@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+    <title>Web Admin Command Center | GUSS Ringim</title>
+    <link rel="icon" type="image/png" href="../public/assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { adminNavy: '#0B1120', adminAccent: '#38BDF8', adminSuccess: '#10B981', gussGreen: '#005A36' } } } }</script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify for Zero-Day XSS Prevention -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        .modal-active {
+            display: flex !important;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        #roleSwitcherMenu {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        #roleSwitcherMenu a {
+            color: #334155 !important;
+        }
+
+        #roleSwitcherMenu a:hover {
+            background-color: #f8fafc !important;
+            color: #005A36 !important;
+        }
+
+        #roleSwitcherMenu .bg-slate-700 {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <!-- SUPER ADMIN SIDEBAR -->
+    <aside id="adminSidebar"
+        class="w-64 bg-adminNavy text-slate-300 flex-col hidden lg:flex h-full shadow-2xl z-40 fixed lg:relative transition-transform transform lg:translate-x-0 border-r border-slate-800">
+        <div class="p-6 border-b border-slate-800 flex items-center gap-4 relative">
+            <button id="closeAdminSidebar" class="absolute top-6 right-4 text-slate-400 hover:text-white lg:hidden"><i
+                    class="fa-solid fa-xmark text-xl"></i></button>
+            <img src="../public/assets/images/logo_img.png" alt="GUSS Logo"
+                class="w-10 h-10 object-contain filter brightness-125">
+            <div>
+                <h2 class="text-sm font-black text-white uppercase tracking-wider">Web Admin</h2>
+                <p class="text-[9px] text-slate-500 font-bold uppercase tracking-widest">System Control</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4 mb-2 mt-4">Core Overview</p>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 bg-adminAccent/10 text-adminAccent rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-overview"><i class="fa-solid fa-gauge-high w-5"></i> Dashboard</button>
+
+            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4 mb-2 mt-6">Website CMS</p>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-site-content"><i class="fa-solid fa-circle-question w-5"></i> FAQs, Quotes &amp;
+                PTA</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-cms"><i class="fa-solid fa-newspaper w-5"></i> News & Events</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-gallery"><i class="fa-solid fa-images w-5"></i> Photo Gallery</button>
+
+            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4 mb-2 mt-6">School Operations
+            </p>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-prefects"><i class="fa-solid fa-user-shield w-5"></i> Leadership Engine</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-facilities"><i class="fa-solid fa-building-user w-5"></i> Facility Managers</button>
+
+            <p class="text-[10px] font-black text-slate-600 uppercase tracking-widest px-4 mb-2 mt-6">RINOBA Ecosystem
+            </p>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-network-mod"><i class="fa-solid fa-comments w-5"></i> Network Moderation</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-alumni-execs"><i class="fa-solid fa-user-tie w-5"></i> Alumni Executives</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-alumni-mod"><i class="fa-solid fa-users-gear w-5"></i> Alumni DB Mod</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-endowment-ledger"><i class="fa-solid fa-vault w-5"></i> Financial Ledger</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-eleco"><i class="fa-solid fa-scale-balanced w-5"></i> ELECO Engine</button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="window.executeSystemLogout()"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full"><i
+                    class="fa-solid fa-power-off w-5"></i> Terminate Session</button>
+        </div>
+    </aside>
+
+    <div id="adminSidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+
+    <main class="flex-1 h-full overflow-y-auto relative bg-slate-100">
+
+        <!-- ADMIN TOPBAR -->
+        <header
+            class="bg-white px-6 lg:px-10 py-4 flex justify-between items-center sticky top-0 z-20 shadow-sm border-b border-slate-200">
+            <div class="flex items-center gap-4">
+                <button id="openAdminSidebar" class="text-2xl text-slate-600 lg:hidden focus:outline-none"><i
+                        class="fa-solid fa-bars"></i></button>
+                <div class="hidden sm:block">
+                    <h1 class="text-lg font-black text-slate-800 uppercase tracking-wide">Command Center</h1>
+                </div>
+            </div>
+            <div class="flex items-center gap-6">
+                <div id="networkPingBadge"
+                    class="bg-slate-900 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner transition-colors duration-500 hidden sm:flex">
+                    <div id="networkPingDot"
+                        class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.8)]">
+                    </div>
+                    <span id="networkPingText"
+                        class="text-[9px] font-mono font-bold text-emerald-500 tracking-widest">SERVER: <span
+                            class="text-white">--ms</span></span>
+                </div>
+                <div class="flex items-center gap-3 border-l border-slate-200 pl-6">
+                    <div class="text-right hidden sm:block">
+                        <p id="topAdminName" class="text-xs font-black text-slate-800 uppercase tracking-widest">Admin
+                        </p>
+                        <p id="topAdminRole" class="text-[9px] font-bold text-adminAccent uppercase tracking-widest">
+                            System Administrator</p>
+                    </div>
+                    <img id="topAdminAvatar" src="https://ui-avatars.com/api/?name=Admin&background=0D8ABC&color=fff"
+                        class="w-10 h-10 rounded-full border-2 border-slate-200 shadow-sm object-cover bg-white">
+                </div>
+            </div>
+        </header>
+
+        <div class="p-6 sm:p-10 max-w-7xl mx-auto space-y-8 pb-20">
+
+            <!-- SECTION: OVERVIEW DASHBOARD -->
+            <section id="view-overview" class="tab-content active space-y-8">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-globe"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Network Threads
+                        </h4>
+                        <div class="text-3xl font-black text-slate-800 mb-1" id="statWebTraffic">0</div>
+                        <p class="text-[9px] font-bold text-emerald-500 uppercase tracking-widest">Active Discussions
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-users"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Alumni DB Size
+                        </h4>
+                        <div class="text-3xl font-black text-adminNavy mb-1" id="statTotalAlumni">0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Verified Accounts</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-money-bill-transfer"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Global
+                            Endowment</h4>
+                        <div class="text-3xl font-black text-emerald-600 mb-1" id="statTotalFunds">₦0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Cleared Contributions
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-newspaper"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">CMS Posts</h4>
+                        <div class="text-3xl font-black text-blue-500 mb-1" id="statTotalPosts">0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">News & Events Published
+                        </p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-images"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Gallery Assets
+                        </h4>
+                        <div class="text-3xl font-black text-amber-500 mb-1" id="statTotalGallery">0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Public Photos</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-user-shield"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Active Prefects
+                        </h4>
+                        <div class="text-3xl font-black text-purple-500 mb-1" id="statTotalPrefects">0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Student Leaders</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-building-user"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Facility
+                            Managers</h4>
+                        <div class="text-3xl font-black text-cyan-500 mb-1" id="statTotalFacilities">0</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Assigned H.O.Ds &
+                            Officers</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden">
+                        <div class="absolute -right-4 -bottom-4 text-6xl text-slate-50 opacity-50"><i
+                                class="fa-solid fa-scale-balanced"></i></div>
+                        <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">ELECO Phase
+                        </h4>
+                        <div class="text-3xl font-black text-slate-800 mb-1" id="statElecoPhase">Phase 1</div>
+                        <p class="text-[9px] font-bold text-slate-500 uppercase tracking-widest">Global Status</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: WEBSITE CMS -->
+            <section id="view-cms" class="tab-content space-y-8">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Website Content Manager</h2>
+                    <p class="text-sm text-slate-500 mt-1">Publish news and events across the School and Alumni portals.
+                    </p>
+                </div>
+                <div class="grid lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-5 bg-white border border-slate-200 rounded-3xl p-8 shadow-sm h-max">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-bullhorn text-adminAccent"></i> Create / Edit Post
+                        </h3>
+                        <form id="cmsNewsForm" class="space-y-4">
+                            <input type="hidden" id="cmsEditId" value="">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div><label
+                                        class="text-[10px] font-black uppercase tracking-widest text-slate-500">Target
+                                        Platform</label><select id="cmsPlatform" required
+                                        class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none"></select>
+                                </div>
+                                <div><label
+                                        class="text-[10px] font-black uppercase tracking-widest text-slate-500">Content
+                                        Type</label><select id="cmsType" required
+                                        class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none"></select>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[10px] font-black uppercase tracking-widest text-slate-500">Category</label>
+                                <select id="cmsCategory" required
+                                    class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none"></select>
+                            </div>
+                            <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Headline
+                                    / Title</label><input type="text" id="cmsTitle" required
+                                    class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                            </div>
+                            <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Cover
+                                    Image</label><input type="file" id="cmsImage" accept="image/*"
+                                    class="w-full mt-2 p-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                            </div>
+                            <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Article
+                                    Content</label><textarea id="cmsContent" required rows="4"
+                                    class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none resize-none"></textarea>
+                            </div>
+                            <div class="flex gap-3">
+                                <button type="submit" id="cmsSubmitBtn"
+                                    class="flex-1 bg-adminNavy text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md">Push
+                                    to Live Site</button>
+                                <button type="button" id="cmsCancelEditBtn" onclick="resetCmsEditMode()"
+                                    class="hidden bg-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-300 transition-colors">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div
+                        class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                        <div class="p-6 bg-slate-50 border-b border-slate-200">
+                            <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Published Content
+                            </h3>
+                        </div>
+                        <div class="overflow-x-auto flex-1 h-[600px] overflow-y-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr
+                                        class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-200 sticky top-0 z-10">
+                                        <th class="px-6 py-4 font-black">Date</th>
+                                        <th class="px-6 py-4 font-black">Details</th>
+                                        <th class="px-6 py-4 font-black text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-sm text-slate-600 divide-y divide-slate-100" id="adminCmsTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: SCHOOL OPERATIONS - PREFECTS -->
+            <section id="view-prefects" class="tab-content space-y-8">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Leadership Engine</h2>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Live Database Binding, Disciplinary Audits &
+                            Historical Ledgers.</p>
+                    </div>
+                    <button onclick="openHistoricalLedger('PREFECT')"
+                        class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors shadow-sm border border-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> View Historical Ledger
+                    </button>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm h-max">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-user-shield text-adminAccent"></i> Appoint Prefect
+                        </h3>
+
+                        <form id="prefectForm" class="space-y-5">
+                            <div>
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">1.
+                                    Target Portfolio</label>
+                                <div class="flex gap-2">
+                                    <select id="prefRole" onchange="togglePrefectHostel()" required
+                                        class="flex-1 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none">
+                                    </select>
+                                    <button type="button" onclick="managePortfolios('ADD', 'prefect')"
+                                        class="bg-emerald-50 text-emerald-600 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-sm"
+                                        title="Add Role"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" onclick="managePortfolios('EDIT', 'prefect')"
+                                        class="bg-blue-50 text-blue-600 px-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors shadow-sm"
+                                        title="Edit Role"><i class="fa-solid fa-pen"></i></button>
+                                    <button type="button" onclick="managePortfolios('REMOVE', 'prefect')"
+                                        class="bg-red-50 text-red-600 px-3 rounded-lg border border-red-200 hover:bg-red-100 transition-colors shadow-sm"
+                                        title="Remove Role"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </div>
+
+                            <div id="prefHostelBox" class="hidden">
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-blue-500 block mb-1">Target
+                                    Hostel (Required for Captains)</label>
+                                <select id="prefHostel"
+                                    class="w-full p-3 border border-blue-200 bg-blue-50 rounded-lg text-sm font-bold text-blue-900 focus:border-blue-500 outline-none">
+                                </select>
+                            </div>
+
+                            <div class="relative">
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">2.
+                                    Search Student Database</label>
+                                <input type="text" id="prefSearchInput" oninput="handlePrefectSearch()"
+                                    placeholder="Enter Student Name or NIN..."
+                                    class="w-full p-3 pl-10 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                                <i class="fa-solid fa-magnifying-glass absolute left-4 top-9 text-slate-400"></i>
+                                <div id="prefSearchResults"
+                                    class="absolute z-50 w-full bg-white border border-slate-200 shadow-2xl rounded-xl mt-1 hidden max-h-48 overflow-y-auto divide-y divide-slate-100">
+                                </div>
+                            </div>
+
+                            <div id="prefSelectedCard"
+                                class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl relative">
+                                <div class="flex items-center gap-4 relative z-10">
+                                    <img id="prefBindPhoto" src=""
+                                        class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm bg-slate-200 shrink-0">
+                                    <div class="truncate">
+                                        <p id="prefBindName"
+                                            class="font-black text-sm text-adminNavy uppercase truncate"></p>
+                                        <p id="prefBindNin" class="text-[9px] text-slate-500 font-mono mt-0.5"></p>
+                                        <div class="flex gap-2 mt-1.5" id="prefBindBadges"></div>
+                                    </div>
+                                </div>
+                                <div id="prefDisciplineWarning"
+                                    class="hidden mt-4 bg-red-50 border border-red-200 p-3 rounded-lg">
+                                    <p class="text-[9px] font-black text-red-800 uppercase tracking-widest mb-1"><i
+                                            class="fa-solid fa-triangle-exclamation mr-1"></i> Disciplinary Flag Active
+                                    </p>
+                                    <p id="prefDisciplineReason" class="text-xs text-red-600 font-medium"></p>
+                                </div>
+                            </div>
+
+                            <button type="submit" id="btnAppointPrefect"
+                                class="w-full bg-adminNavy text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md mt-4">Assign
+                                & Bind to Database</button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                        <div
+                            class="p-6 bg-slate-50 border-b border-slate-200 flex justify-between items-center shrink-0">
+                            <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Active Hierarchy
+                            </h3>
+                            <span
+                                class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[8px] font-black uppercase tracking-widest border border-emerald-200">System
+                                Synced</span>
+                        </div>
+                        <div class="overflow-x-auto flex-1 h-[500px] overflow-y-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <tbody class="text-sm text-slate-600 divide-y divide-slate-100"
+                                    id="adminPrefectsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: SCHOOL OPERATIONS - FACILITIES -->
+            <section id="view-facilities" class="tab-content space-y-8">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Facility Managers</h2>
+                        <p class="text-xs text-slate-500 mt-1 font-medium">Live Staff Binding & Facility Management
+                            Ledger.</p>
+                    </div>
+                    <button onclick="openHistoricalLedger('FACILITY')"
+                        class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors shadow-sm border border-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> View Historical Ledger
+                    </button>
+                </div>
+
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm h-max">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-building-user text-adminAccent"></i> Assign Manager
+                        </h3>
+                        <form id="facilityForm" class="space-y-5">
+                            <div>
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">1.
+                                    Target Facility</label>
+                                <div class="flex gap-2">
+                                    <select id="facTarget" required
+                                        class="flex-1 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none">
+                                    </select>
+                                    <button type="button" onclick="managePortfolios('ADD', 'facility')"
+                                        class="bg-emerald-50 text-emerald-600 px-3 rounded-lg border border-emerald-200 hover:bg-emerald-100 transition-colors shadow-sm"
+                                        title="Add Facility"><i class="fa-solid fa-plus"></i></button>
+                                    <button type="button" onclick="managePortfolios('EDIT', 'facility')"
+                                        class="bg-blue-50 text-blue-600 px-3 rounded-lg border border-blue-200 hover:bg-blue-100 transition-colors shadow-sm"
+                                        title="Edit Facility"><i class="fa-solid fa-pen"></i></button>
+                                    <button type="button" onclick="managePortfolios('REMOVE', 'facility')"
+                                        class="bg-red-50 text-red-600 px-3 rounded-lg border border-red-200 hover:bg-red-100 transition-colors shadow-sm"
+                                        title="Remove Facility"><i class="fa-solid fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">2.
+                                    Role Title</label>
+                                <input type="text" id="facRoleTitle" placeholder="e.g., Chief Librarian" required
+                                    class="w-full p-3 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                            </div>
+
+                            <div class="relative">
+                                <label
+                                    class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">3.
+                                    Search Staff Database</label>
+                                <input type="text" id="facSearchInput" oninput="handleFacilitySearch()"
+                                    placeholder="Enter Staff Name or ID..."
+                                    class="w-full p-3 pl-10 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                                <i class="fa-solid fa-magnifying-glass absolute left-4 top-9 text-slate-400"></i>
+                                <div id="facSearchResults"
+                                    class="absolute z-50 w-full bg-white border border-slate-200 shadow-2xl rounded-xl mt-1 hidden max-h-48 overflow-y-auto divide-y divide-slate-100">
+                                </div>
+                            </div>
+
+                            <div id="facSelectedCard"
+                                class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl relative">
+                                <div class="flex items-center gap-4 relative z-10">
+                                    <img id="facBindPhoto" src=""
+                                        class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm bg-slate-200 shrink-0">
+                                    <div class="truncate">
+                                        <p id="facBindName"
+                                            class="font-black text-sm text-adminNavy uppercase truncate"></p>
+                                        <p id="facBindNin" class="text-[9px] text-slate-500 font-mono mt-0.5"></p>
+                                    </div>
+                                </div>
+                                <div id="facDisciplineWarning"
+                                    class="hidden mt-4 bg-red-50 border border-red-200 p-3 rounded-lg">
+                                    <p class="text-[9px] font-black text-red-800 uppercase tracking-widest mb-1"><i
+                                            class="fa-solid fa-triangle-exclamation mr-1"></i> Staff Disciplinary Flag
+                                        Active</p>
+                                    <p id="facDisciplineReason" class="text-xs text-red-600 font-medium"></p>
+                                </div>
+                            </div>
+
+                            <button type="submit" id="btnAppointFacility"
+                                class="w-full bg-adminNavy text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md mt-4">Assign
+                                & Bind to Database</button>
+                        </form>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                        <div
+                            class="p-6 bg-slate-50 border-b border-slate-200 flex justify-between items-center shrink-0">
+                            <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Assigned Managers
+                            </h3>
+                            <span
+                                class="bg-emerald-100 text-emerald-700 px-2 py-1 rounded text-[8px] font-black uppercase tracking-widest border border-emerald-200">System
+                                Synced</span>
+                        </div>
+                        <div class="overflow-x-auto flex-1 h-[500px] overflow-y-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <tbody class="text-sm text-slate-600 divide-y divide-slate-100"
+                                    id="adminFacilitiesTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: SCHOOL OPERATIONS - GALLERY -->
+            <section id="view-gallery" class="tab-content space-y-8">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Campus Gallery</h2>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm max-w-2xl mb-8">
+                    <form id="galleryForm" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><input type="text" id="galTitle" required placeholder="Image Title"
+                                    class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                            </div>
+                            <div><select id="galCategory"
+                                    class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none">
+                                </select></div>
+                        </div>
+                        <div><input type="file" id="galImage" accept="image/*" required
+                                class="w-full mt-2 p-2 border border-slate-300 rounded-lg text-sm bg-slate-50"></div>
+                        <button type="submit" id="btnGalleryUpload"
+                            class="w-full bg-adminNavy text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md mt-4">Add
+                            to Gallery</button>
+                    </form>
+                </div>
+                <div id="adminGalleryGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+            </section>
+
+            <!-- SECTION: NETWORK MODERATION -->
+            <section id="view-network-mod" class="tab-content space-y-8">
+                <div
+                    class="border-b border-slate-200 pb-4 flex flex-col lg:flex-row lg:items-end justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Network Hub Moderation
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Search, filter by date range, inspect replies, and
+                            moderate discussions.</p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <div class="relative">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                            <input type="text" id="netModSearch" oninput="filterAdminNetworkThreads()"
+                                placeholder="Search title, author, text..."
+                                class="pl-9 pr-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:border-adminAccent outline-none w-52">
+                        </div>
+                        <input type="date" id="netModDateFrom" onchange="filterAdminNetworkThreads()" title="From Date"
+                            class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:border-adminAccent outline-none">
+                        <input type="date" id="netModDateTo" onchange="filterAdminNetworkThreads()" title="To Date"
+                            class="px-3 py-2 border border-slate-300 rounded-lg text-xs bg-white focus:border-adminAccent outline-none">
+                        <button onclick="resetNetworkFilters()"
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-3 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors">Reset</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                    <div class="p-6 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Active Threads</h3>
+                        <span id="netModResultCount"
+                            class="text-[10px] font-black uppercase tracking-widest text-slate-400">0 Threads</span>
+                    </div>
+                    <div class="overflow-x-auto h-[600px] overflow-y-auto p-6 space-y-4"
+                        id="adminNetworkThreadsContainer"></div>
+                </div>
+            </section>
+
+            <!-- SECTION: RINOBA - ALUMNI EXECUTIVES -->
+            <section id="view-alumni-execs" class="tab-content space-y-8">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Alumni Executives</h2>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-user-tie text-adminAccent"></i> Assign Executive
+                        </h3>
+                        <form id="execsForm" class="space-y-4">
+                            <div>
+                                <div>
+                                    <div class="flex justify-between items-center mb-1">
+                                        <label
+                                            class="text-[9px] font-black uppercase tracking-widest text-slate-500">Executive
+                                            Portfolio (Synced from ELECO Ranks)</label>
+                                        <button type="button" onclick="manageDynamicConfig('ELECO')"
+                                            class="text-[9px] font-black uppercase text-adminAccent hover:underline"><i
+                                                class="fa-solid fa-pen mr-1"></i>Edit Ranks</button>
+                                    </div>
+                                    <select id="execRole" required
+                                        class="w-full p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-adminAccent outline-none">
+                                        <option value="">Loading ELECO ranks...</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="relative">
+                                <input type="text" id="execSearchInput" oninput="handleExecSearch()"
+                                    placeholder="Search Alumni by Name or ID..."
+                                    class="w-full mt-2 p-3 pl-10 border border-slate-300 rounded-lg text-sm focus:border-adminAccent outline-none">
+                                <i class="fa-solid fa-magnifying-glass absolute left-4 top-6 text-slate-400"></i>
+                                <div id="execSearchResults"
+                                    class="absolute z-50 w-full bg-white border border-slate-200 shadow-2xl rounded-xl mt-1 hidden max-h-48 overflow-y-auto divide-y divide-slate-100">
+                                </div>
+                            </div>
+
+                            <div id="execSelectedCard"
+                                class="hidden p-4 bg-slate-50 border border-slate-200 rounded-xl relative mt-2">
+                                <div class="flex items-center gap-4 relative z-10">
+                                    <img id="execBindPhoto" src=""
+                                        class="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm bg-slate-200 shrink-0">
+                                    <div class="truncate">
+                                        <p id="execBindName"
+                                            class="font-black text-sm text-adminNavy uppercase truncate"></p>
+                                        <p id="execBindId" class="text-[9px] text-slate-500 font-mono mt-0.5"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="text-[9px] font-black uppercase tracking-widest text-slate-500">Official
+                                    Portrait (Optional)</label>
+                                <input type="file" id="execImage" accept="image/*"
+                                    class="w-full mt-1 p-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                            </div>
+                            <button type="submit" id="btnAppointExec"
+                                class="w-full bg-adminNavy text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md mt-4">Publish
+                                Executive</button>
+                        </form>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                        <div class="p-6 bg-slate-50 border-b border-slate-200">
+                            <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Current Board</h3>
+                        </div>
+                        <div class="overflow-x-auto flex-1 h-[350px] overflow-y-auto">
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <tbody class="text-sm text-slate-600 divide-y divide-slate-100"
+                                    id="adminExecsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: ALUMNI DB MODERATION -->
+            <section id="view-alumni-mod" class="tab-content space-y-8">
+                <div
+                    class="flex flex-col md:flex-row justify-between md:items-end gap-4 border-b border-slate-200 pb-4">
+                    <div class="grid lg:grid-cols-12 gap-6">
+                        <div
+                            class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                            <div class="p-4 bg-amber-50 border-b border-amber-200 flex justify-between items-center">
+                                <h3 class="text-xs font-black uppercase tracking-widest text-amber-900"><i
+                                        class="fa-solid fa-user-clock mr-1.5"></i> Pending Alumni Vetting Queue</h3>
+                                <span id="pendingAlumniBadge"
+                                    class="bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full text-[9px] font-black">0</span>
+                            </div>
+                            <div id="pendingAlumniQueueBody" class="p-4 space-y-3 max-h-72 overflow-y-auto"></div>
+                        </div>
+                        <div class="lg:col-span-5 bg-white border border-slate-200 rounded-2xl shadow-sm p-5 space-y-4">
+                            <h3 class="text-xs font-black uppercase tracking-widest text-adminNavy"><i
+                                    class="fa-solid fa-ticket text-adminAccent mr-1.5"></i> Set Invite Codes
+                                (Fast-Track)</h3>
+                            <form id="inviteCodeForm" class="flex flex-wrap gap-2">
+                                <select id="inviteClassSet" required
+                                    class="flex-1 p-2.5 border border-slate-300 rounded-lg text-xs font-bold bg-white"></select>
+                                <input type="number" id="inviteMaxUses" value="25" min="1" max="500"
+                                    class="w-20 p-2.5 border border-slate-300 rounded-lg text-xs font-bold text-center"
+                                    title="Max Uses">
+                                <button type="submit"
+                                    class="bg-adminNavy text-white px-4 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest">Generate</button>
+                            </form>
+                            <div id="inviteCodesList" class="space-y-2 max-h-44 overflow-y-auto text-xs"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Alumni Directory
+                            Moderation</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <select id="exportFilterSet"
+                            class="p-2.5 border border-slate-300 rounded-lg text-xs font-bold focus:outline-none">
+                            <option value="all">All Class Sets</option>
+                        </select>
+                        <select id="exportFilterState"
+                            class="p-2.5 border border-slate-300 rounded-lg text-xs font-bold focus:outline-none">
+                            <option value="all">All States</option>
+                        </select>
+                        <button onclick="exportToCSV()"
+                            class="bg-adminNavy text-white px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition-colors whitespace-nowrap"><i
+                                class="fa-solid fa-download mr-1"></i> Export Data</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <div class="relative w-full max-w-sm"><i
+                                class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i><input
+                                type="text" id="adminDbSearch" onkeyup="filterAdminTable()"
+                                placeholder="Search ID, Name, Email..."
+                                class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-200">
+                                    <th class="px-6 py-4 font-black">Portal ID</th>
+                                    <th class="px-6 py-4 font-black">Full Name</th>
+                                    <th class="px-6 py-4 font-black">Class Set</th>
+                                    <th class="px-6 py-4 font-black">Email Address</th>
+                                    <th class="px-6 py-4 font-black text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600 divide-y divide-slate-100" id="adminAlumniTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: FINANCIAL LEDGER -->
+            <section id="view-endowment-ledger" class="tab-content space-y-8">
+                <div
+                    class="flex flex-col md:flex-row justify-between md:items-end gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Global Financial Ledger
+                        </h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="manageDynamicConfig('DONATION')"
+                            class="bg-slate-100 text-slate-600 px-3 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-colors border border-slate-300"><i
+                                class="fa-solid fa-pen mr-1"></i> Manage Categories</button>
+                        <button onclick="exportLedgerCSV()"
+                            class="bg-emerald-600 text-white px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-emerald-700 transition-colors whitespace-nowrap"><i
+                                class="fa-solid fa-download mr-1"></i> Export Ledger CSV</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <div class="relative w-full max-w-sm"><i
+                                class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i><input
+                                type="text" id="adminLedgerSearch" onkeyup="filterLedgerTable()"
+                                placeholder="Search Donor, ID..."
+                                class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-200">
+                                    <th class="px-6 py-4 font-black">Transaction ID</th>
+                                    <th class="px-6 py-4 font-black">Donor Info</th>
+                                    <th class="px-6 py-4 font-black">Purpose</th>
+                                    <th class="px-6 py-4 font-black">Amount</th>
+                                    <th class="px-6 py-4 font-black">Date</th>
+                                    <th class="px-6 py-4 font-black text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600 divide-y divide-slate-100" id="adminLedgerTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: ELECO ENGINE & ARCHIVES -->
+            <section id="view-eleco" class="tab-content space-y-8">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-slate-200 pb-4">
+                    <div>
+                        <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">Electoral Control (ELECO)
+                        </h2>
+                        <p class="text-sm text-slate-500 mt-1">Manage election phases, review candidate dossiers, and
+                            archive tenures.</p>
+                    </div>
+                    <button onclick="manageDynamicConfig('ELECO')"
+                        class="ml-4 bg-slate-100 text-slate-600 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-colors border border-slate-300"><i
+                            class="fa-solid fa-pen mr-1"></i> Manage Ranks</button>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-solid fa-sliders text-adminAccent"></i> Active Phase Control
+                        </h3>
+                        <div class="space-y-4">
+                            <label
+                                class="flex items-center gap-4 p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors"><input
+                                    type="radio" name="elecoPhase" value="1"
+                                    class="w-4 h-4 text-adminAccent focus:ring-adminAccent">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm uppercase tracking-wide">Phase 1:
+                                        Declarations</p>
+                                    <p class="text-xs text-slate-500">Allow users to submit structured intent dossiers.
+                                    </p>
+                                </div>
+                            </label>
+                            <label
+                                class="flex items-center gap-4 p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors"><input
+                                    type="radio" name="elecoPhase" value="2"
+                                    class="w-4 h-4 text-adminAccent focus:ring-adminAccent">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm uppercase tracking-wide">Phase 2:
+                                        Campaigns Active</p>
+                                    <p class="text-xs text-slate-500">Users review dossiers. Voting is locked.</p>
+                                </div>
+                            </label>
+                            <label
+                                class="flex items-center gap-4 p-4 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition-colors"><input
+                                    type="radio" name="elecoPhase" value="3"
+                                    class="w-4 h-4 text-adminAccent focus:ring-adminAccent">
+                                <div>
+                                    <p class="font-bold text-slate-800 text-sm uppercase tracking-wide">Phase 3: Live
+                                        Voting</p>
+                                    <p class="text-xs text-slate-500">Digital ballot boxes open to all verified alumni.
+                                    </p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm flex flex-col justify-center">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-6 flex items-center gap-2">
+                            <i class="fa-regular fa-clock text-red-500"></i> Set Deadline Timer
+                        </h3>
+                        <p class="text-xs text-slate-500 mb-4">This strict countdown timer will be broadcasted to all
+                            users to enforce the deadline of the current phase.</p>
+                        <input type="datetime-local" id="elecoDeadlineInput"
+                            class="w-full p-4 border border-slate-300 rounded-xl text-sm font-black focus:border-adminAccent outline-none mb-4">
+                        <button onclick="broadcastElecoState()"
+                            class="mt-auto bg-adminNavy text-white px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-800 transition-colors shadow-md w-full"><i
+                                class="fa-solid fa-satellite-dish mr-2"></i> Broadcast Phase & Timer</button>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                    <div class="p-6 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                        <h3 class="text-sm font-black uppercase tracking-widest text-slate-800"><i
+                                class="fa-solid fa-scale-unbalanced text-adminAccent mr-2"></i> Candidate Moderation
+                            Board</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-200">
+                                    <th class="px-6 py-4 font-black">Candidate</th>
+                                    <th class="px-6 py-4 font-black">Target Portfolio</th>
+                                    <th class="px-6 py-4 font-black">Submitted Dossier</th>
+                                    <th class="px-6 py-4 font-black text-center">Status / Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600 divide-y divide-slate-100"
+                                id="adminCandidatesTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+                    <div
+                        class="absolute right-0 top-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none">
+                    </div>
+                    <div class="flex justify-between items-center mb-6 relative z-10 border-b border-slate-800 pb-4">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-simple"></i> Live Vote Tally <span
+                                class="bg-red-500 text-white px-2 py-0.5 rounded text-[8px] animate-pulse ml-2">LIVE</span>
+                        </h3>
+                        <button onclick="printElecoResults()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-md transition-colors"><i
+                                class="fa-solid fa-print mr-2"></i> Generate Official Results</button>
+                    </div>
+                    <div id="liveVoteTallyGrid" class="space-y-8 relative z-10 h-[400px] overflow-y-auto pr-2"></div>
+                </div>
+                <div class="mt-8 border-t border-slate-200 pt-8">
+                    <h3 class="text-xl font-black text-adminNavy uppercase tracking-wide mb-6"><i
+                            class="fa-solid fa-box-archive text-slate-400 mr-2"></i> Electoral Lifecycle & Archives</h3>
+                    <div class="grid lg:grid-cols-12 gap-8">
+                        <div class="lg:col-span-5 bg-red-50 border border-red-200 rounded-3xl p-8 shadow-sm h-max">
+                            <h4
+                                class="text-sm font-black uppercase tracking-widest text-red-600 mb-4 flex items-center">
+                                <i class="fa-solid fa-triangle-exclamation mr-2 text-xl"></i> Seal Election Cycle
+                            </h4>
+                            <p class="text-xs text-red-800 mb-6 leading-relaxed font-bold">Warning: This action will
+                                permanently archive all current votes and candidates, wipe the live active database, and
+                                reset the global system to Phase 1.</p>
+                            <div class="space-y-4">
+                                <div><label class="text-[10px] font-black uppercase tracking-widest text-red-500">Tenure
+                                        Label</label><input type="text" id="elecoTenureLabel"
+                                        placeholder="e.g. 2026 - 2028"
+                                        class="w-full mt-2 p-3 border border-red-300 rounded-lg text-sm focus:border-red-500 outline-none bg-white">
+                                </div>
+                                <button onclick="sealElectionCycle()"
+                                    class="w-full bg-red-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-red-700 transition-colors shadow-md"><i
+                                        class="fa-solid fa-lock mr-2"></i> Seal & Archive Results</button>
+                            </div>
+                        </div>
+                        <div
+                            class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex flex-col">
+                            <div class="p-6 bg-slate-50 border-b border-slate-200">
+                                <h3 class="text-sm font-black uppercase tracking-widest text-slate-800">Historical
+                                    Election Archives</h3>
+                            </div>
+                            <div class="overflow-x-auto flex-1 h-[300px] overflow-y-auto">
+                                <table class="w-full text-left border-collapse whitespace-nowrap">
+                                    <thead
+                                        class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 border-b border-slate-200 sticky top-0 z-10">
+                                        <tr>
+                                            <th class="px-6 py-4 font-black">Tenure Term</th>
+                                            <th class="px-6 py-4 font-black">Date Sealed</th>
+                                            <th class="px-6 py-4 font-black text-center">Total Ballots</th>
+                                            <th class="px-6 py-4 font-black text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-sm text-slate-600 divide-y divide-slate-100"
+                                        id="adminArchivesTableBody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQs, Testimonials, PTA Excos & Suggestions -->
+            <section id="view-site-content" class="tab-content space-y-8">
+                <div class="border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black text-adminNavy uppercase tracking-wide">FAQs, Testimonials &amp; PTA
+                        Secretariat</h2>
+                </div>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-black uppercase">Public FAQs</h3><button onclick="openAddFaqModal()"
+                                class="bg-adminNavy text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">+
+                                Add FAQ</button>
+                        </div>
+                        <div id="adminFaqsList" class="space-y-2 max-h-72 overflow-y-auto"></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-black uppercase">Public Testimonials</h3><button
+                                onclick="openAddTestimonialModal()"
+                                class="bg-adminNavy text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">+
+                                Add Testimonial</button>
+                        </div>
+                        <div id="adminTestimonialsList" class="space-y-2 max-h-72 overflow-y-auto"></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-sm font-black uppercase">PTA Executives</h3><button
+                                onclick="openAddPtaExecModal()"
+                                class="bg-adminNavy text-white px-3 py-1.5 rounded-lg text-[10px] font-black uppercase">+
+                                Add PTA Exec</button>
+                        </div>
+                        <div id="adminPtaExecsList" class="space-y-2 max-h-72 overflow-y-auto"></div>
+                    </div>
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                        <h3 class="text-sm font-black uppercase">PTA Suggestions Inbox</h3>
+                        <div id="adminPtaSuggestionsList" class="space-y-2 max-h-72 overflow-y-auto"></div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- ADMIN MODALS -->
+    <!-- Revocation Modal -->
+    <div id="revokeConfirmModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[90] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl p-8 transform transition-all scale-95 opacity-0"
+            id="revokeConfirmContent">
+            <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-4">
+                <div
+                    class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-user-xmark"></i>
+                </div>
+                <div class="overflow-hidden">
+                    <h3 class="text-lg font-black text-slate-800 uppercase tracking-wide">Revoke Leadership</h3>
+                    <p id="revokeTargetDetails"
+                        class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5 truncate">Target
+                        Name</p>
+                </div>
+            </div>
+            <form id="revokeForm" class="space-y-4">
+                <input type="hidden" id="revokeTargetId">
+                <input type="hidden" id="revokeType">
+                <div>
+                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">Revocation
+                        Type</label>
+                    <select id="revokeDuration"
+                        class="w-full p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-red-500 outline-none">
+                        <option value="Temporary Suspension">Temporary Suspension</option>
+                        <option value="Permanent Removal">Permanent Removal</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[9px] font-black uppercase tracking-widest text-slate-500 block mb-1">Explicit
+                        Reason (Immutable Log)</label>
+                    <textarea id="revokeReason" required placeholder="State exact reason for removal..."
+                        class="w-full p-3 border border-slate-300 rounded-lg text-sm font-medium text-slate-700 focus:border-red-500 outline-none h-24 resize-none"></textarea>
+                </div>
+                <div class="flex gap-4 pt-2">
+                    <button type="button" onclick="closeRevokeModal()"
+                        class="flex-1 bg-slate-100 text-slate-600 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-slate-200 transition-colors">Cancel</button>
+                    <button type="submit" id="btnConfirmRevoke"
+                        class="flex-1 bg-red-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-red-700 transition-colors shadow-md">Execute
+                        Action</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ledger Modal -->
+    <div id="leadershipLedgerModal"
+        class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-5xl shadow-2xl relative transform transition-all flex flex-col max-h-[85vh] scale-95 opacity-0"
+            id="ledgerModalContent">
+
+            <div
+                class="bg-slate-100 p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center rounded-t-3xl border-b border-slate-200 shrink-0 gap-4">
+                <div>
+                    <h3 class="font-black uppercase tracking-wide text-slate-800 flex items-center gap-2"><i
+                            class="fa-solid fa-clock-rotate-left text-adminAccent"></i> Immutable Historical Ledger</h3>
+                    <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400 mt-1">Permanent record of
+                        appointments and revocations.</p>
+                </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <input type="text" id="ledgerSearchInput" onkeyup="filterLedgerUI()"
+                            placeholder="Search entity or portfolio..."
+                            class="w-full pl-9 pr-4 py-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:border-adminAccent">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+                    <button onclick="closeHistoricalLedger()"
+                        class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-slate-200 transition-colors shrink-0"><i
+                            class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500"></i></button>
+                </div>
+            </div>
+
+            <div class="p-0 overflow-y-auto flex-1">
+                <table class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead
+                        class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 sticky top-0 shadow-sm z-10">
+                        <tr>
+                            <th class="p-5 font-black">Entity Name</th>
+                            <th class="p-5 font-black">Portfolio</th>
+                            <th class="p-5 font-black">Action Taken</th>
+                            <th class="p-5 font-black">Immutable Log & Timestamp</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-slate-600" id="ledgerTableBody"></tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Alumni Profile Modal -->
+    <div id="adminViewProfileModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative transform transition-all scale-95 opacity-0"
+            id="adminProfileContent">
+            <div class="bg-slate-100 p-6 flex justify-between items-center rounded-t-3xl border-b border-slate-200">
+                <h3 class="font-black uppercase tracking-wide text-slate-800"><i
+                        class="fa-solid fa-address-card text-adminAccent mr-2"></i> User Profile Details</h3>
+                <button onclick="closeAdminProfileModal()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500 transition-colors"></i></button>
+            </div>
+            <div class="p-8">
+                <div class="flex items-center gap-6 mb-8 pb-6 border-b border-slate-100">
+                    <img id="adminViewImg" src=""
+                        class="w-24 h-24 rounded-full border-4 border-slate-100 shadow-md object-cover bg-white">
+                    <div>
+                        <h2 id="adminViewName" class="text-2xl font-black text-slate-900 uppercase tracking-tight">Name
+                        </h2>
+                        <p class="text-xs text-slate-500 font-bold mb-1">ID: <span id="adminViewId"
+                                class="text-adminNavy font-mono"></span></p>
+                        <span id="adminViewSet"
+                            class="bg-blue-50 text-blue-700 border border-blue-100 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest inline-block mt-2">Set</span>
+                    </div>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-6 text-sm">
+                    <div><span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Email
+                            (Unlocked)</span>
+                        <p id="adminViewEmail" class="font-bold text-adminAccent"></p>
+                    </div>
+                    <div><span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Phone
+                            (Unlocked)</span>
+                        <p id="adminViewPhone" class="font-bold text-slate-800"></p>
+                    </div>
+                    <div><span
+                            class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Profession
+                            & Role</span>
+                        <p id="adminViewJob" class="font-bold text-slate-800"></p>
+                    </div>
+                    <div><span
+                            class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Location</span>
+                        <p id="adminViewLocation" class="font-bold text-slate-800"></p>
+                    </div>
+                    <div><span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Class &
+                            Hostel</span>
+                        <p id="adminViewClass" class="font-bold text-slate-800"></p>
+                    </div>
+                    <div><span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Account
+                            Status</span>
+                        <p id="adminViewStatus" class="font-black uppercase text-emerald-600 tracking-wider">Active</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manifesto / Dossier Modal -->
+    <div id="adminManifestoModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative transform transition-all scale-95 opacity-0 flex flex-col max-h-[85vh]"
+            id="adminManifestoContent">
+            <div
+                class="bg-slate-100 p-6 flex justify-between items-center rounded-t-3xl border-b border-slate-200 shrink-0">
+                <h3 class="font-black uppercase tracking-wide text-slate-800"><i
+                        class="fa-solid fa-folder-open text-adminAccent mr-2"></i> Official Candidate Dossier</h3>
+                <button onclick="closeManifestoModal()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500 transition-colors"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1">
+                <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-6">
+                    <img id="manImg" src="" class="w-16 h-16 rounded-full border-2 border-slate-200 object-cover">
+                    <div>
+                        <h2 id="manName" class="text-xl font-black text-slate-900 uppercase">Name</h2>
+                        <p class="text-xs font-bold text-adminAccent uppercase tracking-widest mt-1">Target Portfolio:
+                            <span id="manRole">Role</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="space-y-6" id="manText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NORMALIZED TAXONOMY CRUD MODAL (ELECO RANKS & DONATION CATEGORIES) -->
+    <div id="taxonomyCrudModal"
+        class="fixed inset-0 bg-slate-900/85 backdrop-blur-sm z-[95] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] transform transition-all scale-95 opacity-0"
+            id="taxonomyCrudContent">
+            <div class="bg-adminNavy p-6 flex justify-between items-center text-white shrink-0">
+                <div>
+                    <h3 id="taxCrudTitle" class="font-black uppercase tracking-wide text-sm">Manage Taxonomy</h3>
+                    <p id="taxCrudSubtitle" class="text-[10px] text-slate-400 mt-0.5">Add, rename, or deactivate entries
+                        in PostgreSQL.</p>
+                </div>
+                <button onclick="closeTaxonomyCrudModal()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-white"></i></button>
+            </div>
+            <div class="p-6 border-b border-slate-200 bg-slate-50 shrink-0">
+                <form onsubmit="submitCreateTaxonomyItem(event)" class="flex flex-col sm:flex-row gap-2">
+                    <input type="text" id="taxNewNameInput" required placeholder="Enter new rank or category name..."
+                        class="flex-1 p-3 border border-slate-300 rounded-xl text-xs font-bold focus:border-adminAccent outline-none">
+                    <input type="text" id="taxNewDescInput" placeholder="Optional description..."
+                        class="flex-1 p-3 border border-slate-300 rounded-xl text-xs focus:border-adminAccent outline-none hidden">
+                    <button type="submit"
+                        class="bg-adminNavy hover:bg-slate-800 text-white px-5 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors shadow-sm shrink-0">
+                        <i class="fa-solid fa-plus mr-1"></i> Add
+                    </button>
+                </form>
+            </div>
+            <div id="taxCrudList" class="p-6 overflow-y-auto flex-1 space-y-2.5"></div>
+        </div>
+    </div>
+
+    <!-- ELECO READ-ONLY ARCHIVE INSPECTOR MODAL -->
+    <div id="elecoArchiveInspectorModal"
+        class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[95] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-5xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] transform transition-all scale-95 opacity-0"
+            id="elecoArchiveInspectorContent">
+            <div
+                class="bg-slate-900 p-6 flex justify-between items-center text-white shrink-0 border-b-4 border-amber-400">
+                <div>
+                    <span
+                        class="bg-red-500/20 text-red-300 border border-red-500/40 px-2.5 py-0.5 rounded text-[9px] font-black uppercase tracking-widest"><i
+                            class="fa-solid fa-lock mr-1"></i> Archived Tenure — Read-Only</span>
+                    <h3 id="archInspectTitle" class="text-lg font-black uppercase tracking-wide mt-2">Election Archive
+                    </h3>
+                    <p id="archInspectMeta" class="text-[11px] text-slate-400 font-mono mt-0.5"></p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button id="archInspectPrintBtn"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm">
+                        <i class="fa-solid fa-print mr-1"></i> Official PDF
+                    </button>
+                    <button onclick="closeArchiveInspector()"><i
+                            class="fa-solid fa-xmark text-xl text-slate-400 hover:text-white"></i></button>
+                </div>
+            </div>
+            <div id="archInspectBody" class="p-6 overflow-y-auto flex-1 space-y-8 bg-slate-50"></div>
+        </div>
+    </div>
+
+    <!-- Staff First Login Modal -->
+    <div id="staffFirstLoginModal"
+        class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-10 text-center transform scale-95 transition-transform opacity-0"
+            id="staffFirstLoginContent">
+            <div
+                class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gussNavy uppercase tracking-tight mb-2">Secure Your Account</h2>
+            <p class="text-sm text-slate-600 mb-8 leading-relaxed">You are currently using a system-generated access
+                key. By institutional policy, you must create a permanent, private password before accessing your
+                dashboard.</p>
+            <form id="staffFirstPasswordForm" class="space-y-4">
+                <input type="password" id="act-current-pass" required placeholder="Current Temporary Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="setupNewStaffPass" required placeholder="Enter Permanent Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+                <input type="password" id="confirmNewStaffPass" required placeholder="Confirm Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+                <button type="submit" id="btnSaveNewPass"
+                    class="w-full bg-gussGold text-gussNavy py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-500/30">Activate
+                    My Account <i class="fa-solid fa-lock ml-2"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Credit -->
+    <div class="fixed bottom-0 right-0 p-4 pointer-events-none z-50">
+        <div
+            class="bg-white/90 backdrop-blur border border-slate-200 px-4 py-2 rounded-full shadow-lg pointer-events-auto">
+            <p class="text-[9px] font-black uppercase tracking-widest text-slate-500 flex items-center gap-2">Architect:
+                <a href="https://haidev-agency.github.io" target="_blank"
+                    class="text-adminNavy hover:text-adminAccent transition-colors">HaiDev Agency</a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/web_admin_app.js"></script>
+
+</body>
+
+</html>

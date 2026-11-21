@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Portal Login | RINOBA</title>
+    <link rel="icon" type="image/png" href="../public/assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { rinobaBlue: '#1E3A8A', rinobaGold: '#D4AF37' } } } }</script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        .hero-overlay {
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(0, 90, 54, 0.8) 100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #D4AF37, #FDE047, #D4AF37);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
+
+    <div class="hidden lg:flex lg:w-1/2 relative bg-slate-900 flex-col justify-between overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1523580494112-071d38458a51?auto=format&fit=crop&q=80&w=1920"
+                alt="Alumni Network" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 z-10 animate-pulse">
+        </div>
+
+        <div class="relative z-20 p-10">
+            <a href="../alumni/index.html"
+                class="inline-flex items-center gap-2 text-white/70 hover:text-white transition-colors text-xs font-black uppercase tracking-widest bg-white/10 px-5 py-2.5 rounded-full border border-white/20 backdrop-blur-sm">
+                <i class="fa-solid fa-arrow-left"></i> Return to Main Site
+            </a>
+        </div>
+
+        <div class="relative z-20 p-16 flex-1 flex flex-col justify-center">
+            <img src="../alumni/assets/images/RINOBA-Rounded-Logo.png" alt="RINOBA Logo"
+                class="w-40 h-40 object-contain flex-shrink-0 mb-8 drop-shadow-2xl">
+            <h1 class="text-4xl xl:text-5xl font-black text-white uppercase tracking-tight leading-[1.1] mb-6">Welcome
+                Back, <br><span class="text-rinobaGold">Scholars.</span></h1>
+            <p class="text-blue-100 text-sm leading-relaxed max-w-md">Authenticate to access the central directory,
+                update your professional portfolio, contribute to the endowment fund, and cast your votes during RINOBA
+                Executive elections.</p>
+        </div>
+
+        <div
+            class="relative z-20 p-10 text-[10px] uppercase tracking-widest font-bold text-white/50 border-t border-white/10">
+            <p>&copy; 2026 Ringim Old Boys Association.</p>
+        </div>
+    </div>
+
+    <div
+        class="w-full lg:w-1/2 min-h-screen flex flex-col justify-center px-6 sm:px-12 md:px-20 py-12 relative bg-white">
+        <div class="lg:hidden mb-10 text-center flex flex-col items-center">
+            <img src="../alumni/assets/images/RINOBA-Regtangle-Logo.png" alt="RINOBA Logo"
+                class="h-12 w-auto mb-4 object-contain">
+            <h2 class="text-2xl font-black text-rinobaBlue uppercase tracking-wide">Portal Access</h2>
+        </div>
+
+        <div class="w-full max-w-md mx-auto">
+            <div class="mb-10 text-center lg:text-left">
+                <h2 class="hidden lg:block text-3xl font-black text-slate-800 uppercase tracking-wide mb-2">Secure
+                    Authentication</h2>
+                <p class="text-sm text-slate-500 font-medium">Please enter your registered RINOBA credentials.</p>
+            </div>
+
+            <form id="loginForm" class="space-y-6">
+                <div class="space-y-2">
+                    <label for="alumniId"
+                        class="text-[10px] font-black uppercase tracking-widest text-slate-600 block">Registration
+                        Number or Email</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i
+                                class="fa-solid fa-id-card text-slate-400"></i></div>
+                        <input type="text" id="alumniId" required placeholder="e.g. RINOBA/2019/045"
+                            class="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rinobaBlue transition-all shadow-sm">
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label for="password"
+                            class="text-[10px] font-black uppercase tracking-widest text-slate-600 block">Portal
+                            Password</label>
+                        <a href="#" id="forgotPasswordLink"
+                            class="text-[10px] font-black uppercase tracking-widest text-rinobaBlue hover:text-rinobaGold transition-colors">Forgot
+                            Password?</a>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"><i
+                                class="fa-solid fa-lock text-slate-400"></i></div>
+                        <input type="password" id="password" required placeholder="••••••••"
+                            class="w-full pl-12 pr-12 py-4 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-rinobaBlue transition-all shadow-sm">
+                    </div>
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-rinobaBlue hover:bg-blue-900 text-white py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg shadow-blue-900/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-shield-halved"></i> Access Dashboard
+                </button>
+            </form>
+
+            <div class="mt-12 bg-blue-50 border border-blue-100 rounded-2xl p-6 text-center">
+                <div
+                    class="w-12 h-12 bg-white text-rinobaBlue rounded-full flex items-center justify-center text-xl mx-auto mb-4 shadow-sm">
+                    <i class="fa-solid fa-database"></i>
+                </div>
+                <h3 class="text-sm font-black text-rinobaBlue uppercase tracking-wide mb-2">Join the Digital Database
+                </h3>
+                <p class="text-xs text-slate-600 leading-relaxed mb-5">It is highly crucial that all graduates claim
+                    their profiles. Joining allows you to participate in <strong>executive voting</strong>, map your
+                    professional network, and trace your class sets.</p>
+                <a href="alumni_registration.html"
+                    class="inline-block w-full bg-white border-2 border-rinobaBlue text-rinobaBlue hover:bg-rinobaBlue hover:text-white py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-colors shadow-sm">Register
+                    & Generate Credentials</a>
+            </div>
+
+            <div class="mt-8 text-center lg:hidden">
+                <a href="../alumni/index.html"
+                    class="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-rinobaBlue transition-colors"><i
+                        class="fa-solid fa-arrow-left mr-1"></i> Back to Main Site</a>
+            </div>
+        </div>
+
+        <div class="absolute bottom-6 right-6 lg:right-12">
+            <p class="text-[9px] uppercase tracking-widest font-bold text-slate-400 flex items-center gap-2">Engineered
+                By <a href="https://haidev-agency.github.io" target="_blank"
+                    class="gradient-text font-black hover:opacity-80 transition-opacity">HAIDEV AGENCY</a></p>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/alumni_auth_app.js"></script>
+
+</body>
+
+</html>

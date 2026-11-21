@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <title>DD Academics Console | G.U.S.S. Ringim</title>
+    <meta name="description" content="Deputy Director of Academics Terminal for Government Unity Secondary School.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner z-[60]">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i
+                    class="fa-solid fa-book-open-reader text-gussGold mr-1"></i> ACADEMIC OVERSIGHT NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-graduate text-blue-400"></i> Role: DD Academics
+            </span>
+            <span
+                class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4 cursor-pointer hover:text-white transition-colors"
+                onclick="openDDProfileSettings()">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeDDNameDisplay">Loading...</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="window.location.href='staff_login.html'"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">DD Academics
+                        Console</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Curriculum, Substitutes &
+                        Faculty Management</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6">
+
+        <div class="flex bg-slate-200/50 p-1.5 rounded-2xl w-full shadow-sm overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('omnisearch')" id="tabBtnOmnisearch"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white shadow text-gussNavy border border-slate-200"><i
+                    class="fa-solid fa-earth-africa mr-1 text-blue-500"></i> Omni-Search</button>
+            <button onclick="switchTab('approvals')" id="tabBtnApprovals"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-user-check mr-1 text-emerald-500"></i> Approvals</button>
+            <button onclick="switchTab('allocations')" id="tabBtnAllocations"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-chalkboard-user mr-1 text-purple-500"></i> Subject Matrix</button>
+            <button onclick="switchTab('substitutes')" id="tabBtnSubstitutes"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-people-arrows mr-1 text-amber-500"></i> Covers & Subs</button>
+            <button onclick="switchTab('transfers')" id="tabBtnTransfers"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-right-left mr-1 text-indigo-500"></i> Transfers</button>
+            <button onclick="switchTab('comms')" id="tabBtnComms"
+                class="flex-1 whitespace-nowrap px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-tower-broadcast mr-1 text-red-500"></i> Dispatcher</button>
+        </div>
+
+        <div id="tabContentOmnisearch" class="block animate-fade-in space-y-6 flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide mb-3"><i
+                        class="fa-solid fa-magnifying-glass text-blue-500 mr-2"></i> Global Omni-Search Gateway</h2>
+                <div class="relative">
+                    <input type="text" id="omniSearchInput" onkeyup="executeOmniSearch()"
+                        placeholder="Search Name, ID, or Admission Number..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-4 pr-3 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div id="omniSearchResults"
+                    class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 max-h-[500px] overflow-y-auto pr-2"></div>
+            </div>
+        </div>
+
+        <div id="tabContentApprovals" class="hidden animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Academic Staff Onboarding
+                            Queue</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Review and
+                            approve teaching staff (Permanent, NYSC, TP).</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Identity</th>
+                                <th class="py-3 px-3">Track / Qual</th>
+                                <th class="py-3 px-3 text-right">Approval Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalsBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentAllocations" class="hidden animate-fade-in flex-1 space-y-6">
+            <!-- MASTER CURRICULUM DICTIONARY -->
+            <div class="bg-blue-50 border border-blue-200 rounded-3xl p-6 shadow-sm mb-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="flex-1">
+                        <h2 class="text-sm font-black text-blue-900 uppercase tracking-wide mb-1">
+                            <i class="fa-solid fa-book-journal-whills text-blue-500 mr-2"></i> Master Curriculum
+                            Dictionary
+                        </h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest uppercase">Modify the statutory
+                            subjects approved by the Ministry of Education.</p>
+                    </div>
+
+                    <!--   Reorganized Button Layout -->
+                    <div class="flex flex-wrap gap-4 w-full md:w-auto">
+                        <!-- Class Operations Column -->
+                        <div class="flex flex-col gap-2 flex-1 md:flex-none">
+                            <button onclick="window.guiAddClass()"
+                                class="w-full bg-gussNavy hover:bg-slate-800 text-white font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-layer-group"></i> Create Class
+                            </button>
+                            <button onclick="window.guiRemoveClass()"
+                                class="w-full bg-white border border-slate-300 text-slate-600 hover:bg-slate-100 font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-eraser"></i> Scrap Class
+                            </button>
+                        </div>
+
+                        <!-- Subject Operations Column -->
+                        <div class="flex flex-col gap-2 flex-1 md:flex-none">
+                            <button onclick="window.guiAddSubject()"
+                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus"></i> Add Subject
+                            </button>
+                            <button onclick="window.guiRemoveSubject()"
+                                class="w-full bg-white border border-red-200 text-red-500 hover:bg-red-50 font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-minus"></i> Remove Subject
+                            </button>
+                        </div>
+
+                        <!-- Category/Mapping Operations Column -->
+                        <div class="flex flex-col gap-2 flex-1 md:flex-none justify-between">
+                            <button id="btnMapSubject" onclick="window.guiMapSubjectToClasses()"
+                                class="w-full bg-gussGold hover:bg-yellow-500 text-gussNavy font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-md transition-all flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-link"></i> Map To Class
+                            </button>
+                            <button onclick="window.guiUnmapSubject()"
+                                class="w-full bg-white border border-yellow-600 text-yellow-700 hover:bg-yellow-50 font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-link-slash"></i> Unmap Subject
+                            </button>
+                            <button onclick="window.guiRemoveCategory()"
+                                class="w-full bg-red-50 border border-red-200 text-red-500 hover:bg-red-100 font-black px-4 py-2.5 rounded-lg text-[9px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-trash-can"></i> Scrap Category
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h2
+                    class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-200 pb-2">
+                    <i class="fa-solid fa-link text-purple-500 mr-2"></i> Assign Subject Teacher
+                </h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Target
+                            Class</label>
+                        <div class="flex gap-2">
+                            <select id="allocSetSelect"
+                                onchange="populateArms('allocArmSelect', this.value); renderActiveAllocations();"
+                                class="w-1/2 bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300"></select>
+                            <select id="allocArmSelect" onchange="renderActiveAllocations()"
+                                class="w-1/2 bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300"
+                                disabled>
+                                <option value="">Arm...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select
+                            Subject</label>
+                        <select id="allocSubjectSelect"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300">
+                            <option value="">Select Class First...</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Academic
+                            Staff</label>
+                        <select id="allocStaffSelect"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300"></select>
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button onclick="assignSubjectTeacher()"
+                        class="bg-gussNavy hover:bg-slate-800 text-white font-black px-6 py-2.5 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors"><i
+                            class="fa-solid fa-chalkboard-user mr-1"></i> Assign Teacher</button>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[300px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-black text-slate-700 uppercase tracking-wide">Current Subject Matrix</h3>
+                    <button onclick="openFormMasterModal()"
+                        class="bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors shadow-sm border border-orange-200"><i
+                            class="fa-solid fa-users-rectangle mr-1"></i> Appoint Form Master</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Subject</th>
+                                <th class="py-3 px-3">Assigned Teacher</th>
+                                <th class="py-3 px-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeAllocationsBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- ACTIVE FORM MASTERS MATRIX -->
+            <div class="bg-orange-50 border border-orange-200 rounded-3xl p-6 shadow-sm min-h-[300px] mt-6">
+                <h3
+                    class="text-sm font-black text-orange-900 uppercase tracking-wide mb-4 border-b border-orange-200 pb-2">
+                    Active Form Masters</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="formMastersGrid"></div>
+            </div>
+        </div>
+
+        <div id="tabContentSubstitutes" class="hidden animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-amber-600 uppercase tracking-wide"><i
+                                class="fa-solid fa-people-arrows mr-2"></i> Stranded Classes & Substitute Matrix</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Classes belonging
+                            to staff currently "ON LEAVE". Assign temporary covers.</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-amber-50 text-[9px] uppercase tracking-widest text-amber-800 font-black border-y border-amber-200">
+                                <th class="py-3 px-3">Stranded Class / Subject</th>
+                                <th class="py-3 px-3">Original Teacher (On Leave)</th>
+                                <th class="py-3 px-3">Active Substitute (Cover)</th>
+                                <th class="py-3 px-3 text-right">Assign Cover</th>
+                            </tr>
+                        </thead>
+                        <tbody id="substitutesBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentTransfers" class="hidden animate-fade-in flex-1">
+            <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-6 shadow-sm max-w-3xl mx-auto">
+                <h2
+                    class="text-sm font-black text-indigo-900 uppercase tracking-wide mb-4 border-b border-indigo-200 pb-2">
+                    <i class="fa-solid fa-right-left text-indigo-500 mr-2"></i> Administrative Class Transfer
+                </h2>
+
+                <div class="space-y-4">
+                    <div class="flex flex-col gap-2 relative">
+                        <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Search Student
+                            Identity</label>
+                        <input type="text" id="transferSearchInput" onkeyup="filterTransferStudents()"
+                            placeholder="Type Name or Adm No..."
+                            class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        <div id="transferSearchResults"
+                            class="absolute top-[60px] left-0 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto hidden">
+                        </div>
+                        <input type="hidden" id="transferStudentId">
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Current
+                            Class</label>
+                        <input type="text" id="transferCurrentClass"
+                            class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-bold text-slate-500 cursor-not-allowed"
+                            readonly>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Destination
+                            Class</label>
+                        <div class="flex gap-2">
+                            <select id="transferNewSet" onchange="populateArms('transferNewArm', this.value)"
+                                class="w-1/2 bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300"></select>
+                            <select id="transferNewArm"
+                                class="w-1/2 bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                                disabled>
+                                <option value="">Arm...</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Official
+                            Reason</label>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Transfer
+                                Category</label>
+                            <select id="transferCategory"
+                                class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                                <option value="PROMOTION">Academic Promotion (Exceptional Intelligence)</option>
+                                <option value="LATERAL">Lateral Transfer (Inevitable Circumstances/Background)</option>
+                                <option value="DEMOTION">Administrative Demotion (Poor Performance/Discipline)</option>
+                            </select>
+                        </div>
+                        <input type="text" id="transferReason"
+                            placeholder="e.g. Demotion, Administrative realignment..."
+                            class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                    </div>
+
+                    <button onclick="executeStudentTransfer()"
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-3 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors mt-2"><i
+                            class="fa-solid fa-shuffle mr-1"></i> Authorize Transfer</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentComms" class="hidden animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm max-w-4xl mx-auto">
+                <h2
+                    class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2">
+                    <i class="fa-solid fa-tower-broadcast text-red-500 mr-2"></i> Institutional Dispatcher
+                </h2>
+                <p class="text-[10px] text-slate-500 font-bold tracking-widest mb-6 uppercase">Issue official warnings,
+                    queries, or information to staff members.</p>
+
+                <div class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Target
+                                Staff</label>
+                            <select id="commStaffSelect"
+                                class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300"></select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Severity
+                                Level</label>
+                            <select id="commSeverity"
+                                class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                                <option value="INFO">Standard Information</option>
+                                <option value="WARNING">Official Warning (Level 1)</option>
+                                <option value="QUERY">Official Query (Requires Response)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Message
+                            Body</label>
+                        <textarea id="commMessage" rows="4" placeholder="Type official communication here..."
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                    </div>
+
+                    <div class="flex items-center gap-2 bg-red-50 p-3 rounded-lg border border-red-100">
+                        <input type="checkbox" id="commSmsToggle"
+                            class="w-4 h-4 text-red-600 rounded border-slate-300 focus:ring-red-500">
+                        <label for="commSmsToggle"
+                            class="text-xs font-black text-red-800 uppercase tracking-wide cursor-pointer">Push SMS
+                            Alert to Mobile Device</label>
+                    </div>
+
+                    <button onclick="dispatchCommunication()"
+                        class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-3 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors"><i
+                            class="fa-solid fa-paper-plane mr-1"></i> Dispatch Secure Message</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <div id="fmModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <h3 class="font-black text-lg text-orange-900 uppercase tracking-wide mb-4 border-b border-orange-200 pb-2">
+                <i class="fa-solid fa-users-rectangle text-orange-500 mr-2"></i> Appoint Form Master
+            </h3>
+            <div class="flex flex-col gap-2 mb-4">
+                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Target Class</label>
+                <input type="text" id="fmTargetClass"
+                    class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2.5 text-xs font-bold text-slate-500 cursor-not-allowed"
+                    readonly>
+            </div>
+            <div class="flex flex-col gap-2 mb-6">
+                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Academic
+                    Staff</label>
+                <select id="fmStaffSelect"
+                    class="w-full bg-white border border-orange-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"></select>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('fmModal').classList.add('hidden')"
+                    class="flex-1 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                <button onclick="saveFormMaster()"
+                    class="flex-1 py-2.5 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all">Appoint</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="dossierModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] scale-95 transition-transform duration-300"
+            id="dossierContent">
+            <div
+                class="bg-gussNavy p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-address-card text-gussGold"></i> Executive Master Dossier</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Complete Unedited
+                        Identity Record</p>
+                </div>
+                <button onclick="closeDossierModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1 bg-slate-50" id="dossierBody"></div>
+        </div>
+    </div>
+
+    <!-- DD PROFILE & SIGNATURE MODAL (STRICTLY READ-ONLY) -->
+    <div id="ddProfileModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <div>
+                    <h3 class="font-black text-lg text-gussNavy uppercase tracking-wide"><i
+                            class="fa-solid fa-id-card-clip text-gussGold mr-2"></i> Official Credentials</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Central ICT Registry
+                        Source of Truth</p>
+                </div>
+                <button onclick="document.getElementById('ddProfileModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6 space-y-3">
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 block mb-1">Active
+                        Officer Name</span>
+                    <div class="font-bold text-sm text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200"
+                        id="readOnlyDDName">Loading...</div>
+                </div>
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 block mb-1">Official
+                        Digital Signature</span>
+                    <div
+                        class="bg-white p-3 rounded-lg border border-slate-200 text-center min-h-[80px] flex items-center justify-center">
+                        <img id="ddSignaturePreview" src=""
+                            class="h-16 object-contain mx-auto mix-blend-multiply opacity-80"
+                            alt="No Signature Uploaded">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-start gap-3">
+                <i class="fa-solid fa-lock text-slate-400 mt-0.5"></i>
+                <p class="text-[10px] text-slate-500 font-medium leading-relaxed">Your identity parameters and digital
+                    signature are cryptographically locked. If you require a modification, you must physically visit the
+                    Central ICT Administrator.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- REMOVE SUBJECT MODAL -->
+    <div id="removeSubjectModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <h3 class="font-black text-lg text-red-600 uppercase tracking-wide"><i
+                        class="fa-solid fa-minus mr-2"></i> Remove Subject</h3>
+                <button onclick="document.getElementById('removeSubjectModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex flex-col gap-4 mb-6">
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select
+                        Category</label>
+                    <!--   Hardcoded options removed. Now populates dynamically on click. -->
+                    <select id="removeSubjectCategory" onchange="populateSubjectRemovalDropdown(this.value)"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                        <option value="">Select Category...</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Subject to
+                        Remove</label>
+                    <select id="removeSubjectSelect"
+                        class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-300"
+                        disabled>
+                        <option value="">Select Category First...</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="executeRemoveSubject()"
+                class="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all"><i
+                    class="fa-solid fa-trash-can mr-1"></i> Confirm Deletion</button>
+        </div>
+    </div>
+
+    <!-- REMOVE CLASS MODAL -->
+    <div id="removeClassModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <h3 class="font-black text-lg text-slate-800 uppercase tracking-wide"><i
+                        class="fa-solid fa-eraser mr-2"></i> Scrap Academic Class</h3>
+                <button onclick="document.getElementById('removeClassModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex flex-col gap-4 mb-6">
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Academic
+                        Set</label>
+                    <select id="removeClassSet" onchange="populateArmsForRemoval(this.value)"
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-slate-500">
+                        <option value="">Select Set First...</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Arm to
+                        Scrap</label>
+                    <select id="removeClassArm"
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-slate-500"
+                        disabled>
+                        <option value="">Select Set First...</option>
+                    </select>
+                </div>
+            </div>
+            <button onclick="executeRemoveClass()"
+                class="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all"><i
+                    class="fa-solid fa-triangle-exclamation mr-1"></i> Permanently Scrap Class</button>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/dd_academics_app.js"></script>
+
+</body>
+
+</html>

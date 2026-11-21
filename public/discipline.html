@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disciplinary Committee | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="The central authority on student conduct, rules, and disciplinary actions at Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header (Authoritative Theme) -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[40vh] flex items-center border-b-[6px] border-red-700">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&q=80&w=1920"
+                alt="Gavel" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center">
+            <span
+                class="bg-red-900/40 border border-red-500/50 text-red-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Maintaining Order & Character
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Disciplinary <span class="text-red-500">Committee</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The central authority enforcing
+                the strict rules and regulations of G.U.S.S. Ringim to forge a generation of highly disciplined leaders.
+            </p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Disciplinary Committee</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Core Rules & Sanctions -->
+                <div class="lg:col-span-8 space-y-12">
+
+                    <div>
+                        <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Command Structure</h2>
+                        <div class="w-16 h-1.5 bg-red-600 mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-4 leading-relaxed">The Disciplinary Committee is the apex
+                            judicial body within the school. It is officially chaired by the <strong>Deputy Director I
+                                (Administration)</strong>, who reviews all major violations and enforces institutional
+                            mandates.</p>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 p-8 rounded-[2rem] shadow-sm">
+                        <div class="flex items-center gap-4 mb-6 border-b border-red-200 pb-4">
+                            <div
+                                class="w-12 h-12 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-mobile-screen-button"></i>
+                            </div>
+                            <h3 class="text-xl font-black text-red-900 uppercase tracking-wide">The Strict Non-Gadget
+                                Policy</h3>
+                        </div>
+                        <p class="text-sm text-red-800 leading-relaxed mb-6 font-medium">According to school
+                            regulations, it is strictly prohibited to use any type of smart gadgets including
+                            smartphones, laptops, and tablets. Exceptions are only made for approved scientific
+                            calculators (e.g., KAPEC, CASIO).</p>
+
+                        <div class="bg-white border border-red-100 p-6 rounded-2xl relative overflow-hidden">
+                            <div class="absolute right-0 top-0 opacity-5 text-9xl"><i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <h4 class="font-black text-slate-800 uppercase text-xs mb-3">Enforcement Protocol</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed">If caught with a contraband device, a
+                                student faces severe and immediate penalties. The most critical sanction requires the
+                                student to personally destroy the device with a hammer, manually chew the SIM/Memory
+                                cards to pieces, and receive 12 mandatory lashes.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <h3
+                            class="text-xl font-black text-gussNavy uppercase tracking-wide border-b border-slate-200 pb-3">
+                            Exceptions & Executive Privileges</h3>
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm">
+                                <h4 class="font-black text-gussNavy uppercase text-sm mb-2"><i
+                                        class="fa-solid fa-star text-gussGold mr-1"></i> Head Student</h4>
+                                <p class="text-xs text-slate-600 leading-relaxed">As the supreme student head, the Head
+                                    Student is legally permitted to use digital devices (including laptops) publicly to
+                                    execute administrative duties on behalf of the management.</p>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm">
+                                <h4 class="font-black text-gussNavy uppercase text-sm mb-2"><i
+                                        class="fa-solid fa-briefcase-medical text-emerald-600 mr-1"></i> Emergency Use
+                                </h4>
+                                <p class="text-xs text-slate-600 leading-relaxed">Health Prefects (for critical medical
+                                    coordination) and House Captains (for severe hostel emergencies) are permitted
+                                    restricted use of phones strictly within the Area Hostels.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geopolitical Exceptions Sidebar -->
+                <div class="lg:col-span-4">
+                    <div
+                        class="bg-gussNavy text-white rounded-[2rem] p-8 shadow-2xl sticky top-28 border border-slate-700">
+                        <h3 class="text-xl font-black uppercase mb-2 flex items-center gap-2 text-gussGold"><i
+                                class="fa-solid fa-globe"></i> GEPSU Protocols</h3>
+                        <p class="text-xs text-slate-400 mb-8 leading-relaxed">The 19 Northern States Exchange Programme
+                            introduces unique disciplinary pathways.</p>
+
+                        <div class="space-y-6">
+                            <div class="border-l-2 border-emerald-500 pl-4">
+                                <h4 class="font-black text-sm uppercase mb-1">State Patrons</h4>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">Each exchange state micro-union
+                                    (e.g., KASEPSA, GOSSA) is assigned a faculty Patron. This patron acts as a direct
+                                    advocate to prevent bullying and ensure fair disciplinary hearings.</p>
+                            </div>
+                            <div class="border-l-2 border-amber-500 pl-4">
+                                <h4 class="font-black text-sm uppercase mb-1">Sanction Limits</h4>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">To protect the diplomatic
+                                    integrity of the exchange program, Exchange Students are treated exceptionally well.
+                                    An Exchange Student can generally only be suspended if their violation is severe
+                                    enough to trigger an outright dismissal for a non-exchange student.</p>
+                            </div>
+                            <div class="border-l-2 border-blue-500 pl-4">
+                                <h4 class="font-black text-sm uppercase mb-1">Prefect Limitations</h4>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">While Prefects wield immense power
+                                    over Junior students (JSS1 - SSS2), they are strictly forbidden from disciplining a
+                                    fellow Senior (SSS3). All Senior infractions must be reported to the Head Student or
+                                    the Disciplinary Committee.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

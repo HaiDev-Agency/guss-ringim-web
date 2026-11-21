@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratories | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Explore the specialized Science, Agricultural, and Technical Laboratories at Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-teal-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=1920"
+                alt="Laboratories" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-teal-900/40 border border-teal-500/50 text-teal-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Practical Application Zones
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Specialized <span class="text-teal-500">Laboratories</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">10 distinct practical
+                workshops. Hover over any facility to view the Head of Department and operational details.</p>
+        </div>
+    </header>
+
+    <!-- Interactive Labs Grid -->
+    <section class="py-24 bg-slate-100">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+                <!-- 1. Physics Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Physics Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-atom text-teal-400"></i> Physics Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-physics_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-teal-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-physics_lab-name" class="text-sm font-black uppercase text-teal-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-physics_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Sciences
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">Equipped for advanced mechanics,
+                            optics, and thermodynamics. Senior students conduct rigorous experiments here to prepare for
+                            WAEC/NECO practical examinations.</p>
+                    </div>
+                </div>
+
+                <!-- 2. Chemistry Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=80&w=600"
+                        onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&q=80&w=600';"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Chemistry Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-flask text-blue-400"></i> Chemistry Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-chemistry_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-blue-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-chemistry_lab-name" class="text-sm font-black uppercase text-blue-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-chemistry_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Sciences
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">A highly ventilated workspace
+                            dedicated to volumetric analysis, titrations, and complex chemical syntheses. Safety
+                            protocols are strictly enforced by the Lab Prefects.</p>
+                    </div>
+                </div>
+
+                <!-- 3. Biology Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Biology Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-dna text-green-400"></i> Biology Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-biology_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-green-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-biology_lab-name" class="text-sm font-black uppercase text-green-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-biology_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Sciences
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">Features extensive microscopes and
+                            preserved botanical/zoological specimens. Students explore cellular anatomy and ecological
+                            systems in this interactive studio.</p>
+                    </div>
+                </div>
+
+                <!-- 4. Agricultural Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Agric Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-seedling text-emerald-500"></i> Agric Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-agric_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-emerald-500 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-agric_lab-name" class="text-sm font-black uppercase text-emerald-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-agric_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Arts &
+                                    Voc.</p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">Connected directly to the school's
+                            farming grid. Students perform soil acidity tests, crop yield estimations, and study
+                            advanced farming techniques.</p>
+                    </div>
+                </div>
+
+                <!-- 5. Mathematics Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Maths Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-calculator text-gussGold"></i> Maths Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-maths_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-gussGold overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-maths_lab-name" class="text-sm font-black uppercase text-gussGold">Awaiting
+                                    Assignment</h5>
+                                <p id="fac-maths_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Sciences
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">A highly focused space for logical
+                            problem solving, featuring physical geometric models, statistical data boards, and advanced
+                            calculus instruments.</p>
+                    </div>
+                </div>
+
+                <!-- 6. Geography Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Geography Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-globe text-cyan-400"></i> Geography Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-geography_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-cyan-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-geography_lab-name" class="text-sm font-black uppercase text-cyan-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-geography_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Arts &
+                                    Voc.</p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">Equipped with topographical maps,
+                            an anemometer station, and surveying tools for practical cartography and weather reading.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 7. Animal Husbandry -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Animal Husbandry">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-cow text-orange-400"></i> Husbandry Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-husbandry_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-orange-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-husbandry_lab-name" class="text-sm font-black uppercase text-orange-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-husbandry_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D
+                                    Vocations</p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">An extension of the Agric block
+                            focusing entirely on veterinary science basics, animal nutrition, and practical livestock
+                            management.</p>
+                    </div>
+                </div>
+
+                <!-- 8. T.D Studio -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="TD Studio">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-compass-drafting text-slate-300"></i> T.D Studio</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-td_studio-img"
+                                class="w-12 h-12 rounded-full border-2 border-slate-300 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-td_studio-name" class="text-sm font-black uppercase text-slate-300">Awaiting
+                                    Assignment</h5>
+                                <p id="fac-td_studio-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D
+                                    Vocations</p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">A specialized studio outfitted
+                            with massive drafting tables, T-squares, and architectural boards for Technical Drawing
+                            students.</p>
+                    </div>
+                </div>
+
+                <!-- 9. E.I.M Workshop -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="EIM Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-plug text-yellow-500"></i> E.I.M Workshop</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-eim_workshop-img"
+                                class="w-12 h-12 rounded-full border-2 border-yellow-500 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-eim_workshop-name" class="text-sm font-black uppercase text-yellow-500">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-eim_workshop-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D
+                                    Vocations</p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">The Electrical Installation and
+                            Maintenance hub. Features heavy machinery, wiring boards, and circuitry testing
+                            environments.</p>
+                    </div>
+                </div>
+
+                <!-- 10. Computer Lab -->
+                <div
+                    class="group relative bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm h-80 cursor-pointer">
+                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=600"
+                        class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        alt="Computer Lab">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-t from-gussNavy via-gussNavy/40 to-transparent flex flex-col justify-end p-6 transition-opacity duration-300 group-hover:opacity-0">
+                        <h4 class="text-xl font-black text-white uppercase flex items-center gap-2"><i
+                                class="fa-solid fa-computer text-purple-400"></i> Computer Lab</h4>
+                    </div>
+                    <div
+                        class="absolute inset-0 bg-gussNavy/95 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-all duration-300 p-6 flex flex-col justify-center text-white translate-y-4 group-hover:translate-y-0">
+                        <div class="flex items-center gap-3 mb-4 border-b border-slate-700 pb-4">
+                            <div id="fac-computer_lab-img"
+                                class="w-12 h-12 rounded-full border-2 border-purple-400 overflow-hidden image-placeholder text-[8px] shrink-0">
+                                HOD IMG</div>
+                            <div>
+                                <h5 id="fac-computer_lab-name" class="text-sm font-black uppercase text-purple-400">
+                                    Awaiting Assignment</h5>
+                                <p id="fac-computer_lab-role"
+                                    class="text-[9px] uppercase tracking-widest font-bold text-slate-400">H.O.D Sciences
+                                </p>
+                            </div>
+                        </div>
+                        <p class="text-xs leading-relaxed text-slate-300 font-medium">The Data Processing and IT
+                            training facility. Equipped with desktop terminals where students learn vital digital skills
+                            and coding fundamentals.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

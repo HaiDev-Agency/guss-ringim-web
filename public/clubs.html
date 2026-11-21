@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clubs & Societies | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header
+        class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-emerald-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=1920"
+                alt="Clubs" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-emerald-900/40 border border-emerald-500/50 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Extra-Curricular
+                Excellence</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Clubs & <span class="text-emerald-500">Societies</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Voluntary organizations
+                fostering creativity, science, and cultural heritage under the guidance of active faculty patrons.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- THE HAUSA DRAMA CLUB (Highlighted Section) -->
+            <div class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="relative flex h-3 w-3"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-3 w-3 bg-amber-500"></span></span>
+                    <h2 class="text-sm font-black text-slate-400 uppercase tracking-widest">Most Active Society</h2>
+                </div>
+
+                <div
+                    class="bg-amber-50 border border-amber-200 rounded-[2rem] overflow-hidden shadow-xl flex flex-col lg:flex-row group transition-shadow">
+                    <div class="lg:w-1/2 p-8 sm:p-12 flex flex-col justify-center relative overflow-hidden">
+                        <i
+                            class="fa-solid fa-masks-theater absolute -left-10 -bottom-10 text-[16rem] text-amber-500/10"></i>
+                        <h3 class="text-3xl font-black text-amber-900 uppercase tracking-wide mb-4 relative z-10">Hausa
+                            Drama Club</h3>
+                        <p class="text-sm text-amber-800 leading-relaxed text-justify mb-6 relative z-10">
+                            The vibrant social heartbeat of the school. The Hausa Drama Club is officially the most
+                            active organization on campus, renowned for coordinating massive, deeply traditional events
+                            such as <strong>Hawan Kara</strong> and <strong>Hawan Daushe</strong>.
+                        </p>
+                        <div class="bg-white border border-amber-100 p-5 rounded-2xl relative z-10">
+                            <h4 class="font-black text-slate-800 text-xs uppercase mb-2">Faculty & Exco Synergy</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed text-justify">The club's overwhelming
+                                success is driven by highly active Patrons who literally write the scripts and
+                                coordinate the stage plays. Furthermore, the student Executives (Excos) wield
+                                significant influence, directly recommending casting posts and specific cultural roles
+                                for participants during these major festivals.</p>
+                        </div>
+                    </div>
+                    <div
+                        class="lg:w-1/2 relative overflow-hidden h-72 lg:h-auto border-t lg:border-t-0 lg:border-l border-amber-200">
+                        <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=1200"
+                            alt="Drama Club" class="absolute inset-0 w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Standard Clubs Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                    <i
+                        class="fa-solid fa-microphone absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-blue-100 transition-colors"></i>
+                    <div
+                        class="w-14 h-14 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl mb-6 relative z-10">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3 relative z-10">Press Club
+                    </h4>
+                    <p class="text-sm text-slate-600 leading-relaxed relative z-10 text-justify">The voice of the
+                        students. The Press Club commands a standard, constant window during every <strong>Monday
+                            Assembly</strong>. Because assemblies only happen once a week, the Press Club is highly
+                        relied upon to deliver compiled campus news, global current affairs, and verified announcements
+                        before the official dismissal.</p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                    <i
+                        class="fa-solid fa-microscope absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-emerald-100 transition-colors"></i>
+                    <div
+                        class="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-xl flex items-center justify-center text-2xl mb-6 relative z-10">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3 relative z-10">J.E.T.S Club
+                    </h4>
+                    <p class="text-sm text-slate-600 leading-relaxed relative z-10 text-justify">Junior Engineers,
+                        Technicians and Scientists. A highly intellectual society where students prototype inventions,
+                        prepare for national Olympiads, and utilize the specialized laboratories under expert Patron
+                        guidance.</p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                    <i
+                        class="fa-solid fa-laptop-code absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-purple-100 transition-colors"></i>
+                    <div
+                        class="w-14 h-14 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl mb-6 relative z-10">
+                        <i class="fa-solid fa-computer"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3 relative z-10">CITAD Hub
+                    </h4>
+                    <p class="text-sm text-slate-600 leading-relaxed relative z-10 text-justify">Operating from the
+                        Computer Lab, this tech-focused society introduces students to digital literacy, data processing
+                        concepts, and technological advocacy, preparing them for a digital future.</p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                    <i
+                        class="fa-solid fa-calculator absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-red-100 transition-colors"></i>
+                    <div
+                        class="w-14 h-14 bg-red-100 text-red-600 rounded-xl flex items-center justify-center text-2xl mb-6 relative z-10">
+                        <i class="fa-solid fa-square-root-variable"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3 relative z-10">Mathematics
+                        Club</h4>
+                    <p class="text-sm text-slate-600 leading-relaxed relative z-10 text-justify">A society dedicated to
+                        breaking the phobia of numbers. Members engage in advanced calculus prep, logical
+                        problem-solving debates, and inter-school math competitions.</p>
+                </div>
+
+                <div
+                    class="bg-slate-50 border border-slate-200 p-8 rounded-[2rem] shadow-sm hover:shadow-md transition-shadow group relative overflow-hidden">
+                    <i
+                        class="fa-solid fa-language absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-teal-100 transition-colors"></i>
+                    <div
+                        class="w-14 h-14 bg-teal-100 text-teal-600 rounded-xl flex items-center justify-center text-2xl mb-6 relative z-10">
+                        <i class="fa-solid fa-book-quran"></i>
+                    </div>
+                    <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3 relative z-10">Arabic Club
+                    </h4>
+                    <p class="text-sm text-slate-600 leading-relaxed relative z-10 text-justify">Focused on linguistic
+                        mastery, poetry, and debate in the Arabic language. It highly complements the efforts of the
+                        weekend Islamiyyah program and is a point of pride during cultural events.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

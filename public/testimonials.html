@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testimonials | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Read authentic stories and testimonials from the parents, students, and notable alumni of Government Unity Secondary School, Ringim.">
+    <meta name="author" content="HaiDev Agency">
+
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[40vh] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1920"
+                alt="Testimonials" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center">
+            <span
+                class="bg-gussGold/20 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Community Voices
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                What They Say <br><span class="text-gussGold">About Us</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Authentic stories and
+                experiences shared by our parents, active scholars, and the RINOBA alumni network.</p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Testimonials</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dynamic Testimonials Grid -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Verified Testimonials</h2>
+                <div class="w-24 h-1.5 bg-gussGold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Handled via app.js -->
+            <div id="dynamicTestimonialsGrid" class="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+                <!-- Data injected here -->
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

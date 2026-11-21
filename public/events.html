@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events & Ceremonies | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Discover the vibrant calendar of Government Unity Secondary School, Ringim, including the Islamiyyah Convocation, Inter-House Sports, and Labor routines.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-amber-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=1920"
+                alt="Ceremonies" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-amber-900/40 border border-amber-500/50 text-amber-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                The Campus Calendar
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Events & <span class="text-amber-500">Ceremonies</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">From weekly disciplinary
+                routines to our grandest annual celebrations and cross-state sports competitions.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Grand Annual Ceremonies</h2>
+                <div class="w-24 h-1.5 bg-gussGold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Grand Ceremonies Grid (Dynamic Injection from Web Admin) -->
+            <div id="dynamicEventsGrid" class="grid lg:grid-cols-2 gap-12 mb-24">
+                <!-- Javascript will inject "Campus Life" and "Alumni Event" posts here -->
+            </div>
+
+            <!-- Weekly Routines -->
+            <div
+                class="bg-gussNavy text-white rounded-[2rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden border-t-8 border-emerald-500">
+                <i class="fa-solid fa-calendar-days absolute -right-10 -bottom-10 text-[16rem] text-white/5"></i>
+                <div class="relative z-10">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-black uppercase tracking-wide text-emerald-400">Weekly Mandates &
+                            Routines</h2>
+                        <p class="text-sm text-slate-300 mt-2">The strict structural schedules that maintain discipline
+                            and order on campus.</p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div
+                            class="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div
+                                    class="w-12 h-12 bg-amber-500/20 text-amber-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-broom"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-black uppercase tracking-wide">Labor Day</h3>
+                                    <span class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">Every
+                                        Wednesday</span>
+                                </div>
+                            </div>
+                            <div id="event-desc-3"
+                                class="line-clamp-3 text-sm text-slate-300 leading-relaxed text-justify mb-2 transition-all duration-300">
+                                A mandatory physical routine for all Junior students (JSS 1 - SSS 2). The Labor Masters
+                                and Labor Prefects assign specific partitions of the campus for thorough cleaning,
+                                ensuring the school environment remains immaculate. Evading labor day attracts strict
+                                penalties from the Disciplinary Committee.</div>
+                            <button onclick="toggleReadMore('event-desc-3', this)"
+                                class="text-[10px] font-black uppercase tracking-widest text-amber-400 hover:text-amber-300 text-left transition-colors">Read
+                                More <i class="fa-solid fa-chevron-down ml-1"></i></button>
+                        </div>
+
+                        <div
+                            class="bg-white/5 border border-white/10 p-8 rounded-3xl backdrop-blur-sm hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div
+                                    class="w-12 h-12 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                    <i class="fa-solid fa-mosque"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-black uppercase tracking-wide">Friday Outings & Juma'at</h3>
+                                    <span class="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Every
+                                        Friday</span>
+                                </div>
+                            </div>
+                            <div id="event-desc-4"
+                                class="line-clamp-3 text-sm text-slate-300 leading-relaxed text-justify mb-2 transition-all duration-300">
+                                The official school holiday and outing day. The Director hosts the morning assembly. At
+                                10:00 AM, the gates open for the Ringim community to attend Juma'at prayers, and
+                                students may choose to pray on campus or at town mosques. It is a day of spiritual
+                                reflection and community integration.</div>
+                            <button onclick="toggleReadMore('event-desc-4', this)"
+                                class="text-[10px] font-black uppercase tracking-widest text-emerald-400 hover:text-emerald-300 text-left transition-colors">Read
+                                More <i class="fa-solid fa-chevron-down ml-1"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Strict Enterprise Security & Crawler Directives -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+
+    <!-- Professional Internal SEO & Metadata Matrix -->
+    <title>Director's Executive Node | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Secure Super Admin Executive Console for G.U.S.S. Ringim. Telemetry, HR oversight, and delegation matrix.">
+    <meta name="author" content="HaiDev Agency">
+    <meta property="og:title" content="Director's Executive Node | G.U.S.S.">
+    <meta property="og:description" content="Enterprise Management Dashboard for the School Director.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="G.U.S.S. Central Registry">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A', gussDark: '#0B1120' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- DOMPurify for XSS Sanitization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-gussDark text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-black shadow-inner relative z-[60] no-print">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-chess-king text-gussGold mr-1"></i>
+                EXECUTIVE COMMAND NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-yellow-900/30 border border-yellow-700/50 px-3 py-0.5 rounded-full font-black text-[10px] tracking-wide text-yellow-500 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-crown text-yellow-400"></i> Role: School Director
+            </span>
+            <span class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span id="activeDirectorNameDisplay">Root
+                    Admin</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+
+            <button onclick="window.location.href='staff_login.html'"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3.5 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">Executive
+                        Director Console</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Telemetry, Delegation &
+                        Global Oversight</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="openEpochModal()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg text-xs font-black uppercase tracking-wider shadow-sm transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-forward-step"></i> Advance Academic Term
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main
+        class="max-w-7xl w-full mx-auto py-8 px-4 flex-1 grid lg:grid-cols-12 gap-6 items-start transition-all duration-300 no-print">
+
+        <div class="lg:col-span-8 flex flex-col gap-6">
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide mb-3"><i
+                        class="fa-solid fa-earth-africa text-blue-500 mr-2"></i> Global Omni-Search Gateway</h2>
+                <div class="relative">
+                    <input type="text" id="directorSearchInput" onkeyup="executeDirectorSearch()"
+                        placeholder="Search entire system for any Staff, Student, or Admission Number..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-4 pr-3 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div id="directorSearchResults" class="space-y-2 mt-4 max-h-[250px] overflow-y-auto pr-2"></div>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-5xl text-blue-500">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Active Students</h4>
+                    <p class="text-3xl font-black text-gussNavy" id="telStudents">0</p>
+                    <p class="text-[10px] text-emerald-500 font-bold mt-1"><i class="fa-solid fa-arrow-trend-up"></i>
+                        Live Count</p>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-5xl text-purple-500">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Staff</h4>
+                    <p class="text-3xl font-black text-gussNavy" id="telStaff">0</p>
+                    <p class="text-[10px] text-slate-500 font-bold mt-1"><i
+                            class="fa-solid fa-check-circle text-emerald-500 mr-1"></i> <span
+                            id="telStaffApproved">0</span> Approved</p>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-5xl text-emerald-500">
+                        <i class="fa-solid fa-file-contract"></i>
+                    </div>
+                    <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Term Grading</h4>
+                    <p class="text-3xl font-black text-gussNavy" id="telGrading">0%</p>
+                    <div class="w-full bg-slate-100 rounded-full h-1 mt-2">
+                        <div class="bg-emerald-500 h-1 rounded-full w-[0%]" id="telGradingBar"></div>
+                    </div>
+                </div>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm relative overflow-hidden group">
+                    <div
+                        class="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity text-5xl text-orange-500">
+                        <i class="fa-solid fa-scale-unbalanced"></i>
+                    </div>
+                    <h4 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Disciplinary</h4>
+                    <p class="text-2xl font-black text-gussNavy tracking-tight" id="telDiscipline">0 Flags</p>
+                    <p class="text-[10px] text-orange-500 font-bold mt-1"><i
+                            class="fa-solid fa-triangle-exclamation mr-1"></i> Active Matrix</p>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[600px]">
+                <div class="flex gap-2 border-b border-slate-200 pb-4 mb-6 overflow-x-auto no-scrollbar">
+                    <button onclick="switchDirTab('delegation')" id="tabBtnDel"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-gussNavy text-white shadow-md whitespace-nowrap"><i
+                            class="fa-solid fa-network-wired mr-1"></i> Delegation</button>
+                    <!--  NEW: Comms Tab Added Here -->
+                    <button onclick="switchDirTab('comms')" id="tabBtnComms"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap"><i
+                            class="fa-solid fa-paper-plane mr-1 text-indigo-500"></i> Dispatcher</button>
+                    <button onclick="switchDirTab('oversight')" id="tabBtnOver"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap"><i
+                            class="fa-solid fa-eye mr-1"></i> Exams</button>
+                    <button onclick="switchDirTab('discipline')" id="tabBtnDisc"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap"><i
+                            class="fa-solid fa-gavel mr-1"></i> Discipline</button>
+                    <button onclick="switchDirTab('certs')" id="tabBtnCerts"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap"><i
+                            class="fa-solid fa-award mr-1"></i> Transient Certs</button>
+                    <button onclick="switchDirTab('hr')" id="tabBtnHR"
+                        class="px-5 py-2 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:bg-slate-100 whitespace-nowrap"><i
+                            class="fa-solid fa-folder-open mr-1"></i> HR Archives</button>
+                </div>
+
+                <div id="tabDelegation" class="animate-fade-in">
+                    <div
+                        class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-4 items-end">
+                        <div class="flex-1 w-full">
+                            <label
+                                class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Select
+                                Staff</label>
+                            <select id="staffSelect"
+                                class="w-full bg-white border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-blue-400 focus:outline-none"></select>
+                        </div>
+                        <!--   Replaced input with the unified SweetAlert button -->
+                        <button onclick="guiDelegateRole()"
+                            class="bg-gussNavy hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider px-6 py-2.5 rounded-xl shadow-md transition-all whitespace-nowrap w-full md:w-auto">
+                            <i class="fa-solid fa-user-plus mr-1"></i> Delegate Role
+                        </button>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-100 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                    <th class="py-2.5 px-4">Executive Role</th>
+                                    <th class="py-2.5 px-4">Appointed Officer</th>
+                                    <th class="py-2.5 px-4 text-right">Control</th>
+                                </tr>
+                            </thead>
+                            <tbody id="delegationTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!--  NEW: Executive Communications Hub -->
+                <div id="tabComms" class="hidden animate-fade-in space-y-6">
+                    <!-- Internal Dispatch -->
+                    <div class="bg-indigo-50 border border-indigo-200 rounded-2xl p-5 shadow-sm">
+                        <h3
+                            class="text-sm font-black text-indigo-900 uppercase tracking-wide mb-3 border-b border-indigo-200 pb-2">
+                            <i class="fa-solid fa-paper-plane text-indigo-500 mr-2"></i> Internal Institutional Dispatch
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label
+                                        class="block text-[9px] font-black text-indigo-700 uppercase tracking-widest mb-1">Target
+                                        Staff</label>
+                                    <select id="commsInternalTarget"
+                                        class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                        <option value="">Select Target...</option>
+                                        <option value="ALL_STAFF" class="font-black text-red-600 bg-red-50"> GLOBAL
+                                            DISPATCH: ALL STAFF</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[9px] font-black text-indigo-700 uppercase tracking-widest mb-1">Official
+                                        Subject</label>
+                                    <input type="text" id="commsInternalSubject" placeholder="Directive Subject..."
+                                        class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[9px] font-black text-indigo-700 uppercase tracking-widest mb-1">Directive
+                                    Body</label>
+                                <textarea id="commsInternalBody" rows="3" placeholder="Type official directive..."
+                                    class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-400"></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="executeInternalDispatch()" id="btnInternalDispatch"
+                                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black uppercase tracking-wider px-6 py-2 rounded-lg shadow-sm transition-all"><i
+                                        class="fa-solid fa-paper-plane mr-1"></i> Send Internal Dispatch</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- External Dispatch -->
+                    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 shadow-sm">
+                        <h3
+                            class="text-sm font-black text-emerald-900 uppercase tracking-wide mb-3 border-b border-emerald-200 pb-2">
+                            <i class="fa-solid fa-envelope-open-text text-emerald-600 mr-2"></i> External Formal
+                            Dispatch (Letterhead)
+                        </h3>
+                        <p class="text-[10px] text-slate-600 font-bold mb-4">Send a highly formalized email to external
+                            bodies (e.g. Ministry of Education). It will be framed in the institutional letterhead and
+                            signed with your digital stamp.</p>
+
+                        <div class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label
+                                        class="block text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">Destination
+                                        Email</label>
+                                    <input type="email" id="commsExternalTo" placeholder="ministry@jigawastate.gov.ng"
+                                        class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">Formal
+                                        Subject</label>
+                                    <input type="text" id="commsExternalSubject" placeholder="Re: Institutional Report"
+                                        class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label
+                                    class="block text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1"><i
+                                        class="fa-solid fa-paperclip mr-1"></i> File Attachment (Optional)</label>
+                                <input type="file" id="commsExternalFile" multiple
+                                    class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">Formal
+                                    Message Body</label>
+                                <textarea id="commsExternalBody" rows="4" placeholder="Dear Sir/Madam..."
+                                    class="w-full bg-white border border-emerald-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button onclick="executeExternalDispatch()" id="btnExternalDispatch"
+                                    class="bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-black uppercase tracking-wider px-6 py-2.5 rounded-lg shadow-md transition-all"><i
+                                        class="fa-solid fa-stamp mr-1 text-gussGold"></i> Authorize & Transmit Formal
+                                    Letter</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tabOversight" class="hidden animate-fade-in">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-100 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                    <th class="py-2 px-3">Scope / Target</th>
+                                    <th class="py-2 px-3">Withhold Status</th>
+                                    <th class="py-2 px-3">Deadline Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="oversightTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tabDiscipline" class="hidden animate-fade-in">
+                    <div class="flex flex-col sm:flex-row justify-between items-end mb-4 gap-4">
+                        <select id="disciplineFilter" onchange="renderDisciplineTable()"
+                            class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none w-full sm:w-auto">
+                            <option value="ALL">All Disciplinary Levels</option>
+                            <option value="Warning">Level 1: Warnings</option>
+                            <option value="Probation">Level 2: Probation</option>
+                            <option value="Suspension">Level 3: Suspensions</option>
+                            <option value="Dismissal">Level 4: Dismissals</option>
+                        </select>
+                    </div>
+                    <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-b border-slate-200">
+                                    <th class="py-3 px-4">Identity</th>
+                                    <th class="py-3 px-4">Level</th>
+                                    <th class="py-3 px-4 min-w-[200px]">Infraction & Penalty</th>
+                                </tr>
+                            </thead>
+                            <tbody id="disciplineTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- TAB 5: TRANSIENT CERTS & TENURE DESK -->
+                <div id="tabCerts" class="hidden animate-fade-in space-y-4">
+                    <div
+                        class="bg-blue-50 border border-blue-200 rounded-2xl p-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div>
+                            <h4
+                                class="text-xs font-black uppercase text-blue-900 tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-clock-rotate-left text-blue-600"></i> Transient Corps & Teaching
+                                Practice Desk
+                            </h4>
+                            <p class="text-[10px] text-blue-700 font-medium mt-0.5">Adjust passing out dates
+                                (disciplinary extensions / early discharge) and generate regal Certificates of Service.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto border border-slate-200 rounded-2xl bg-white shadow-sm">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-100 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                    <th class="py-3 px-4">Corps Member</th>
+                                    <th class="py-3 px-4">Track / Stream</th>
+                                    <th class="py-3 px-4 text-center">Tenure Status</th>
+                                    <th class="py-3 px-4 text-right">Administrative Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certificatesBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tabHR" class="hidden animate-fade-in">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse whitespace-nowrap">
+                            <thead>
+                                <tr
+                                    class="bg-slate-100 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                    <th class="py-2 px-3">Profile</th>
+                                    <th class="py-2 px-3">Rank</th>
+                                    <th class="py-2 px-3">Tenure</th>
+                                </tr>
+                            </thead>
+                            <tbody id="hrTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!--   Massively Upgraded Watchdog Logs UI -->
+        <div
+            class="lg:col-span-4 bg-slate-900 rounded-3xl overflow-hidden shadow-xl border border-slate-800 flex flex-col h-[750px] sticky top-24">
+            <div class="bg-black/60 p-4 border-b border-slate-800 flex flex-col gap-4 shrink-0">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xs font-black text-emerald-400 uppercase tracking-widest flex items-center gap-2"><i
+                            class="fa-solid fa-satellite-dish"></i> Watchdog Live Logs</h3>
+                    <span class="relative flex h-2 w-2 hidden" id="logNotificationBell">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                </div>
+                <div class="space-y-2">
+                    <div class="relative">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
+                        <input type="text" id="logSearchInput" onkeyup="executeLogSearch()"
+                            placeholder="Search log history..."
+                            class="w-full bg-slate-800 border border-slate-700 rounded-lg pl-8 pr-3 py-2 text-xs font-medium text-slate-200 focus:outline-none focus:border-emerald-500">
+                    </div>
+                    <!--   Month filter removed, precise Date search remains -->
+                    <input type="date" id="logDateFilter" onchange="executeLogSearch()"
+                        class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-[10px] font-bold text-slate-400 focus:outline-none">
+                </div>
+                <!--  DYNAMIC ALIGNED CATEGORY CHIPS -->
+                <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar items-center" id="logFilterChips">
+                    <button onclick="filterLogs('ALL')"
+                        class="px-3 py-1.5 rounded-lg bg-emerald-500 text-white text-[9px] font-black uppercase whitespace-nowrap shadow-sm">All
+                        Logs</button>
+                    <button onclick="filterLogs('SYSTEM')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">Governance</button>
+                    <button onclick="filterLogs('EXECUTIVE')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">
+                        <i class="fa-solid fa-crown text-yellow-500 mr-1"></i> Delegations
+                    </button>
+                    <button onclick="filterLogs('COMMUNICATION')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">Communications</button>
+                    <button onclick="filterLogs('DISCIPLINE')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">Discipline</button>
+                    <button onclick="filterLogs('HR')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">HR
+                        & Welfare</button>
+                    <button onclick="filterLogs('ACADEMICS')"
+                        class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-400 hover:bg-slate-700 text-[9px] font-black uppercase whitespace-nowrap border border-slate-700 transition-colors">Academic
+                        Audit</button>
+                </div>
+            </div>
+            <div id="systemLogs"
+                class="p-4 overflow-y-auto flex-1 font-mono text-[10px] text-slate-400 scroll-smooth no-scrollbar">
+            </div>
+        </div>
+
+    </main>
+
+    <div id="dossierModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] scale-95 transition-transform duration-300"
+            id="dossierContent">
+            <div
+                class="bg-gussNavy p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-address-card text-gussGold"></i> Executive Master Dossier</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Complete Unedited
+                        Identity Record</p>
+                </div>
+                <button onclick="closeDossierModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1 bg-slate-50" id="dossierBody"></div>
+        </div>
+    </div>
+
+    <div id="epochVaultModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-3xl w-full max-w-3xl overflow-hidden shadow-2xl flex flex-col max-h-[85vh] scale-95 transition-transform duration-300"
+            id="epochVaultContent">
+            <div
+                class="bg-gussDark p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-server text-gussGold"></i> Temporal Archive Vault</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Access read-only
+                        historical data from previous epochs.</p>
+                </div>
+                <button onclick="closeEpochVault()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 bg-slate-50">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-white p-3 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="relative w-full sm:w-1/2">
+                        <i class="fa-solid fa-magnifying-glass absolute left-4 top-3 text-slate-400"></i>
+                        <input type="text" id="vaultSearchInput" onkeyup="filterVaultGrid()"
+                            placeholder="Search epochs (e.g., '2025' or '3rd Term')...."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    </div>
+                    <div class="flex gap-3 w-full sm:w-auto">
+                        <select id="vaultSessionFilter" onchange="filterVaultGrid()"
+                            class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-300 w-full sm:w-auto">
+                            <option value="ALL">All Sessions</option>
+                        </select>
+                        <button onclick="activateLiveSession()" id="vaultLiveBtn"
+                            class="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-300 px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest shadow-sm transition-all flex items-center gap-2 whitespace-nowrap">
+                            <span class="relative flex h-2 w-2 mr-1"><span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span
+                                    class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span> Live
+                            Node
+                        </button>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="vaultGridContainer"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="securityModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4 no-print">
+        <div
+            class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 text-center border-t-4 border-red-600">
+            <div
+                class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-red-100 text-red-600">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="font-black text-xl text-gussNavy uppercase tracking-wide mb-2">Epoch Archival Protocol</h3>
+            <p class="text-sm text-slate-500 font-medium mb-6">CRITICAL: You are about to officially close the current
+                term. All data will be sealed into the Time Machine archive. The system will advance to the next term.
+            </p>
+
+            <div class="mb-6 text-left bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Type "ADVANCE"
+                    to confirm</label>
+                <input type="text" id="epochConfirmInput" placeholder="ADVANCE"
+                    class="w-full bg-white border border-slate-300 rounded-lg px-4 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-red-400 text-center tracking-widest uppercase">
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('securityModal').classList.add('hidden')"
+                    class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Abort</button>
+                <button onclick="executeTermAdvancement()"
+                    class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg transition-all">Seal
+                    & Advance</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- TENURE SQUEEZER & EXTENDER MODAL                          -->
+    <!-- ========================================================= -->
+    <div id="tenureModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5 animate-fade-in">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="font-black text-sm text-gussNavy uppercase tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-clock-rotate-left text-orange-500"></i> Adjust Service Tenure
+                </h3>
+                <button type="button" onclick="closeTenureModal()" class="text-slate-400 hover:text-slate-600"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <form id="tenureForm" onsubmit="submitTenureAdjustment(event)" class="space-y-4">
+                <input type="hidden" id="tenureStaffId">
+
+                <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+                    <span class="text-[9px] font-black uppercase text-slate-400 tracking-widest block">Corps
+                        Personnel</span>
+                    <p id="tenureStaffName" class="text-xs font-black text-slate-800 uppercase">---</p>
+                    <p id="tenureCurrentEnd" class="text-[10px] font-mono text-slate-500 font-bold">Current End Date:
+                        ---</p>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Protocol Type</label>
+                    <select id="tenureActionType"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                        <option value="EXTEND">Service Extension (Penalty / Delayed Passing Out)</option>
+                        <option value="SQUEEZE">Early Commendable Discharge / Compassionate Release</option>
+                    </select>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">New Passing Out
+                        Date</label>
+                    <input type="date" id="tenureNewEndDate"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Executive
+                        Reason</label>
+                    <textarea id="tenureReason" rows="3" required
+                        placeholder="Mandatory directive details for audit logging and notification..."
+                        class="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeTenureModal()"
+                        class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest transition-colors">Cancel</button>
+                    <button type="submit" id="btnSubmitTenure"
+                        class="flex-1 py-3 bg-gussNavy hover:bg-slate-800 text-white rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-all">Commit
+                        Adjustment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/director_app_stateless.js"></script>
+
+</body>
+
+</html>

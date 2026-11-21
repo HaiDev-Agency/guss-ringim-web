@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <title>Admission Officer Console | G.U.S.S. Ringim</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } },
+            safelist: [
+                'bg-emerald-100', 'text-emerald-800', 'border-emerald-200',
+                'bg-amber-100', 'text-amber-800', 'border-amber-200',
+                'bg-red-100', 'text-red-800', 'border-red-200',
+                'bg-red-950', 'text-red-300', 'border-red-800',
+                'bg-indigo-100', 'text-indigo-800', 'border-indigo-200',
+                'bg-amber-50', 'text-amber-600', 'border-amber-200',
+                'bg-slate-100', 'text-slate-600', 'border-slate-300'
+            ]
+        }
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <div
+        class="bg-gussNavy text-slate-300 text-[11px] py-2 px-6 flex justify-between items-center border-b border-slate-800 no-print">
+        <div class="flex items-center gap-4 font-black tracking-widest uppercase">
+            <span class="text-gussGold"><i class="fa-solid fa-id-badge mr-1"></i> Admission Office</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span class="bg-slate-800 text-emerald-400 px-3 py-1 rounded-md"><i
+                    class="fa-solid fa-user-shield mr-1"></i> Role: Admission Officer</span>
+            <!--  Cloud-Native Dynamic Name Display -->
+            <span class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeOfficerNameDisplay">Loading...</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-4 font-bold">
+            <!--  DYNAMIC NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+            <!-- GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-4"
+                id="globalTimeMachineWidget">
+
+                <!-- Live Indicator Button -->
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+
+                <!-- Session Dropdown -->
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+
+                <!-- Term Dropdown (Hidden on Admissions Portal, Visible on Grading/Bursary) -->
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="hidden bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white px-3 py-1 rounded transition-colors border border-red-500/20"><i
+                    class="fa-solid fa-power-off mr-1"></i> System Exit</button>
+        </div>
+    </div>
+
+    <header class="bg-white shadow-sm sticky top-0 z-40 no-print">
+        <div class="max-w-[1400px] mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="assets/images/logo_img.png" alt="Logo" class="h-12 w-auto">
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussNavy uppercase leading-none">Admission Officer
+                        Console</h1>
+                    <p class="text-[10px] text-slate-400 tracking-widest uppercase font-black mt-0.5">Placement Matrix,
+                        Triage & Analytics Engine</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="livePortalStatus"
+                    class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-globe"></i> Application Portal is Live
+                </div>
+                <div id="intakeSessionBadge"
+                    class="bg-slate-50 text-slate-600 border border-slate-200 px-4 py-2 rounded-lg text-xs font-black uppercase tracking-wider">
+                    Active Intake
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1400px] w-full mx-auto px-6 py-8 flex-1 flex flex-col no-print">
+
+        <div class="flex flex-wrap gap-2 mb-8 bg-white p-2 rounded-2xl border border-slate-200 shadow-sm w-fit">
+            <button onclick="switchTab('triage')" id="tab-triage"
+                class="tab-btn active bg-slate-100 text-gussNavy font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"><i
+                    class="fa-solid fa-inbox text-amber-500 mr-2"></i> Verification Triage</button>
+            <button onclick="switchTab('registry')" id="tab-registry"
+                class="tab-btn text-slate-500 hover:bg-slate-50 font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"><i
+                    class="fa-solid fa-users text-emerald-500 mr-2"></i> Master Registry</button>
+            <button onclick="switchTab('population')" id="tab-population"
+                class="tab-btn text-slate-500 hover:bg-slate-50 font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"><i
+                    class="fa-solid fa-chart-pie text-blue-500 mr-2"></i> Population Matrix</button>
+            <button onclick="switchTab('config')" id="tab-config"
+                class="tab-btn text-slate-500 hover:bg-slate-50 font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"><i
+                    class="fa-solid fa-sliders text-gussGold mr-2"></i> Portal Config</button>
+            <button onclick="switchTab('tribunal')" id="tab-tribunal"
+                class="tab-btn text-red-500 hover:bg-red-50 font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest transition-all"><i
+                    class="fa-solid fa-gavel mr-2"></i> Identity Tribunal</button>
+        </div>
+
+        <!-- TAB: TRIAGE -->
+        <div id="section-triage" class="tab-content block space-y-6 animate-fade-in">
+            <div
+                class="bg-indigo-900 text-white p-6 rounded-3xl border border-indigo-800 shadow-lg flex flex-col md:flex-row justify-between items-center gap-4">
+                <div>
+                    <h3 class="text-lg font-black uppercase tracking-widest text-indigo-300"><i
+                            class="fa-solid fa-layer-group mr-2"></i> Batch Publishing Pool</h3>
+                    <p class="text-xs text-indigo-200 mt-1">Students finalized but not yet published to the public
+                        gateway.</p>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="text-center">
+                        <span class="block text-[10px] uppercase tracking-widest text-indigo-400">Pooled Students</span>
+                        <span id="stat-pooled" class="text-3xl font-mono font-black text-white">0</span>
+                    </div>
+                    <button onclick="publishAdmissionsBatch()"
+                        class="bg-indigo-500 hover:bg-indigo-400 text-white font-black px-6 py-3 rounded-xl uppercase tracking-widest shadow-md transition-colors"><i
+                            class="fa-solid fa-paper-plane mr-2"></i> Publish 1st Batch</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div onclick="openRegistryFilter('ALL')"
+                    class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-slate-300 hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div>
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Total
+                            Applications</p>
+                        <h3 id="stat-total" class="text-3xl font-black text-gussNavy">0</h3>
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                </div>
+                <div onclick="openRegistryFilter('AWAITING_VERIFICATION')"
+                    class="bg-amber-50 p-6 rounded-3xl border border-amber-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-amber-300 hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div>
+                        <p class="text-[10px] font-black text-amber-600 uppercase tracking-widest mb-1">Awaiting
+                            Verification</p>
+                        <h3 id="stat-pending" class="text-3xl font-black text-amber-700">0</h3>
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-amber-100 text-amber-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                    </div>
+                </div>
+                <div onclick="openRegistryFilter('ADMITTED')"
+                    class="bg-emerald-50 p-6 rounded-3xl border border-emerald-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-emerald-300 hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div>
+                        <p class="text-[10px] font-black text-emerald-600 uppercase tracking-widest mb-1">Admitted
+                            Successfully</p>
+                        <h3 id="stat-admitted" class="text-3xl font-black text-emerald-700">0</h3>
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                </div>
+                <div onclick="openRegistryFilter('REJECTED_RETURNED')"
+                    class="bg-red-50 p-6 rounded-3xl border border-red-200 shadow-sm flex items-center justify-between cursor-pointer hover:border-red-300 hover:shadow-md hover:-translate-y-1 transition-all">
+                    <div>
+                        <p class="text-[10px] font-black text-red-600 uppercase tracking-widest mb-1">Returned /
+                            Rejected</p>
+                        <h3 id="stat-rejected" class="text-3xl font-black text-red-700">0</h3>
+                    </div>
+                    <div
+                        class="w-12 h-12 bg-red-100 text-red-500 rounded-full flex items-center justify-center text-xl">
+                        <i class="fa-solid fa-user-xmark"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                    <div>
+                        <h3 class="text-lg font-black uppercase text-gussNavy tracking-wide">Awaiting Verification
+                            Triage</h3>
+                        <p class="text-xs text-slate-500 mt-1">Review applicant credentials and process official
+                            admissions.</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200">
+                                <th class="p-5">Applicant Identity</th>
+                                <th class="p-5">Target Class</th>
+                                <th class="p-5">Entry Pathway</th>
+                                <th class="p-5">Mode of Entry</th>
+                                <th class="p-5 text-right">Verification Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="triageTableBody"
+                            class="text-sm font-medium text-slate-700 divide-y divide-slate-100"></tbody>
+                    </table>
+                    <div id="triagePaginationControls"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: MASTER REGISTRY -->
+        <div id="section-registry" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+                <div
+                    class="p-6 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-slate-50/50">
+                    <div>
+                        <h3 class="text-lg font-black uppercase text-gussNavy tracking-wide"><i
+                                class="fa-solid fa-users text-emerald-500 mr-2"></i> Master Registry Archive</h3>
+                        <p class="text-xs text-slate-500 mt-1">Comprehensive database of all processed and pending
+                            applications.</p>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                        <div class="relative w-full sm:w-64">
+                            <i
+                                class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="omniSearchInput" placeholder="Search NIN, Name, RRR..."
+                                class="bg-white border border-slate-300 text-xs font-black tracking-widest text-slate-700 rounded-xl pl-9 pr-4 py-3 outline-none focus:border-gussGreen shadow-sm w-full">
+                        </div>
+                        <!--  DYNAMIC STATUS BADGE -->
+                        <span id="sessionFilterStatusBadge"
+                            class="hidden text-[9px] font-black uppercase px-2.5 py-1.5 rounded-lg tracking-widest whitespace-nowrap shadow-sm border"></span>
+                    </div>
+                    <select id="registryFilterSelect" onchange="renderMasterRegistry()"
+                        class="bg-white border border-slate-300 text-xs font-black tracking-widest text-slate-700 rounded-xl px-4 py-3 outline-none focus:border-gussGreen shadow-sm w-full sm:w-auto">
+                        <option value="ALL">SHOW ALL RECORDS</option>
+                        <option value="AWAITING_VERIFICATION">AWAITING VERIFICATION</option>
+                        <option value="POOLED">POOLED (AWAITING BATCH PUBLISH)</option>
+                        <option value="ADMITTED">ADMITTED STUDENTS</option>
+                        <option value="PENDING_QUALIFYING_EXAMS">PENDING QUALIFYING EXAMS</option>
+                        <option value="REJECTED_RETURNED">RETURNED / REJECTED</option>
+                        <option value="QUARANTINED">QUARANTINED (TRIBUNAL REVOKED)</option>
+                        <option value="PROVISIONALLY_POOLED">PROVISIONALLY POOLED (DEFICIENT DATA)</option>
+                    </select>
+                    <select id="registryStateFilter" onchange="executeStateOriginFilter()"
+                        class="bg-white border border-slate-300 text-xs font-black tracking-widest text-slate-700 rounded-xl px-4 py-3 outline-none focus:border-gussGreen shadow-sm w-full sm:w-auto">
+                        <option value="ALL">ALL STATES</option>
+                    </select>
+                    <select id="registryClearanceFilter" onchange="executeStateOriginFilter()"
+                        class="bg-white border border-slate-300 text-xs font-black tracking-widest text-slate-700 rounded-xl px-4 py-3 outline-none focus:border-gussGreen shadow-sm w-full sm:w-auto">
+                        <option value="ALL">ALL CLEARANCE</option>
+                        <option value="CLEARED">PHYSICALLY CLEARED</option>
+                        <option value="PENDING">PENDING CLEARANCE</option>
+                    </select>
+                </div>
+            </div>
+
+            <div
+                class="flex flex-col lg:flex-row items-center justify-between gap-4 bg-slate-50 p-4 rounded-xl border border-slate-200 mt-4 mb-4 shadow-inner">
+                <!-- Spooler Engine -->
+                <div
+                    class="flex items-center gap-3 w-full lg:w-auto border-b lg:border-b-0 lg:border-r border-slate-200 pb-4 lg:pb-0 lg:pr-4">
+                    <span
+                        class="text-[10px] font-black uppercase text-slate-500 tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text text-amber-500"></i> Admission Letters
+                    </span>
+                    <span id="letterSpoolerCountBadge"
+                        class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm hidden">0
+                        Selected</span>
+                    <button onclick="executeBulkAdmissionLetters()" id="btnExecuteBulkLetters" disabled
+                        class="bg-slate-300 text-slate-500 hover:bg-slate-400 text-[9px] font-black px-4 py-2 rounded-lg uppercase tracking-widest shadow-sm transition-all ml-auto lg:ml-0 cursor-not-allowed">
+                        Generate Batch PDF (0)
+                    </button>
+                </div>
+
+                <!-- Data Export Engine -->
+                <div class="flex items-center gap-3 w-full lg:w-auto">
+                    <span class="text-[10px] font-black uppercase text-slate-500 tracking-widest"><i
+                            class="fa-solid fa-cloud-arrow-down text-blue-500 mr-1"></i> Data Export</span>
+                    <select id="exportScopeFilter"
+                        class="bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-lg px-3 py-1.5 focus:outline-none flex-1 lg:flex-none">
+                        <option value="ALL">Entire Registry Database</option>
+                    </select>
+                    <select id="exportFormatFilter"
+                        class="bg-white border border-slate-300 text-slate-700 text-xs font-bold rounded-lg px-3 py-1.5 focus:outline-none hidden sm:block">
+                        <option value="PDF">Jasper PDF</option>
+                        <option value="EXCEL">MS Excel (.xlsx)</option>
+                    </select>
+                    <button id="btnExportData" onclick="window.exportRegistryData()"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest shadow-sm transition-colors">
+                        Execute
+                    </button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-200">
+                            <th class="p-5">Applicant Identity</th>
+                            <th class="p-5">Target Class</th>
+                            <th class="p-5">Pipeline Status</th>
+                            <th class="p-5 text-center">Physical Clearance</th>
+                            <th class="p-5">Administrative Notes / Reasons</th>
+                            <th class="p-5 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="registryTableBody" class="text-sm font-medium text-slate-700 divide-y divide-slate-100">
+                    </tbody>
+                </table>
+                <div id="registryPaginationControls"></div>
+            </div>
+        </div>
+        </div>
+
+        <!-- TAB: POPULATION MATRIX -->
+        <div id="section-population" class="tab-content hidden space-y-6 animate-fade-in">
+            <div
+                class="bg-gussNavy text-white p-8 rounded-3xl shadow-lg border border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div>
+                    <h3 class="text-xl font-black uppercase tracking-wide text-gussGold mb-2"><i
+                            class="fa-solid fa-chart-pie mr-2"></i> Live Population Analytics Engine</h3>
+                    <p class="text-xs text-slate-400 leading-relaxed max-w-2xl">Real-time statistics of successfully
+                        admitted students actively enrolled in the school. Use the smart calculator to generate exact
+                        counts for administrative reporting and clearance preparation.</p>
+                </div>
+                <div class="bg-slate-800/80 border border-slate-700 p-4 rounded-2xl text-center min-w-[200px]">
+                    <span class="block text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-1">Total
+                        Active Headcount</span>
+                    <span id="pop-total-headcount" class="text-4xl font-black text-white font-mono">0</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Total Junior Section
+                        (JSS)</h4>
+                    <span id="pop-total-jss" class="text-2xl font-black text-gussNavy font-mono">0</span>
+                </div>
+                <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm text-center">
+                    <div
+                        class="w-12 h-12 bg-purple-50 text-purple-600 rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                        <i class="fa-solid fa-user-graduate"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-1">Total Senior Section
+                        (SSS)</h4>
+                    <span id="pop-total-sss" class="text-2xl font-black text-gussNavy font-mono">0</span>
+                </div>
+                <div class="bg-white border border-amber-200 p-6 rounded-3xl shadow-sm text-center bg-amber-50/30">
+                    <div
+                        class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <h4 class="text-xs font-black text-amber-700 uppercase tracking-widest mb-1">Graduating Pool (JSS3 &
+                        SSS3)</h4>
+                    <span id="pop-graduating" class="text-2xl font-black text-amber-900 font-mono">0</span>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+                <h4
+                    class="text-sm font-black uppercase text-gussNavy tracking-wide mb-6 border-b border-slate-100 pb-3">
+                    <i class="fa-solid fa-calculator text-gussGreen mr-2"></i> Smart Cohort Calculator
+                </h4>
+
+                <!--   Removed the accidental duplicate nested div here -->
+                <div class="flex flex-col md:flex-row items-end gap-4">
+                    <div class="flex flex-col gap-2 w-full md:w-1/3">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Level /
+                            Pool</label>
+                        <select id="calc-level"
+                            class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-gussGreen">
+                            <option value="ALL">Entire School</option>
+                            <!--  Dynamic Levels injected here -->
+                        </select>
+                    </div>
+
+                    <div class="flex flex-col gap-2 w-full md:w-1/3">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Specific
+                            Arm (Optional)</label>
+                        <select id="calc-arm"
+                            class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-gussGreen">
+                            <option value="ALL">All Arms</option>
+                            <!--  Dynamic Arms injected here -->
+                        </select>
+                    </div>
+
+                    <button onclick="runSmartCalculator()"
+                        class="w-full md:w-auto bg-gussGreen text-white font-black px-8 py-3 rounded-xl uppercase tracking-widest shadow-md hover:bg-emerald-800 transition-colors">Calculate
+                        Headcount</button>
+                </div>
+
+                <div id="calc-result-box"
+                    class="hidden mt-6 p-5 bg-slate-900 text-white rounded-2xl flex items-center justify-between shadow-inner">
+                    <span id="calc-query-text" class="text-xs font-bold text-slate-400 uppercase tracking-widest">Query:
+                        JSS 1 (ALL ARMS)</span>
+                    <span id="calc-result-number" class="text-2xl font-black text-gussGold font-mono">0 STUDENTS</span>
+                </div>
+            </div>
+        </div>
+
+        <!--TAB: PORTAL CONFIG-->
+        <div id="section-config" class="tab-content hidden space-y-6 animate-fade-in">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm max-w-3xl mx-auto">
+                <h3 class="text-lg font-black uppercase text-gussNavy tracking-wide mb-2">Intranet Portal Global
+                    Controls</h3>
+                <p class="text-xs text-slate-500 mb-8 border-b border-slate-100 pb-4">Manage the global state of the
+                    Applicant Gateway. Changes here only take effect after syncing.</p>
+
+                <div class="space-y-6">
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-black text-sm text-slate-800 uppercase tracking-wider">Admissions
+                                Gateway
+                                Status</h4>
+                            <p class="text-[10px] text-slate-500 mt-1">Toggle whether students can access the
+                                application forms.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="config-gateway-toggle" class="sr-only peer" checked>
+                            <div
+                                class="w-14 h-7 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-gussGreen">
+                            </div>
+                        </label>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <h4 class="font-black text-sm text-slate-800 uppercase tracking-wider">Target Intake
+                                    Academic Session</h4>
+                                <p class="text-[10px] text-slate-500">Select the intake target (Calculated directly from
+                                    the Central Time Matrix).</p>
+                            </div>
+                            <span
+                                class="bg-emerald-100 text-emerald-800 text-[9px] font-black uppercase px-2.5 py-1 rounded-md">Epoch
+                                Synced</span>
+                        </div>
+                        <select id="config-session"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 font-bold text-sm focus:outline-none focus:border-gussGreen">
+                            <!-- Dynamically populated by admission_officer_app.js -->
+                        </select>
+                    </div>
+
+                    <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200 space-y-3">
+                        <h4 class="font-black text-sm text-slate-800 uppercase tracking-wider"><i
+                                class="fa-solid fa-stopwatch mr-1"></i> Application Deadline</h4>
+                        <p class="text-[10px] text-slate-500">Set the exact date and time the portal automatically
+                            countdowns to and closes.</p>
+                        <input type="datetime-local" id="config-deadline"
+                            class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 font-bold text-sm focus:outline-none focus:border-gussGreen">
+                    </div>
+
+                    <div class="bg-amber-50/50 p-6 rounded-2xl border border-amber-200 space-y-3">
+                        <h4 class="font-black text-sm text-amber-800 uppercase tracking-wider"><i
+                                class="fa-solid fa-bullhorn mr-1"></i> Global Broadcast Alert</h4>
+                        <p class="text-[10px] text-amber-600">Type a message to be displayed as a scrolling alert on
+                            the
+                            applicant portal.</p>
+                        <input type="text" id="config-broadcast"
+                            placeholder="e.g., Late registration closes on Friday at midnight..."
+                            class="w-full bg-white border border-amber-300 rounded-xl px-4 py-3 font-medium text-sm focus:outline-none focus:border-amber-500">
+                    </div>
+
+                    <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-200 mt-6 space-y-4">
+                        <div class="border-b border-blue-200 pb-2 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-black text-sm text-blue-900 uppercase tracking-wider">
+                                    <i class="fa-solid fa-id-card-clip mr-1"></i> Active Officer Credentials (Read-Only)
+                                </h4>
+                                <p class="text-[10px] text-blue-700 mt-0.5">Central ICT Registry source of truth.
+                                    Modifications restricted to ICT Administration.</p>
+                            </div>
+                            <span
+                                class="bg-blue-200 text-blue-800 text-[9px] font-black px-2.5 py-1 rounded-md uppercase tracking-widest">
+                                <i class="fa-solid fa-lock mr-1"></i> Locked
+                            </span>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Active
+                                    Officer Name</label>
+                                <input type="text" id="config-officer-name" readonly disabled
+                                    class="w-full bg-slate-100 border border-blue-200 rounded-xl px-4 py-3 font-bold text-sm text-slate-700 cursor-not-allowed">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Official
+                                    Contact Number</label>
+                                <input type="text" id="config-officer-phone" readonly disabled
+                                    class="w-full bg-slate-100 border border-blue-200 rounded-xl px-4 py-3 font-mono font-bold text-sm text-slate-700 cursor-not-allowed">
+                            </div>
+                            <div class="md:col-span-2 flex flex-col gap-2">
+                                <label class="text-[10px] font-bold text-blue-800 uppercase tracking-widest">Official
+                                    Onboarded Signature</label>
+                                <div class="flex items-center gap-4 bg-white p-3 rounded-xl border border-blue-200">
+                                    <img id="preview-signature" src=""
+                                        class="h-12 w-32 object-contain bg-slate-50 border border-slate-200 rounded hidden">
+                                    <span class="text-[10px] font-bold text-slate-400 italic">Signature dynamically
+                                        verified from PostgreSQL Vault.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="saveGlobalSettings()"
+                        class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black py-4 rounded-xl text-sm uppercase tracking-widest transition-all shadow-lg mt-4">Save
+                        & Sync Portal State</button>
+                </div>
+            </div>
+        </div>
+
+        <section id="section-tribunal" class="tab-content hidden animate-fade-in mt-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- MASS EXCEPTION ENGINE -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-red-100 text-red-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-slate-800 uppercase tracking-widest text-sm">Bulk Exception
+                                Engine
+                            </h3>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase">Mass Reject Provisional /
+                                Deficient
+                                Pools</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 font-medium mb-6 leading-relaxed">Instantly purge all
+                        provisionally
+                        pooled applications that lack complete documentation. This will return their files and lock
+                        them
+                        out
+                        if the deadline has passed.</p>
+                    <input type="text" id="bulkRejectReason"
+                        placeholder="Official Reason (e.g. Management Directive: Missing Docs)"
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-bold mb-4 focus:outline-none focus:border-red-400">
+                    <button onclick="window.bulkRejectProvisionals()"
+                        class="w-full bg-red-600 hover:bg-red-700 text-white px-5 py-3 rounded-xl font-black uppercase tracking-widest text-[11px] shadow-md transition-all">
+                        <i class="fa-solid fa-trash-can mr-2"></i> Execute Mass Rejection
+                    </button>
+                </div>
+
+                <!-- MASS QUARANTINE ENGINE -->
+                <div class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 mt-6">
+                    <div class="flex items-center gap-3 mb-4 border-b border-slate-100 pb-3">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-user-lock"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-slate-800 uppercase tracking-widest text-sm">Clearance Quarantine
+                            </h3>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase">Mass Revoke Uncleared Students</p>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 font-medium mb-6 leading-relaxed">Instantly quarantine all ADMITTED
+                        students who failed to complete physical clearance. This strips their admission number and locks
+                        them out.</p>
+                    <input type="text" id="bulkQuarantineReason" placeholder="Official Reason (e.g. Failed to resume)"
+                        class="w-full bg-slate-50 border border-slate-200 text-slate-700 px-4 py-3 rounded-xl text-xs font-bold mb-4 focus:outline-none focus:border-orange-400">
+                    <button onclick="window.bulkQuarantineUncleared()"
+                        class="w-full bg-orange-600 hover:bg-orange-700 text-white px-5 py-3 rounded-xl font-black uppercase tracking-widest text-[11px] shadow-md transition-all">
+                        <i class="fa-solid fa-gavel mr-2"></i> Execute Mass Quarantine
+                    </button>
+                </div>
+
+                <!-- IDENTITY TRIBUNAL (GUILLOTINE) -->
+                <div class="bg-red-950 rounded-3xl border-2 border-red-900 shadow-2xl p-6 relative overflow-hidden">
+                    <i class="fa-solid fa-gavel absolute -right-6 -bottom-6 text-9xl text-red-900 opacity-20"></i>
+                    <div class="flex items-center gap-3 mb-6 relative z-10">
+                        <div
+                            class="w-10 h-10 rounded-xl bg-red-900 text-red-300 flex items-center justify-center text-lg shadow-inner">
+                            <i class="fa-solid fa-skull"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-black text-red-400 uppercase tracking-widest text-sm">Identity Tribunal
+                            </h3>
+                            <p class="text-[10px] text-red-300 font-bold uppercase">Post-Admission Quarantine &
+                                Reinstatement</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-3 mb-6 relative z-10">
+                        <input type="text" id="tribunalSearchInput" placeholder="Enter Admission No or NIN..."
+                            class="flex-1 bg-black/40 border border-red-800 text-red-100 px-4 py-3 rounded-xl text-xs font-mono placeholder-red-700 focus:outline-none focus:border-red-500">
+                        <button onclick="window.searchTribunalTarget()"
+                            class="bg-red-700 hover:bg-red-600 text-white px-6 py-3 rounded-xl font-black uppercase tracking-widest text-[10px] shadow-lg transition-colors"><i
+                                class="fa-solid fa-crosshairs"></i></button>
+                    </div>
+
+                    <div id="tribunalTargetDisplay"
+                        class="hidden bg-black/40 border border-red-500/30 rounded-xl p-4 relative z-10">
+                        <div class="flex items-center gap-4 mb-4">
+                            <img id="tribTargetPhoto" src=""
+                                class="w-12 h-12 rounded-lg border border-red-500/50 object-cover grayscale mix-blend-luminosity">
+                            <div>
+                                <h4 id="tribTargetName"
+                                    class="text-red-100 font-black text-sm uppercase tracking-wider">
+                                    Loading...</h4>
+                                <p id="tribTargetId" class="text-red-400 font-mono text-[10px]"></p>
+                            </div>
+                            <div id="tribTargetStatus"
+                                class="ml-auto text-[9px] font-black uppercase px-2 py-1 rounded bg-black text-white border border-red-800">
+                            </div>
+                        </div>
+
+                        <select id="tribunalReason"
+                            class="w-full bg-black text-red-300 border border-red-800 rounded-lg px-3 py-2.5 text-[10px] font-black uppercase tracking-widest mb-3 focus:outline-none">
+                            <!--  Dynamic tribunal reasons injected here by JS -->
+                        </select>
+
+                        <button id="btnExecuteGuillotine" onclick="window.executeGuillotine()"
+                            class="w-full bg-red-600 hover:bg-red-500 text-white px-5 py-2.5 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(220,38,38,0.4)] transition-all animate-pulse">
+                            <i class="fa-solid fa-skull mr-2"></i> Execute Guillotine Protocol
+                        </button>
+                        <button id="btnExecuteLazarus" onclick="window.executeLazarus()"
+                            class="hidden w-full bg-emerald-600 hover:bg-emerald-500 text-white px-5 py-2.5 rounded-lg font-black uppercase tracking-widest text-[10px] shadow-[0_0_15px_rgba(5,150,105,0.4)] transition-all">
+                            <i class="fa-solid fa-heart-pulse mr-2"></i> Initiate Lazarus Reinstatement
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- SCREENING MODAL -->
+    <div id="screeningModal"
+        class="hidden fixed inset-0 z-50 bg-slate-900/90 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-5xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="bg-gussNavy text-white px-8 py-5 flex justify-between items-center shrink-0">
+                <div>
+                    <h3 class="font-black uppercase tracking-widest text-sm flex items-center gap-2"><i
+                            class="fa-solid fa-scale-balanced text-gussGold"></i> Verification Pipeline</h3>
+                    <p class="text-[10px] text-slate-400 font-mono mt-1">NIN: <span id="modal-nin">---</span></p>
+                </div>
+                <button onclick="closeScreeningModal()" class="text-slate-400 hover:text-white text-xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-8 overflow-y-auto bg-slate-50 flex-1">
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 space-y-6">
+                        <div
+                            class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm flex flex-col sm:flex-row items-start gap-6">
+                            <!--  DUAL-IMAGE BIOMETRIC COMPARISON DECK -->
+                            <div class="flex items-center gap-3 shrink-0">
+                                <div class="text-center">
+                                    <span
+                                        class="block text-[8px] font-black uppercase tracking-widest text-emerald-700 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 mb-1.5">Recent
+                                        Upload</span>
+                                    <img id="modal-photo" src="" onclick="window.viewDocument(this.src)"
+                                        title="Click to enlarge Recent Upload"
+                                        class="w-28 h-28 rounded-2xl object-cover border-2 border-emerald-500 shadow-sm bg-slate-100 cursor-pointer hover:scale-105 transition-transform">
+                                </div>
+                                <div class="text-center">
+                                    <span
+                                        class="block text-[8px] font-black uppercase tracking-widest text-blue-700 bg-blue-50 border border-blue-200 rounded px-1.5 py-0.5 mb-1.5"><i
+                                            class="fa-solid fa-shield-halved mr-0.5"></i> NIMC Vault</span>
+                                    <img id="modal-nimc-photo" src=""
+                                        onclick="if(this.dataset.hasNimc === 'true') window.viewDocument(this.src)"
+                                        title="Official NIMC Registry Biometric Photo"
+                                        class="w-28 h-28 rounded-2xl object-cover border-2 border-blue-400 shadow-sm bg-slate-100 transition-transform">
+                                    <span id="modal-nimc-badge"
+                                        class="block text-[8px] font-bold text-slate-400 uppercase mt-1">Pending
+                                        KYB</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-3 w-full">
+                                <h2 id="modal-name" class="text-2xl font-black text-gussNavy uppercase tracking-wide">
+                                    ---</h2>
+                                <div class="grid grid-cols-2 gap-4 text-xs font-bold text-slate-600">
+                                    <p>State: <span id="modal-state" class="text-slate-900">---</span></p>
+                                    <p>LGA: <span id="modal-lga" class="text-slate-900">---</span></p>
+                                    <p>DOB: <span id="modal-dob" class="text-slate-900 font-mono">---</span></p>
+                                    <p>Rel: <span id="modal-rel" class="text-slate-900">---</span></p>
+                                </div>
+                                <div
+                                    class="bg-slate-50 px-3 py-2 rounded-lg border border-slate-100 text-[10px] font-mono text-slate-500 mt-2 inline-block">
+                                    NOK Contact: <span id="modal-nok">---</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid lg:grid-cols-2 sm:grid-cols-2 gap-6">
+                            <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                                <h4
+                                    class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+                                    Academic Pathway</h4>
+                                <div class="space-y-3 text-xs font-bold text-slate-600">
+                                    <p><span id="modal-track"
+                                            class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded text-[10px] tracking-wider uppercase">---</span>
+                                    </p>
+                                    <p>Target: <span id="modal-target" class="text-slate-900 font-black">---</span></p>
+                                    <p>Mode: <span id="modal-mode" class="text-slate-900">---</span></p>
+                                </div>
+                            </div>
+                            <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4">
+                                <h4
+                                    class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+                                    Medical Profile</h4>
+                                <div class="space-y-3 text-xs font-bold text-slate-600">
+                                    <p>Blood: <span id="modal-blood"
+                                            class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-100">---</span>
+                                        | Gen: <span id="modal-gen"
+                                            class="text-blue-600 bg-blue-50 px-1.5 py-0.5 rounded border border-blue-100">---</span>
+                                    </p>
+                                    <p>Med Allergies: <span id="modal-allergies" class="text-slate-900">---</span></p>
+                                    <p>Food Allergies: <span id="modal-food-allergies" class="text-slate-900">---</span>
+                                    </p>
+                                    <p>Surgeries: <span id="modal-surgeries" class="text-slate-900">---</span></p>
+                                    <p>Routine Meds: <span id="modal-meds" class="text-slate-900">---</span></p>
+                                    <p>Respiratory: <span id="modal-respiratory" class="text-slate-900">---</span></p>
+                                    <p>Neurological: <span id="modal-neuro" class="text-slate-900">---</span></p>
+                                    <p>Disability: <span id="modal-disability" class="text-slate-900">---</span></p>
+                                    <p>Condition Details: <span id="modal-disability-details"
+                                            class="text-slate-900 font-medium">---</span></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm space-y-4 lg:col-span-1 sm:col-span-2">
+                            <h4
+                                class="text-[10px] font-black text-slate-400 uppercase tracking-widest border-b border-slate-100 pb-2">
+                                Emergency & Contacts</h4>
+                            <div class="space-y-3 text-xs font-bold text-slate-600">
+                                <p>NOK Name: <span id="modal-nok-name" class="text-slate-900">---</span></p>
+                                <p>NOK Phone: <span id="modal-nok-phone" class="text-slate-900 font-mono">---</span></p>
+                                <p class="pt-2 border-t border-slate-100">Parent: <span id="modal-parent-name"
+                                        class="text-slate-900">---</span></p>
+                                <p>Parent Phone: <span id="modal-parent-phone"
+                                        class="text-slate-900 font-mono">---</span></p>
+                                <p>Occupation: <span id="modal-parent-occ" class="text-slate-900">---</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border border-slate-200 p-6 rounded-3xl shadow-sm flex flex-col">
+                        <h4
+                            class="text-[10px] font-black text-gussNavy uppercase tracking-widest border-b border-slate-100 pb-3 mb-4">
+                            Required Uploads Verification</h4>
+                        <ul id="modal-checklist" class="space-y-3.5 flex-1"></ul>
+                        <div id="modal-action-buttons" class="pt-6 mt-4 border-t border-slate-100 shrink-0"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NORMALIZED ALLOCATION MODAL -->
+    <div id="allocationModal"
+        class="hidden fixed inset-0 z-[60] bg-slate-900/95 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-xl shadow-2xl overflow-hidden p-8 text-center space-y-6">
+            <div
+                class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto">
+                <i class="fa-solid fa-stamp"></i>
+            </div>
+            <div>
+                <h3 class="text-xl font-black uppercase text-gussNavy tracking-wide">Credentials Approved</h3>
+                <p class="text-xs text-slate-500 mt-2 font-medium">Official GUSSR Identification has been generated.
+                    Allocate the student's physical placements below to complete the intake process.</p>
+            </div>
+
+            <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 shadow-inner">
+                <span class="block text-[9px] font-black uppercase tracking-widest text-gussGold mb-1">Generated
+                    Admission ID</span>
+                <span id="alloc-adm-no"
+                    class="text-2xl font-black text-white font-mono tracking-widest">GUSSR/2026/...</span>
+            </div>
+
+            <div class="text-left space-y-5">
+                <div class="flex flex-col gap-2 border border-slate-200 p-4 rounded-2xl bg-slate-50"
+                    id="alloc-class-container">
+                    <label class="font-black text-[10px] text-slate-600 uppercase tracking-widest">Target Class Arm
+                        Assignment</label>
+                    <select id="alloc-class"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-gussGreen"></select>
+                    <p id="alloc-sss-note" class="hidden text-[9px] font-bold text-amber-600 mt-1"><i
+                            class="fa-solid fa-triangle-exclamation"></i> SSS Applicants cannot be assigned a class
+                        until after Qualifying Exams.</p>
+                </div>
+                <div class="flex flex-col gap-2 border border-slate-200 p-4 rounded-2xl bg-slate-50">
+                    <div class="flex justify-between items-center"><label
+                            class="font-black text-[10px] text-slate-600 uppercase tracking-widest">Hostel
+                            Allocation</label><span
+                            class="text-[9px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded font-black"><i
+                                class="fa-solid fa-users text-emerald-500"></i> LIVE HEADCOUNTS</span></div>
+                    <select id="alloc-hostel"
+                        class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 font-bold text-slate-700 focus:outline-none focus:border-gussGreen">
+                        <option value="">Select Accommodation Block...</option>
+                        <!--  Dynamic hostels will be injected here directly from the PostgreSQL Database -->
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="finalizeAdmission()"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-md transition-colors">Finalize
+                & Pool Admission <i class="fa-solid fa-paper-plane ml-1"></i></button>
+            <button onclick="closeAllocationModal()"
+                class="text-[10px] font-bold text-slate-400 hover:text-slate-600 uppercase tracking-widest mt-2">Cancel
+                & Return</button>
+        </div>
+    </div>
+
+    <!-- Viewer Lightbox -->
+    <div id="viewerModal"
+        class="hidden fixed inset-0 z-[100] bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-4 opacity-0 transition-opacity no-print">
+        <div
+            class="absolute top-6 left-6 text-gussGold font-black uppercase tracking-widest text-xs flex items-center gap-2">
+            <i class="fa-solid fa-magnifying-glass"></i> Document Inspection
+        </div>
+        <button onclick="closeViewer()" class="absolute top-6 right-6 text-slate-300 hover:text-white text-3xl"><i
+                class="fa-solid fa-xmark"></i></button>
+        <img id="viewerImage" src=""
+            class="max-w-full max-h-[85vh] object-contain rounded-lg border border-slate-700 shadow-2xl">
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- BATCH ADMISSION LETTER SPOOLER & PDF PREVIEW MODAL        -->
+    <!-- ========================================================= -->
+    <div id="batchPreviewModal"
+        class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-sm z-[150] items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in">
+
+            <div
+                class="bg-gussNavy p-5 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-lg uppercase tracking-wide flex items-center gap-3">
+                        <i class="fa-solid fa-layer-group text-blue-400"></i> Admission Letter Spooler
+                    </h3>
+                    <p class="text-[10px] text-slate-400 font-bold tracking-widest mt-1 uppercase"
+                        id="batchPreviewSubtitle">
+                        Compiling Jasper Engine...
+                    </p>
+                </div>
+                <button onclick="closeBatchPreview()" class="text-slate-400 hover:text-white transition-colors text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex-1 bg-slate-200 relative flex items-center justify-center">
+                <div id="batchLoadingState"
+                    class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10">
+                    <i class="fa-solid fa-gear fa-spin text-5xl text-blue-500 mb-4"></i>
+                    <h4 class="font-black text-gussNavy uppercase tracking-widest text-sm">Compiling Official Letters
+                    </h4>
+                    <p class="text-xs text-slate-500 mt-2 font-bold">Please wait while Jasper Engine processes the
+                        batch...</p>
+                </div>
+                <iframe id="pdfPreviewFrame" class="w-full h-full border-0 hidden z-20"></iframe>
+            </div>
+
+            <div class="p-4 border-t border-slate-200 bg-white flex justify-between items-center shrink-0">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest">
+                    <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> Document Compiled
+                </span>
+                <button onclick="document.getElementById('pdfPreviewFrame').contentWindow.print()" id="btnConfirmBatch"
+                    class="bg-gussNavy hover:bg-slate-800 text-white font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-md transition-colors flex items-center gap-2 hidden">
+                    <i class="fa-solid fa-print text-gussGold"></i> Print A4 Letters
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/admission_officer_app.js"></script>
+
+</body>
+
+</html>

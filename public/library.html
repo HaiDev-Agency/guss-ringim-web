@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Library | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="The Main Library and Guidance & Counseling Office at Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header
+        class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-purple-600">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1541963463532-d68292c34b19?auto=format&fit=crop&q=80&w=1920"
+                alt="Library" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-purple-900/40 border border-purple-500/50 text-purple-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                The Intellectual Hub
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                The Main <span class="text-purple-500">Library</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">A sanctuary for research,
+                cataloging our vast academic archives and offering structured borrowing privileges for all scholars.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Chief Librarian Sidebar -->
+                <div class="lg:col-span-4 space-y-8 sticky top-28">
+                    <div
+                        class="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 shadow-sm text-center relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 bg-purple-600 text-white text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl shadow-md">
+                            Active</div>
+                        <div id="fac-main_library-img"
+                            class="w-40 h-40 mx-auto rounded-full border-4 border-purple-500 mb-6 overflow-hidden image-placeholder text-[10px] bg-slate-800 text-slate-500 shadow-inner">
+                            [ LIBRARIAN IMG ]
+                        </div>
+                        <h2 id="fac-main_library-name" class="text-xl font-black text-gussNavy uppercase tracking-wide">
+                            Awaiting Assignment</h2>
+                        <span id="fac-main_library-role"
+                            class="text-[10px] text-purple-600 font-bold uppercase tracking-widest block my-2">Chief
+                            Librarian</span>
+                        <div class="w-12 h-1 bg-purple-500 mx-auto my-4 rounded-full"></div>
+                        <p class="text-sm text-slate-500 leading-relaxed font-medium">Curating academic resources,
+                            verifying borrow cards, and directly managing the student Library Prefects.</p>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="lg:col-span-8 space-y-12">
+                    <div>
+                        <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The Academic Archive</h3>
+                        <div class="w-16 h-1.5 bg-purple-600 mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                            The Main Library is a massive, meticulously organized facility designed for absolute
+                            academic focus. It holds thousands of volumes ranging from foundational JSS literature to
+                            advanced SSS Science, Arts, and Commercial textbooks. It provides the silent atmosphere
+                            necessary for students preparing for crucial WAEC and NECO examinations.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-8">
+                        <div class="rounded-3xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&q=80&w=600"
+                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                                alt="Library Aisles">
+                            <div class="bg-white p-6 relative z-10">
+                                <h4 class="font-black text-slate-800 uppercase mb-2">Extensive Catalogs</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">Aisles separated strictly by
+                                    departmental routing to ensure students can rapidly find relevant academic material.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="rounded-3xl overflow-hidden shadow-md group">
+                            <img src="https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&q=80&w=600"
+                                class="w-full h-48 object-cover group-hover:scale-105 transition-transform"
+                                alt="Students Reading">
+                            <div class="bg-white p-6 relative z-10">
+                                <h4 class="font-black text-slate-800 uppercase mb-2">Silent Study Zones</h4>
+                                <p class="text-xs text-slate-500 leading-relaxed">Spacious reading tables where absolute
+                                    silence is enforced by the Library Prefects to maximize concentration.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- The Borrowing System -->
+                    <div
+                        class="bg-purple-50 border border-purple-200 rounded-[2rem] p-8 shadow-sm flex flex-col md:flex-row items-center gap-8">
+                        <div
+                            class="w-24 h-24 bg-white text-purple-600 rounded-full flex items-center justify-center text-4xl shrink-0 shadow-md">
+                            <i class="fa-solid fa-id-card-clip"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-black text-purple-900 uppercase tracking-wide mb-3">Borrowing &
+                                Lending Privileges</h3>
+                            <p class="text-sm text-purple-800 leading-relaxed text-justify">
+                                Students are actively encouraged to borrow textbooks and literature for evening study in
+                                the Area Hostels. The borrowing system is highly organized—students must present their
+                                official school ID to the Chief Librarian. A physical borrow card is issued and stamped,
+                                mandating a strict return date to ensure book availability for all scholars.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

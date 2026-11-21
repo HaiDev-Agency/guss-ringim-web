@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="module" src="assets/js/security_guard.js"></script>
+    <title>Employee Command Center | G.U.S.S. Ringim</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Enterprise Security DOMPurify Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gussGreen: '#005A36',
+                        gussGold: '#D4AF37',
+                        gussNavy: '#0F172A',
+                        gussDark: '#0B1120'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body
+    class="bg-slate-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col relative selection:bg-gussGold selection:text-gussNavy">
+
+    <!-- Top Security & Environment Header -->
+    <div
+        class="bg-slate-950/80 backdrop-blur-md text-xs py-2.5 px-6 flex flex-col sm:flex-row justify-between items-center gap-3 border-b border-slate-800 shadow-xl sticky top-0 z-[60]">
+        <div class="flex items-center gap-4 flex-wrap">
+            <span class="text-slate-400 font-mono tracking-wider flex items-center gap-2">
+                <span class="relative flex h-2 w-2">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                EMPLOYEE COMMAND NODE
+            </span>
+            <span class="text-slate-700 hidden md:inline">|</span>
+            <span id="staffTrackPill"
+                class="bg-blue-500/10 border border-blue-500/30 text-blue-400 px-3 py-0.5 rounded-full font-black text-[10px] tracking-widest uppercase inline-flex items-center gap-1.5 shadow-inner">
+                <i class="fa-solid fa-id-card-clip"></i> <span id="staffTrackText">Loading Track...</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="window.location.href='staff_login.html'"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3.5 py-1 rounded-lg transition-all flex items-center gap-2 text-xs font-black tracking-widest uppercase shadow-sm active:scale-95">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Workspace Container -->
+    <main class="max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 flex-1 flex flex-col gap-8">
+
+        <!-- Welcome Banner Card -->
+        <div
+            class="relative overflow-hidden bg-gradient-to-r from-gussNavy via-slate-900 to-slate-950 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl">
+            <div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none">
+                <img src="assets/images/logo_img.png" alt="GUSS Crest" class="w-96 h-96 object-contain">
+            </div>
+
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="relative group">
+                        <img id="userAvatar"
+                            src="https://ui-avatars.com/api/?name=Staff+Member&background=005A36&color=fff"
+                            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover border-2 border-gussGold/50 shadow-2xl bg-slate-800 shrink-0">
+                        <span
+                            class="absolute -bottom-1 -right-1 bg-emerald-500 text-white text-[8px] font-black px-2 py-0.5 rounded-full border border-slate-900 uppercase tracking-widest shadow-md">Verified</span>
+                    </div>
+
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gussGold uppercase tracking-widest"
+                                id="greetingTime">Good Day,</span>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase leading-tight"
+                            id="userName">
+                            Loading Staff Profile...
+                        </h1>
+                        <div class="flex flex-wrap items-center gap-3 text-xs font-mono text-slate-400 pt-1">
+                            <span id="userIdDisplay"
+                                class="bg-slate-800/80 px-2.5 py-1 rounded-md border border-slate-700 font-bold text-emerald-400">---</span>
+                            <span>•</span>
+                            <span id="userEmailDisplay" class="text-slate-300 font-medium">---@gussringim.sch.ng</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Banner Header  -->
+                <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
+                    <button onclick="openLeaveModal()"
+                        class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-slate-950 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 active:scale-95">
+                        <i class="fa-solid fa-plane-departure text-slate-900"></i> Request Leave
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Capability-Based Dynamic Workspace Grid -->
+        <div class="space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h2 class="text-xs font-black uppercase tracking-widest text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-gussGold"></i> Active Workspaces & Capabilities
+                </h2>
+                <span class="text-[10px] font-mono text-slate-500" id="activeCapabilitiesCount">Evaluating
+                    permissions...</span>
+            </div>
+
+            <div id="capabilityGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Dynamically populated by staff_portal_app.js based on staff track & allocations -->
+                <div class="col-span-full text-center py-16 text-slate-500 font-mono text-xs">
+                    <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-gussGold block"></i>
+                    Initializing Capability Engine...
+                </div>
+            </div>
+        </div>
+
+        <!-- Institutional Announcements & Comms Board -->
+        <div class="bg-slate-950/60 border border-slate-800 rounded-3xl p-6 shadow-xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800/80 pb-3">
+                <h3 class="text-xs font-black uppercase tracking-widest text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-bullhorn text-blue-400"></i> Institutional Broadcasts & Circulars
+                </h3>
+                <span
+                    class="text-[9px] font-black uppercase tracking-widest text-emerald-400 bg-emerald-950/50 border border-emerald-800/50 px-2.5 py-1 rounded-md">Live
+                    Stream</span>
+            </div>
+            <div id="broadcastContainer" class="space-y-3">
+                <p class="text-xs text-slate-500 font-medium text-center py-4">No active broadcasts transmitted from
+                    Administration.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Digital ID Card Modal -->
+    <div id="digitalIdModal"
+        class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div
+            class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl p-6 text-center space-y-6 animate-fade-in relative">
+            <button onclick="closeDigitalIdModal()"
+                class="absolute top-4 right-4 text-slate-500 hover:text-white transition-colors">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <h3 class="text-xs font-black uppercase tracking-widest text-gussGold">Digital Staff Pass</h3>
+
+            <div
+                class="bg-white text-slate-900 rounded-2xl p-6 shadow-2xl border-2 border-gussGreen space-y-4 relative overflow-hidden text-left">
+                <div class="flex items-center gap-3 border-b border-slate-200 pb-3">
+                    <img src="assets/images/logo_img.png" class="w-8 h-8 object-contain">
+                    <div>
+                        <h4 class="text-[9px] font-black uppercase leading-tight text-gussGreen">Govt. Unity Sec. School
+                        </h4>
+                        <p class="text-[7px] font-bold text-slate-500 uppercase">Ringim, Jigawa State</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <img id="modalIdPhoto" src=""
+                        class="w-16 h-16 rounded-xl object-cover border border-slate-300 bg-slate-100 shrink-0">
+                    <div>
+                        <h5 id="modalIdName" class="text-xs font-black uppercase text-slate-900 leading-snug">---</h5>
+                        <p id="modalIdRole" class="text-[9px] font-black text-blue-700 uppercase tracking-wide">---</p>
+                        <p id="modalIdNumber" class="text-[9px] font-mono font-bold text-slate-500 mt-1">---</p>
+                    </div>
+                </div>
+                <div
+                    class="bg-slate-900 text-white text-center py-1.5 rounded-lg font-mono text-[8px] font-bold tracking-widest uppercase">
+                    Official Identity Verification
+                </div>
+            </div>
+
+            <button onclick="window.print()"
+                class="w-full bg-slate-800 hover:bg-slate-700 text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest border border-slate-700 transition-all">
+                <i class="fa-solid fa-print mr-2"></i> Print Official ID
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- LEAVE & WELFARE REQUEST MODAL (ENTERPRISE TWO-STAGE ENGINE) -->
+    <!-- ========================================================= -->
+    <div id="leaveModal"
+        class="fixed inset-0 bg-slate-950/85 backdrop-blur-md z-[110] hidden items-center justify-center p-4">
+        <div
+            class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-fade-in">
+            <div
+                class="bg-slate-950 p-5 flex justify-between items-center text-white border-b border-slate-800 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div
+                        class="w-9 h-9 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-center justify-center">
+                        <i class="fa-solid fa-plane-departure text-sm"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-sm uppercase tracking-wide text-slate-100">Leave Management Desk</h3>
+                        <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">DD Admin
+                            Authorization Pipeline</p>
+                    </div>
+                </div>
+                <button onclick="closeLeaveModal()" class="text-slate-400 hover:text-white transition-colors text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="flex border-b border-slate-800 bg-slate-950/40 px-6 pt-3 shrink-0 gap-6">
+                <button id="tabLeaveApply" onclick="switchLeaveTab('apply')"
+                    class="pb-3 text-xs font-black uppercase tracking-widest text-amber-500 border-b-2 border-amber-500 transition-colors">
+                    Apply for Leave
+                </button>
+                <button id="tabLeaveHistory" onclick="switchLeaveTab('history')"
+                    class="pb-3 text-xs font-black uppercase tracking-widest text-slate-500 border-b-2 border-transparent hover:text-slate-300 transition-colors">
+                    Application History
+                </button>
+            </div>
+
+            <!-- TAB 1: APPLICATION FORM -->
+            <div id="contentLeaveApply" class="p-6 overflow-y-auto space-y-4">
+                <form id="leaveApplicationForm" onsubmit="submitStaffLeave(event)" class="space-y-4">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Leave
+                            Category</label>
+                        <select id="leaveType" onchange="toggleCustomLeaveType(this.value)"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-xs font-bold text-slate-200 focus:outline-none focus:border-amber-500">
+                            <option value="Casual">Casual Leave (Short Duration)</option>
+                            <option value="Medical">Medical / Health Leave</option>
+                            <option value="Compassionate">Compassionate / Bereavement</option>
+                            <option value="Maternity">Maternity / Paternity Leave</option>
+                            <option value="Study">Academic / Study Leave</option>
+                            <option value="Other">Other Category (Specify)</option>
+                        </select>
+                    </div>
+
+                    <div id="customLeaveTypeContainer" class="hidden flex-col gap-1.5">
+                        <label class="font-black text-[10px] text-amber-400 uppercase tracking-widest">Specify Custom
+                            Leave</label>
+                        <input type="text" id="customLeaveType"
+                            class="w-full bg-slate-800 border border-amber-500/50 rounded-xl px-4 py-3 text-xs font-bold text-white focus:outline-none"
+                            placeholder="e.g. Traditional Title Conferment">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Commencement
+                                Date</label>
+                            <input type="date" id="leaveStart" required
+                                class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-xs font-bold text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Expected
+                                Return</label>
+                            <input type="date" id="leaveEnd" required
+                                class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-xs font-bold text-slate-200 focus:outline-none focus:border-amber-500">
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-1.5">
+                        <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Handover Notes /
+                            Reason</label>
+                        <textarea id="leaveNotes" rows="3" required
+                            placeholder="Detail the duties or lesson covers arranged for your absence..."
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl p-4 text-xs font-medium text-slate-200 focus:outline-none focus:border-amber-500 resize-none"></textarea>
+                    </div>
+
+                    <button type="submit"
+                        class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-all shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2 mt-2">
+                        <i class="fa-solid fa-paper-plane text-slate-950"></i> Transmit to DD Administration
+                    </button>
+                </form>
+            </div>
+
+            <!-- TAB 2: APPLICATION HISTORY -->
+            <div id="contentLeaveHistory" class="p-6 overflow-y-auto space-y-3 hidden flex-1">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-slate-950/60 text-[9px] uppercase tracking-widest text-slate-400 font-black border-b border-slate-800">
+                                <th class="py-2.5 px-3">Type & Reason</th>
+                                <th class="py-2.5 px-3">Dates</th>
+                                <th class="py-2.5 px-3 text-center">Status</th>
+                                <th class="py-2.5 px-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myLeaveHistoryBody" class="divide-y divide-slate-800/60 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/staff_portal_app.js"></script>
+
+    <!-- FIRST LOGIN MANDATORY SECURITY MODAL -->
+    <div id="staffFirstLoginModal"
+        class="fixed inset-0 bg-slate-950/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-[2rem] w-full max-w-md shadow-2xl p-8 text-center transform scale-95 transition-all opacity-0"
+            id="staffFirstLoginContent">
+            <div
+                class="w-16 h-16 bg-amber-500/10 text-amber-500 border border-amber-500/20 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5 shadow-inner">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2 class="text-xl font-black text-white uppercase tracking-tight mb-2">Secure Your Account</h2>
+            <p class="text-xs text-slate-400 mb-6 leading-relaxed">You are currently using a temporary access key.
+                Institutional policy requires setting a private, permanent password before continuing.</p>
+
+            <form id="staffFirstPasswordForm" class="space-y-4">
+                <input type="password" id="act-current-pass" required placeholder="Current Temporary Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="setupNewStaffPass" required placeholder="Enter Permanent Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="confirmNewStaffPass" required placeholder="Confirm Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+
+                <button type="submit" id="btnSaveNewPass"
+                    class="w-full bg-amber-500 text-slate-950 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20">
+                    Activate Account <i class="fa-solid fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

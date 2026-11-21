@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visiting & Outings | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-slate-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1506784365847-bbad939e9335?auto=format&fit=crop&q=80&w=1920"
+                alt="Gates" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-slate-800 border border-slate-500/50 text-slate-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Time
+                & Order</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Visiting & <span class="text-slate-400">Outings</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The official schedules for town
+                excursions, parent visits, and the strict administrative timelines of the campus.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-16 items-start">
+
+            <!-- Left: Outings & The 5 PM Curfew -->
+            <div class="lg:col-span-7 space-y-12">
+                <div>
+                    <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Friday Outing Protocol</h2>
+                    <div class="w-16 h-1.5 bg-slate-400 mt-4 rounded-full"></div>
+                    <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                        Fridays serve as the official outing day for the general student body. Classes conclude at a
+                        standard early time, allowing students to access Ringim town to purchase provisions, attend
+                        Juma'at prayers, and meet with visiting parents at the designated pavilions.
+                    </p>
+                </div>
+
+                <div class="bg-red-50 border border-red-200 p-8 rounded-[2rem] shadow-md relative overflow-hidden">
+                    <i class="fa-regular fa-clock absolute -right-6 -bottom-6 text-9xl text-red-500/10"></i>
+                    <h3 class="text-xl font-black text-red-900 uppercase tracking-wide mb-4 relative z-10"><i
+                            class="fa-solid fa-lock text-red-600 mr-2"></i> The Strict 5:00 PM Curfew</h3>
+                    <p class="text-sm text-red-800 leading-relaxed text-justify relative z-10 mb-4">
+                        Time management is an absolute mandate at G.U.S.S. Ringim. On outing days, <strong>every student
+                            must return to the campus strictly before 5:00 PM.</strong>
+                    </p>
+                    <p class="text-sm text-red-800 leading-relaxed text-justify relative z-10">
+                        When the clock strikes 5:00 PM, all auxiliary perimeter gates are heavily chained and locked.
+                        Only the Main Entry Gate remains active, supervised by the official Gatekeepers and Quarter
+                        Prefects. Any student caught arriving after 5:00 PM faces immediate disciplinary punishment for
+                        insubordination.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: The Monday Assembly Mandate -->
+            <div class="lg:col-span-5">
+                <div class="bg-gussNavy text-white rounded-[2rem] p-8 shadow-2xl sticky top-28 border border-slate-700">
+                    <h3 class="text-xl font-black uppercase mb-4 flex items-center gap-3 text-gussGold"><i
+                            class="fa-solid fa-bullhorn"></i> The Monday Assembly</h3>
+                    <p class="text-sm text-slate-300 mb-6 leading-relaxed text-justify">
+                        Information flow is highly centralized. The Assembly is <strong>strictly a once-a-week event
+                            held only on Mondays.</strong>
+                    </p>
+                    <p class="text-sm text-slate-300 mb-8 leading-relaxed text-justify">
+                        Whatever events or administrative decisions occur during the week, they must wait until the
+                        following Monday to be delivered to the general student body by the Director or the Press Club.
+                    </p>
+
+                    <div class="bg-slate-800 border border-slate-600 p-5 rounded-xl">
+                        <h4
+                            class="font-black text-slate-200 text-[10px] uppercase tracking-widest mb-3 border-b border-slate-700 pb-2">
+                            The Only Exceptions</h4>
+                        <ul class="space-y-3 text-xs font-medium text-slate-400">
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-gussGold mt-1"></i> The
+                                announcement of Acting Prefects during WAEC.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-gussGold mt-1"></i> The
+                                official swearing-in of the new Real Prefecture.</li>
+                            <li class="flex items-start gap-2"><i class="fa-solid fa-check text-gussGold mt-1"></i>
+                                Emergency holiday briefings (e.g., duration of break, resumption items).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

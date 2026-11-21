@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+    <title>House Master Console | G.U.S.S. Ringim</title>
+    <meta name="description" content="Hostel & Boarding Administration Terminal for Government Unity Secondary School.">
+    <meta name="author" content="HaiDev Agency">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner relative z-[60] no-print">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-building-user text-gussGold mr-1"></i>
+                BOARDING ADMIN NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-bed text-amber-400"></i> Role: House Master
+            </span>
+            <span class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeWardenNameDisplay">Loading...</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!-- App Switcher -->
+            <div id="multiRoleSwitcher" class="hidden relative">
+                <button onclick="toggleAppSwitcher()"
+                    class="bg-purple-900/50 hover:bg-purple-800 border border-purple-500/50 text-purple-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm text-[10px] uppercase">
+                    <i class="fa-solid fa-layer-group"></i> Switch Role <i
+                        class="fa-solid fa-chevron-down text-[8px]"></i>
+                </button>
+                <div id="appSwitcherDropdown"
+                    class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-[70] flex flex-col gap-1">
+                </div>
+            </div>
+
+            <!-- Notification Bell -->
+            <div class="relative cursor-pointer ml-2" onclick="openNotificationsModal()">
+                <i class="fa-solid fa-bell text-slate-400 hover:text-white transition-colors text-base"></i>
+                <span id="notifBadge" class="hidden absolute -top-1 -right-1 flex h-3 w-3">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span
+                        class="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[8px] items-center justify-center text-white font-black">!</span>
+                </span>
+            </div>
+
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-white"></span></span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">House Master
+                        Console</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Hostel Control & Gate Pass
+                        Logistics</p>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6 no-print">
+
+        <!-- Controls -->
+        <div
+            class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm flex flex-col md:flex-row gap-6 items-center justify-between">
+            <div class="flex items-center gap-4 w-full md:w-auto">
+                <div
+                    class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-building-user"></i>
+                </div>
+                <div class="w-full md:w-64">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Active
+                        Controlled Hostel</label>
+                    <div id="hostelNameDisplay"
+                        class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm font-black text-gussNavy uppercase tracking-wide truncate">
+                        Loading Allocation...
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex bg-slate-100 p-1 rounded-xl w-full md:w-auto overflow-x-auto no-scrollbar">
+                <button onclick="switchWardenTab('roster')" id="wTabBtnRoster"
+                    class="flex-1 md:flex-none px-6 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-white shadow-sm text-gussNavy border border-slate-200 whitespace-nowrap"><i
+                        class="fa-solid fa-users mr-1"></i> Boarding Roster</button>
+                <button onclick="switchWardenTab('exeat')" id="wTabBtnExeat"
+                    class="flex-1 md:flex-none px-6 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-slate-500 hover:text-gussNavy whitespace-nowrap"><i
+                        class="fa-solid fa-person-walking-arrow-right mr-1"></i> Gate Passes</button>
+                <button onclick="switchWardenTab('discipline')" id="wTabBtnDiscipline"
+                    class="flex-1 md:flex-none px-6 py-2.5 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-slate-500 hover:text-gussNavy whitespace-nowrap"><i
+                        class="fa-solid fa-gavel mr-1"></i> Disciplinary</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-xl"><i
+                        class="fa-solid fa-bed"></i></div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Total Boarders</p>
+                    <h3 id="statTotalBoarders" class="text-2xl font-black text-gussNavy font-mono">0</h3>
+                </div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Active Exeats</p>
+                    <h3 id="statActiveExeats" class="text-2xl font-black text-amber-600 font-mono">0</h3>
+                </div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-4">
+                <div class="w-12 h-12 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-xl"><i
+                        class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Hostel Infractions
+                    </p>
+                    <h3 id="statInfractions" class="text-2xl font-black text-red-600 font-mono">0</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: BOARDING ROSTER -->
+        <div id="wTabContentRoster"
+            class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex-1 animate-fade-in block">
+            <div
+                class="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/50">
+                <div>
+                    <h3 class="text-lg font-black text-gussNavy uppercase tracking-wide">Live Hostel Roster</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-1">All officially admitted students assigned to your
+                        block.</p>
+                </div>
+                <div class="relative w-full sm:w-64">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                    <input type="text" id="rosterSearchInput" onkeyup="filterWardenRoster()"
+                        placeholder="Search resident..."
+                        class="w-full bg-white border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-amber-200">
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse whitespace-nowrap">
+                    <thead>
+                        <tr
+                            class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-500 font-black border-b border-slate-200">
+                            <th class="py-3 px-4">Resident Identity</th>
+                            <th class="py-3 px-4">Academic Class</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                            <th class="py-3 px-4 text-right">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wardenRosterBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB: EXEAT PASSES -->
+        <div id="wTabContentExeat" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h3
+                    class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2">
+                    <i class="fa-solid fa-person-walking-arrow-right text-amber-500 mr-2"></i> Issue Official Exeat
+                    (Gate Pass)
+                </h3>
+                <div class="grid md:grid-cols-4 gap-4 items-end">
+                    <div class="md:col-span-1">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Select
+                            Resident</label>
+                        <select id="exeatStudentSelect"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-amber-500"></select>
+                    </div>
+                    <div class="md:col-span-1">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Exeat
+                            Category</label>
+                        <select id="exeatType"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-amber-500">
+                            <option value="Medical">Medical Treatment</option>
+                            <option value="Domestic">Domestic / Family Issue</option>
+                            <option value="Official">Official School Duty</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-1">
+                        <label
+                            class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Expected
+                            Return</label>
+                        <input type="date" id="exeatReturnDate"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:border-amber-500">
+                    </div>
+                    <div class="md:col-span-1">
+                        <button onclick="issueExeatPass()"
+                            class="w-full bg-amber-500 hover:bg-amber-600 text-white font-black py-2 rounded-xl text-xs uppercase tracking-widest shadow-md transition-all"><i
+                                class="fa-solid fa-stamp mr-1"></i> Issue Pass</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex-1">
+                <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-sm font-black text-gussNavy uppercase tracking-wide">Active Gate Passes Registry
+                    </h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-500 font-black border-b border-slate-200">
+                                <th class="py-3 px-4">Resident Identity</th>
+                                <th class="py-3 px-4">Pass Category</th>
+                                <th class="py-3 px-4">Expected Return</th>
+                                <th class="py-3 px-4 text-center">Status</th>
+                                <th class="py-3 px-4 text-right">Gate Control</th>
+                            </tr>
+                        </thead>
+                        <tbody id="exeatRegistryBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: DISCIPLINARY -->
+        <div id="wTabContentDiscipline" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div class="bg-red-50 border border-red-200 rounded-3xl p-6 shadow-sm">
+                <h3 class="text-sm font-black text-red-900 uppercase tracking-wide mb-4 border-b border-red-100 pb-2"><i
+                        class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i> Log Boarding Infraction</h3>
+                <p class="text-[10px] text-red-600 font-bold mb-4 uppercase tracking-widest">Flags submitted here will
+                    instantly reflect on the Central Deputy Director (Admin) Disciplinary Matrix.</p>
+
+                <div class="grid md:grid-cols-2 gap-4 items-start">
+                    <div class="space-y-4">
+                        <div>
+                            <label
+                                class="block text-[10px] font-black text-red-800 uppercase tracking-widest mb-1">Select
+                                Offender</label>
+                            <select id="discStudentSelect"
+                                class="w-full bg-white border border-red-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-red-200"></select>
+                        </div>
+                        <div>
+                            <label
+                                class="block text-[10px] font-black text-red-800 uppercase tracking-widest mb-1">Infraction
+                                Severity</label>
+                            <select id="discSeverity"
+                                class="w-full bg-white border border-red-300 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-red-200">
+                                <option value="Warning">Warning (Level 1)</option>
+                                <option value="Probation">Probation (Level 2 - Escalate to DD)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="space-y-4 flex flex-col h-full">
+                        <div class="flex-1">
+                            <label
+                                class="block text-[10px] font-black text-red-800 uppercase tracking-widest mb-1">Incident
+                                Report & Recommended Penalty</label>
+                            <textarea id="discReport" rows="4"
+                                placeholder="Detail the hostel infraction (e.g., sneaking out after lights out, fighting, contraband)..."
+                                class="w-full bg-white border border-red-300 rounded-xl px-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-red-200 resize-none"></textarea>
+                        </div>
+                        <button onclick="submitDisciplinaryFlag()"
+                            class="w-full bg-red-600 hover:bg-red-700 text-white font-black py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-md transition-all"><i
+                                class="fa-solid fa-flag mr-1"></i> Transmit Flag to Central Admin</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex-1">
+                <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                    <h3 class="text-sm font-black text-gussNavy uppercase tracking-wide">Hostel Disciplinary Log</h3>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-500 font-black border-b border-slate-200">
+                                <th class="py-3 px-4">Resident Identity</th>
+                                <th class="py-3 px-4">Severity</th>
+                                <th class="py-3 px-4">Report Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hostelDisciplineBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- COMPREHENSIVE DOSSIER MODAL -->
+    <div id="dossierModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] scale-95 transition-transform duration-300"
+            id="dossierContent">
+            <div
+                class="bg-gussNavy p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-address-card text-gussGold"></i> Resident Master Dossier</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Complete Student
+                        Identity Record</p>
+                </div>
+                <button onclick="closeDossierModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1 bg-slate-50" id="dossierBody"></div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/house_master_app.js"></script>
+
+    <!-- FIRST LOGIN MANDATORY SECURITY MODAL -->
+    <div id="staffFirstLoginModal"
+        class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-10 text-center transform scale-95 transition-transform opacity-0"
+            id="staffFirstLoginContent">
+            <div
+                class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gussNavy uppercase tracking-tight mb-2">Secure Your Account</h2>
+            <p class="text-sm text-slate-600 mb-8 leading-relaxed">You are currently using a system-generated access
+                key. By institutional policy, you must create a permanent, private password before accessing your
+                dashboard.</p>
+
+            <form id="staffFirstPasswordForm" class="space-y-4">
+                <input type="password" id="act-current-pass" required placeholder="Current Temporary Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="setupNewStaffPass" required placeholder="Enter Permanent Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+                <input type="password" id="confirmNewStaffPass" required placeholder="Confirm Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+
+                <button type="submit" id="btnSaveNewPass"
+                    class="w-full bg-gussGold text-gussNavy py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-500/30">
+                    Activate My Account <i class="fa-solid fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

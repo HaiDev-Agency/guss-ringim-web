@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports & Athletics | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-blue-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1526676037777-05a232554f77?auto=format&fit=crop&q=80&w=1920"
+                alt="Sports" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-blue-900/40 border border-blue-500/50 text-blue-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Physical
+                Excellence</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Sports & <span class="text-blue-500">Athletics</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Where scholars and faculty
+                unite on the field, fostering extreme camaraderie and competitive spirit.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="bg-blue-50 border border-blue-200 rounded-[2rem] p-8 mb-16 shadow-sm flex items-start gap-6">
+                <div
+                    class="w-16 h-16 bg-white text-blue-600 rounded-full flex items-center justify-center text-3xl shrink-0 shadow-md">
+                    <i class="fa-solid fa-handshake-angle"></i>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black text-blue-900 uppercase tracking-wide mb-2">The Open Participation
+                        Policy</h3>
+                    <p class="text-sm text-blue-800 leading-relaxed text-justify">At G.U.S.S. Ringim, the athletic
+                        grounds erase the boundaries between staff and scholars. <strong>Every teacher is actively
+                            encouraged to participate in all sports without any restrictions.</strong> Whether it is a
+                        rigorous football match or an evening basketball game, faculty members routinely join the
+                        students, building powerful mentorship bonds and an unmatched sense of campus camaraderie.</p>
+                </div>
+            </div>
+
+            <!-- Sports Grid -->
+            <div class="grid lg:grid-cols-3 gap-8">
+                <!-- Football -->
+                <div class="bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-lg group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1518605368461-1e1e114e5122?auto=format&fit=crop&q=80&w=800"
+                            alt="Football"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div
+                            class="absolute bottom-4 right-4 bg-blue-600 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-md">
+                            <i class="fa-solid fa-futbol"></i>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3">Main Football Pitch
+                        </h4>
+                        <p class="text-sm text-slate-600 leading-relaxed text-justify">The epicenter of the legendary
+                            Inter-House and Inter-State tournaments. Students train vigorously here, often challenged by
+                            highly skilled faculty teams in thrilling friendly matches.</p>
+                    </div>
+                </div>
+
+                <!-- Basketball -->
+                <div class="bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-lg group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&q=80&w=800"
+                            alt="Basketball"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div
+                            class="absolute bottom-4 right-4 bg-orange-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-md">
+                            <i class="fa-solid fa-basketball"></i>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3">Basketball Grids</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed text-justify">Fully paved, high-energy courts
+                            that come alive every evening. These courts are heavily favored by active NYSC staff members
+                            who regularly draft students into intense, skill-building pick-up games.</p>
+                    </div>
+                </div>
+
+                <!-- Volleyball -->
+                <div class="bg-white border border-slate-200 rounded-[2rem] overflow-hidden shadow-lg group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?auto=format&fit=crop&q=80&w=800"
+                            alt="Volleyball"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div
+                            class="absolute bottom-4 right-4 bg-emerald-500 text-white w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-md">
+                            <i class="fa-solid fa-volleyball"></i>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-xl font-black text-gussNavy uppercase tracking-wide mb-3">Volleyball Courts</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed text-justify">Strategically positioned to
+                            support rapid, agile gameplay. The volleyball courts are overseen by the Games Prefects and
+                            serve as a massive unifier during intra-school sporting weeks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

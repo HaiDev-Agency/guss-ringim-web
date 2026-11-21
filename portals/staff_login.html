@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Staff Gateway | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Secure administrative authentication portal for Government Unity Secondary School, Ringim.">
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A', gussDark: '#0B1120' },
+                    animation: { 'blob': 'blob 10s infinite', 'fade-in-up': 'fadeInUp 0.8s ease-out forwards' },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' }
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .input-glass:focus {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #D4AF37;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.1);
+        }
+
+        .input-glass::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body
+    class="bg-gussDark font-sans antialiased min-h-screen relative overflow-hidden flex items-center justify-center selection:bg-gussGold selection:text-gussNavy">
+
+    <!-- Animated Ambient Background -->
+    <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-96 h-96 bg-gussGreen rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob">
+        </div>
+        <div
+            class="absolute top-[20%] right-[-5%] w-80 h-80 bg-gussGold rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-blob animation-delay-2000">
+        </div>
+        <div
+            class="absolute bottom-[-20%] left-[20%] w-[500px] h-[500px] bg-blue-900 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-blob animation-delay-4000">
+        </div>
+        <div
+            class="absolute inset-0 bg-[url('assets/images/logo_img.png')] bg-center bg-no-repeat bg-contain opacity-[0.02] mix-blend-overlay">
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="relative z-10 w-full max-w-[420px] p-6 animate-fade-in-up">
+        <div class="glass-panel rounded-[2.5rem] p-8 sm:p-10 relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gussGreen via-gussGold to-gussGreen">
+            </div>
+
+            <div class="text-center mb-8 relative">
+                <div
+                    class="w-20 h-20 mx-auto mb-5 bg-white/5 rounded-2xl p-3 border border-white/10 shadow-inner flex items-center justify-center backdrop-blur-sm">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S Logo"
+                        class="w-full h-full object-contain filter drop-shadow-md">
+                </div>
+                <h1 class="text-2xl font-black text-white uppercase tracking-widest leading-tight">Executive<br><span
+                        class="text-gussGold">Gateway</span></h1>
+                <p
+                    class="text-[10px] text-slate-400 font-black tracking-[0.2em] uppercase mt-3 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-lock text-gussGreen"></i> Authorized Only
+                </p>
+            </div>
+
+            <form id="staffGatewayForm" class="space-y-5">
+                <div class="space-y-2 relative">
+                    <label class="text-[9px] font-black text-slate-400 uppercase tracking-widest pl-1">Institutional
+                        ID</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-id-badge text-slate-500"></i>
+                        </div>
+                        <input type="text" id="staffIdInput" placeholder="GUSS/.../..."
+                            class="input-glass w-full rounded-xl py-3.5 pl-11 pr-4 font-mono font-bold tracking-wider text-sm outline-none uppercase"
+                            required>
+                    </div>
+                </div>
+
+                <div class="space-y-2 relative">
+                    <label
+                        class="text-[9px] font-black text-slate-400 uppercase tracking-widest pl-1 flex justify-between">
+                        <span>Access Key</span>
+                        <a href="#" onclick="openEmergencyModal()"
+                            class="text-red-400 font-bold hover:text-red-300 transition-colors tracking-widest"><i
+                                class="fa-solid fa-triangle-exclamation mr-1 animate-pulse"></i> Override</a>
+                    </label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-key text-slate-500"></i>
+                        </div>
+                        <input type="password" id="staffPasswordInput" placeholder="••••••••••••"
+                            class="input-glass w-full rounded-xl py-3.5 pl-11 pr-12 font-medium text-sm outline-none"
+                            required>
+                        <button type="button" onclick="togglePasswordVisibility()"
+                            class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-white transition-colors">
+                            <i class="fa-solid fa-eye" id="togglePassIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="staffLoginBtn"
+                    class="w-full bg-gussGold hover:bg-yellow-500 text-gussNavy font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] transition-all mt-4 flex justify-center items-center gap-2 group">
+                    <span>Initialize Session</span>
+                    <i class="fa-solid fa-arrow-right-to-bracket group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </form>
+
+            <div class="mt-8 text-center border-t border-white/10 pt-6">
+                <p class="text-[9px] text-slate-500 font-medium uppercase tracking-wider leading-relaxed">
+                    Secured by HaiDev Agency Infrastructure<br>
+                    <span class="text-slate-600">v2.0 • System Genesis Node</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EMERGENCY OVERRIDE MODAL -->
+    <div id="emergencyModal"
+        class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-md transition-opacity duration-300 opacity-0">
+        <div class="relative w-full max-w-lg p-6 transform scale-95 transition-transform duration-300"
+            id="emergencyModalContent">
+            <div
+                class="glass-panel border-red-500/30 rounded-[2rem] p-8 relative overflow-hidden bg-red-950/20 shadow-[0_0_50px_rgba(220,38,38,0.15)]">
+                <div
+                    class="absolute top-[-20%] right-[-20%] w-64 h-64 bg-red-600 rounded-full mix-blend-screen filter blur-[100px] opacity-20">
+                </div>
+
+                <div class="flex justify-between items-start mb-6 border-b border-red-500/20 pb-4">
+                    <div>
+                        <h2 class="text-xl font-black text-red-400 uppercase tracking-widest flex items-center gap-2"><i
+                                class="fa-solid fa-shield-cat"></i> Emergency Override</h2>
+                        <p class="text-[9px] text-slate-400 font-bold tracking-widest uppercase mt-1">Level 5
+                            Authorization Required</p>
+                    </div>
+                </div>
+
+                <div id="recoverySuccessState" class="hidden text-center py-6">
+                    <i
+                        class="fa-solid fa-unlock-keyhole text-5xl text-emerald-500 mb-4 drop-shadow-[0_0_15px_rgba(16,185,129,0.5)]"></i>
+                    <h3 class="text-lg font-black text-white uppercase tracking-widest mb-2">Vault Breached</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-6">Identity verified. Your old Master Vault Key
+                        has been burned. Use the temporary key below to initialize a new session.</p>
+                    <div class="bg-black/50 border border-emerald-500/30 p-4 rounded-xl">
+                        <p class="text-[9px] text-emerald-400 font-black uppercase tracking-widest mb-1">New Access Key
+                        </p>
+                        <p id="newTempKeyDisplay" class="text-xl font-mono font-bold text-white tracking-widest"></p>
+                    </div>
+                    <button onclick="window.location.reload()"
+                        class="w-full bg-slate-800 hover:bg-black text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest border border-slate-700 transition-all mt-6">Return
+                        to Gateway</button>
+                </div>
+
+                <form id="emergencyRecoveryForm" class="space-y-4 relative z-10">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="space-y-1.5 col-span-2">
+                            <label
+                                class="text-[9px] font-black text-red-300/80 uppercase tracking-widest pl-1">Institutional
+                                ID</label>
+                            <input type="text" id="recStaffId" placeholder="GUSS/STF/..."
+                                class="input-glass w-full rounded-lg py-2.5 px-4 font-mono font-bold text-xs outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 bg-black/40 uppercase"
+                                required>
+                        </div>
+                        <div class="space-y-1.5 col-span-2">
+                            <label class="text-[9px] font-black text-red-300/80 uppercase tracking-widest pl-1"><i
+                                    class="fa-solid fa-key mr-1"></i> Master Vault Key</label>
+                            <input type="password" id="recVaultKey" placeholder="••••-••••-••••-••••"
+                                class="input-glass w-full rounded-lg py-2.5 px-4 font-mono text-xs outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 bg-black/40"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-4 border-t border-red-500/20">
+                        <p class="text-[9px] text-slate-400 font-bold tracking-widest uppercase mb-4 text-center">
+                            Cognitive Verification Challenge</p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="space-y-1.5 col-span-2">
+                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest pl-1">Exact
+                                    Full Name</label>
+                                <input type="text" id="recFullName"
+                                    class="input-glass w-full rounded-lg py-2 px-3 text-xs outline-none bg-black/20"
+                                    required>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label
+                                    class="text-[8px] font-black text-slate-500 uppercase tracking-widest pl-1">Personal
+                                    Phone</label>
+                                <input type="text" id="recPhone"
+                                    class="input-glass w-full rounded-lg py-2 px-3 text-xs font-mono outline-none bg-black/20"
+                                    required>
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest pl-1">Blood
+                                    Group</label>
+                                <select id="recBlood"
+                                    class="input-glass w-full rounded-lg py-2 px-3 text-xs font-bold outline-none bg-black/20 appearance-none"
+                                    required>
+                                    <option value="" disabled selected>Select...</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                            <div class="space-y-1.5 col-span-2">
+                                <label
+                                    class="text-[8px] font-black text-slate-500 uppercase tracking-widest pl-1">Personal
+                                    Email</label>
+                                <input type="email" id="recEmail"
+                                    class="input-glass w-full rounded-lg py-2 px-3 text-xs outline-none bg-black/20"
+                                    required>
+                            </div>
+                            <div class="space-y-1.5 col-span-2">
+                                <label class="text-[8px] font-black text-slate-500 uppercase tracking-widest pl-1">Next
+                                    of Kin Full Name</label>
+                                <input type="text" id="recNok"
+                                    class="input-glass w-full rounded-lg py-2 px-3 text-xs outline-none bg-black/20"
+                                    required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-3 mt-6">
+                        <button type="button" onclick="closeEmergencyModal()"
+                            class="flex-1 bg-slate-800/80 hover:bg-slate-800 text-slate-300 font-black py-3.5 rounded-xl text-xs uppercase tracking-widest border border-slate-700 transition-all">
+                            Cancel / Return
+                        </button>
+                        <button type="submit" id="btnExecuteRecovery"
+                            class="flex-[2] bg-red-600 hover:bg-red-700 text-white font-black py-3.5 rounded-xl text-xs uppercase tracking-widest shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:shadow-[0_0_25px_rgba(220,38,38,0.6)] transition-all flex justify-center items-center gap-2">
+                            <i class="fa-solid fa-radiation"></i> <span>Execute Override</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--   Loading the unified auth_gateway.js -->
+    <script type="module" src="assets/js/auth_gateway.js"></script>
+
+    <!-- UI Interactivity Script -->
+    <script>
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById('staffPasswordInput');
+            const icon = document.getElementById('togglePassIcon');
+            if (passInput.type === 'password') {
+                passInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function openEmergencyModal() {
+            const modal = document.getElementById('emergencyModal');
+            const content = document.getElementById('emergencyModalContent');
+            const currentId = document.getElementById('staffIdInput').value;
+            if (currentId) document.getElementById('recStaffId').value = currentId;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                content.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeEmergencyModal() {
+            const modal = document.getElementById('emergencyModal');
+            const content = document.getElementById('emergencyModalContent');
+            modal.classList.add('opacity-0');
+            content.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+                document.getElementById('emergencyRecoveryForm').reset();
+                document.getElementById('emergencyRecoveryForm').classList.remove('hidden');
+                document.getElementById('recoverySuccessState').classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+
+</html>

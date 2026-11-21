@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Religious Activities | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header
+        class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-emerald-600">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&q=80&w=1920"
+                alt="Religion" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-emerald-900/40 border border-emerald-500/50 text-emerald-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Faith
+                & Morality</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Religious <span class="text-emerald-500">Activities</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Fostering deep moral character,
+                mutual respect, and spiritual devotion across all faiths.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+            <!-- MSSN -->
+            <div
+                class="bg-slate-50 border border-slate-200 rounded-[2rem] p-10 shadow-sm flex flex-col lg:flex-row gap-12 items-center">
+                <div class="lg:w-1/2 space-y-6">
+                    <div
+                        class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl shadow-md">
+                        <i class="fa-solid fa-hands-praying"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">M.S.S.N</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-600 block">Muslim Students
+                        Society of Nigeria</span>
+                    <p class="text-sm text-slate-600 leading-relaxed text-justify">Under the supreme guidance of the
+                        Chief Imams and coordinated by the Ameer Prefects, the MSSN manages the daily Khams Salawat
+                        congregational prayers within the Hostel Mosques. They serve as the moral compass of the school,
+                        resolving student disputes through Islamic principles and directly facilitating the esteemed
+                        weekend Islamiyyah program.</p>
+                </div>
+                <div class="lg:w-1/2 w-full relative h-64 rounded-3xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&q=80&w=800"
+                        alt="Mosque" class="w-full h-full object-cover">
+                </div>
+            </div>
+
+            <!-- Christian Students Union -->
+            <div
+                class="bg-slate-50 border border-slate-200 rounded-[2rem] p-10 shadow-sm flex flex-col lg:flex-row-reverse gap-12 items-center">
+                <div class="lg:w-1/2 space-y-6">
+                    <div
+                        class="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-3xl shadow-md">
+                        <i class="fa-solid fa-cross"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Christian Students Union</h3>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600 block">Fellowship &
+                        Community</span>
+                    <p class="text-sm text-slate-600 leading-relaxed text-justify">Operating with absolute freedom and
+                        structure, the Christian Students Union conducts daily devotions at specialized campus locations
+                        assigned by their President/Chairman. The union’s student leadership resolves internal peer
+                        issues and escalates severe concerns directly to their assigned Patrons (Christian Teachers).
+                    </p>
+
+                    <div class="bg-blue-50 border border-blue-200 p-5 rounded-2xl mt-6">
+                        <h4 class="font-black text-blue-900 text-xs uppercase mb-2"><i
+                                class="fa-solid fa-church mr-1 text-blue-600"></i> The Sunday Outing Privilege</h4>
+                        <p class="text-xs text-blue-800 leading-relaxed text-justify">While the general student body
+                            only receives outings on Fridays, Christian scholars are granted a highly respected
+                            <strong>second outing day</strong>. Every Sunday morning, under the escort of their Patrons,
+                            they are permitted to leave the campus to attend main town churches in Ringim for worship
+                            and major religious events, returning in the afternoon.
+                        </p>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 w-full relative h-64 rounded-3xl overflow-hidden shadow-lg">
+                    <img src="https://images.unsplash.com/photo-1438032005730-c7aedb64e129?auto=format&fit=crop&q=80&w=800"
+                        alt="Church Service" class="w-full h-full object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

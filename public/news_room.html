@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News & Press Center | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Stay updated with the latest news, academic announcements, and press releases from Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-blue-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=1920"
+                alt="News Room" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-blue-900/40 border border-blue-500/50 text-blue-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                The Press Center
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Latest <span class="text-blue-500">News & Updates</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Official announcements,
+                academic term dates, and administrative circulars from the Directorate.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Featured Spotlight Article -->
+            <div class="mb-20">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="relative flex h-3 w-3"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span></span>
+                    <h2 class="text-sm font-black text-slate-400 uppercase tracking-widest">Featured Spotlight</h2>
+                </div>
+
+                <!-- THIS ID IS CRITICAL FOR THE JS TO INJECT THE LATEST POST -->
+                <div id="dynamicFeaturedNews">
+                    <div class="bg-slate-50 border border-slate-200 rounded-[2rem] p-12 text-center shadow-sm">
+                        <i class="fa-solid fa-bullhorn text-4xl text-slate-300 mb-4"></i>
+                        <p class="text-sm font-bold text-slate-500">No spotlight news has been published by the
+                            administration.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter Bar (NOW WIRED UP) -->
+            <div
+                class="flex flex-col md:flex-row gap-4 justify-between items-center mb-12 bg-slate-100 p-4 rounded-2xl border border-slate-200">
+                <div class="relative w-full md:w-96">
+                    <input type="text" id="newsSearchInput" onkeyup="filterNewsSearch()"
+                        placeholder="Search news archives..."
+                        class="w-full bg-white border border-slate-300 rounded-xl pl-12 pr-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gussGreen">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                </div>
+                <div class="flex gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0">
+                    <button onclick="filterNews('All')" data-filter="All"
+                        class="news-filter-btn bg-gussGreen text-white px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap shadow-sm">All
+                        News</button>
+                    <button onclick="filterNews('Academics')" data-filter="Academics"
+                        class="news-filter-btn bg-white border border-slate-200 text-slate-600 hover:text-gussGreen px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors">Academics</button>
+                    <button onclick="filterNews('Admissions')" data-filter="Admissions"
+                        class="news-filter-btn bg-white border border-slate-200 text-slate-600 hover:text-gussGreen px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors">Admissions</button>
+                    <button onclick="filterNews('Administration')" data-filter="Administration"
+                        class="news-filter-btn bg-white border border-slate-200 text-slate-600 hover:text-gussGreen px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors">Administration</button>
+                    <button onclick="filterNews('Rules & Discipline')" data-filter="Rules & Discipline"
+                        class="news-filter-btn bg-white border border-slate-200 text-slate-600 hover:text-gussGreen px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors">Discipline</button>
+                    <button onclick="filterNews('Campus Life')" data-filter="Campus Life"
+                        class="news-filter-btn bg-white border border-slate-200 text-slate-600 hover:text-gussGreen px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest whitespace-nowrap transition-colors">Campus
+                        Life</button>
+                </div>
+            </div>
+
+            <!-- Dynamic News Grid (Injected via JS) -->
+            <div id="dynamicNewsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Articles injected by app.js -->
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-16 flex justify-center gap-2">
+                <button
+                    class="w-10 h-10 rounded-xl border border-slate-300 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors"><i
+                        class="fa-solid fa-chevron-left"></i></button>
+                <button
+                    class="w-10 h-10 rounded-xl bg-gussGreen text-white font-black flex items-center justify-center shadow-md">1</button>
+                <button
+                    class="w-10 h-10 rounded-xl border border-slate-300 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-colors">2</button>
+                <button
+                    class="w-10 h-10 rounded-xl border border-slate-300 flex items-center justify-center text-slate-600 font-bold hover:bg-slate-50 transition-colors">3</button>
+                <button
+                    class="w-10 h-10 rounded-xl border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-50 transition-colors"><i
+                        class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

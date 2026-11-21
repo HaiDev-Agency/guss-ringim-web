@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Primary Meta Tags -->
+    <title>ICT & Central Registry | G.U.S.S. Ringim</title>
+    <meta name="title" content="ICT & Central Registry | G.U.S.S. Ringim">
+    <meta name="description"
+        content="Official Central Infrastructure and Identity Registry Terminal for Government Unity Secondary School, Ringim. Authorized administrative access only.">
+    <meta name="keywords"
+        content="GUSS Ringim, Secondary School Portal, Education Management System, Jigawa State Education, ICT Registry">
+    <meta name="author" content="Government Unity Secondary School, Ringim">
+    <meta name="theme-color" content="#005A36">
+
+    <!-- Search Engine Crawler Directives (Internal Portal) -->
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="googlebot" content="noindex, nofollow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gussringim.sch.ng/registry">
+    <meta property="og:title" content="ICT & Central Registry | G.U.S.S. Ringim">
+    <meta property="og:description"
+        content="Official Central Infrastructure and Identity Registry Terminal for Government Unity Secondary School, Ringim.">
+    <meta property="og:image" content="https://gussringim.sch.ng/assets/images/logo_img.png">
+    <meta property="og:site_name" content="GUSS Ringim Enterprise Node">
+
+    <!-- Twitter / X -->
+    <meta property="twitter:card" content="summary">
+    <meta property="twitter:url" content="https://gussringim.sch.ng/registry">
+    <meta property="twitter:title" content="ICT & Central Registry | G.U.S.S. Ringim">
+    <meta property="twitter:description"
+        content="Official Central Infrastructure and Identity Registry Terminal for Government Unity Secondary School, Ringim.">
+    <meta property="twitter:image" content="https://gussringim.sch.ng/assets/images/logo_img.png">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <!-- Favicon Suite -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/Adobe_Express_file.png">
+    <link rel="apple-touch-icon" href="assets/images/Adobe_Express_file.png">
+
+    <!-- Core Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A', gussDark: '#0B1120' } } } }
+    </script>
+
+    <!-- Security & UI Utilities -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js" defer></script>
+
+    <style>
+        .id-card-bg {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(240, 253, 250, 1) 100%);
+            position: relative;
+        }
+
+        .id-card-bg::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('assets/images/logo_img.png');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 60%;
+            opacity: 0.05;
+            z-index: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-slate-900 text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-black shadow-inner relative z-[60]">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-server text-blue-400 mr-1"></i> CENTRAL
+                INFRASTRUCTURE NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-network-wired text-emerald-400"></i> Role: ICT Administrator
+            </span>
+            <span onclick="openAdminProfileModal()"
+                class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4 cursor-pointer hover:text-emerald-400 transition-colors inline-flex items-center gap-2 group"
+                title="Click to update ICT Admin Profile & Signature">
+                <i class="fa-regular fa-circle-user text-emerald-400"></i>
+                <span id="activeAdminNameDisplay">Hussaini A. Ismaeel</span>
+                <i
+                    class="fa-solid fa-pen-to-square text-[10px] text-slate-400 group-hover:text-emerald-400 transition-colors"></i>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="window.location.href='staff_login.html'"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">ICT & Central
+                        Registry</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Identity, Security &
+                        Systems Management</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span
+                    class="bg-blue-50 text-blue-700 border border-blue-200 px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-widest"><i
+                        class="fa-solid fa-shield-halved mr-1"></i> SysOps Active</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6">
+
+        <div class="flex bg-slate-200/50 p-1.5 rounded-2xl w-full shadow-sm overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('staff')" id="tabBtnStaff"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white shadow text-gussNavy border border-slate-200"><i
+                    class="fa-solid fa-user-plus mr-2"></i> Data Entry & Onboarding</button>
+            <button onclick="switchTab('credentials')" id="tabBtnCredentials"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-key mr-2"></i> Credentials Support</button>
+            <button onclick="switchTab('idcard')" id="tabBtnIdcard"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-id-card-clip mr-2"></i> ID Card Engine</button>
+            <button onclick="switchTab('archive')" id="tabBtnArchive"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-box-archive mr-2"></i> Master Archive</button>
+            <!-- NEW: Statutory Postings Tab Button -->
+            <button onclick="switchTab('postings')" id="tabBtnPostings"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-landmark text-gussGold mr-2"></i> Statutory Postings</button>
+            <button onclick="switchTab('system')" id="tabBtnSystem"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-server mr-2"></i> SysOps Cache</button>
+        </div>
+
+        <div id="tabContentStaff" class="grid lg:grid-cols-12 gap-8 items-start animate-fade-in flex-1">
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                    <h2
+                        class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-user-tie text-blue-500 mr-2"></i> Onboard New Staff
+                    </h2>
+                    <p class="text-[10px] text-slate-500 font-bold mb-4 uppercase tracking-widest">Data is locked
+                        pending Deputy Director Approval.</p>
+
+                    <form id="staffRegistrationForm" class="space-y-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Staff
+                                Category (Track)</label>
+                            <select id="regStaffType" onchange="toggleTransientDate()"
+                                class="w-full bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 text-xs font-bold text-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                                <option value="Academic">Permanent Faculty (Academic)</option>
+                                <option value="Non-Academic">Permanent Staff (Non-Academic)</option>
+                                <option value="NYSC">NYSC (Corp Member)</option>
+                                <option value="TP">Teaching Practice (TP)</option>
+                            </select>
+                        </div>
+
+                        <div class="flex flex-col gap-2 hidden" id="transientDateContainer">
+                            <label class="font-black text-[10px] text-orange-600 uppercase tracking-widest">Expected
+                                Passing Out Date</label>
+                            <input type="date" id="regStaffEndDate"
+                                class="w-full bg-orange-50 border border-orange-200 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-400">
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Full Legal
+                                Name</label>
+                            <input type="text" id="regStaffName" placeholder="Title First Last"
+                                class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-blue-500"
+                                required>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Highest
+                                Qualification (Course)</label>
+                            <input type="text" id="regStaffQual" placeholder="e.g. B.Sc. Ed, Ph.D in Physics"
+                                class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-blue-500"
+                                required>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="flex flex-col gap-2">
+                                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Phone
+                                    Number</label>
+                                <input type="text" id="regStaffPhone" placeholder="080..."
+                                    class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-blue-500"
+                                    required>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Personal
+                                    Email</label>
+                                <input type="email" id="regStaffPersonalEmail" placeholder="personal@gmail.com"
+                                    class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-blue-500"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="col-span-2 flex flex-col gap-2">
+                                <label
+                                    class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Residential
+                                    Address</label>
+                                <input type="text" id="regStaffAddress" placeholder="Physical Address"
+                                    class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-blue-500"
+                                    required>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Blood
+                                    Group</label>
+                                <select id="regStaffBlood"
+                                    class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-blue-500"
+                                    required>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <div class="col-span-2">
+                                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Next of
+                                    Kin (NOK)</label>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <input type="text" id="regStaffNokName" placeholder="NOK Full Name"
+                                    class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:border-blue-500"
+                                    required>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <input type="text" id="regStaffNokPhone" placeholder="NOK Phone"
+                                    class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:border-blue-500"
+                                    required>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-slate-100">
+                            <div class="grid grid-cols-2 gap-6">
+                                <div>
+                                    <label
+                                        class="font-black text-[10px] text-slate-500 uppercase tracking-widest mb-2 block">Upload
+                                        Photograph</label>
+                                    <div class="flex items-center gap-3">
+                                        <img id="regStaffPhotoPreview"
+                                            src="https://ui-avatars.com/api/?name=New+Staff&background=f1f5f9&color=94a3b8"
+                                            class="w-10 h-10 rounded-lg object-cover border border-slate-300 shrink-0">
+                                        <input type="file" id="regStaffPhotoInput" accept="image/*"
+                                            onchange="processMediaUpload(this, 'regStaffPhotoPreview')"
+                                            class="text-[10px] font-bold text-slate-500 w-full" required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label
+                                        class="font-black text-[10px] text-slate-500 uppercase tracking-widest mb-2 block">Digital
+                                        Signature</label>
+                                    <div class="flex items-center gap-3">
+                                        <img id="regStaffSigPreview" src=""
+                                            class="hidden w-10 h-10 rounded object-contain border border-slate-300 shrink-0 bg-white">
+                                        <input type="file" id="regStaffSigInput" accept="image/*"
+                                            onchange="processMediaUpload(this, 'regStaffSigPreview')"
+                                            class="text-[10px] font-bold text-slate-500 w-full" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-3 rounded-lg text-[10px] uppercase tracking-widest shadow-md transition-colors mt-2"><i
+                                class="fa-solid fa-cloud-arrow-up mr-1"></i> Submit To Deputy Director</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide">Institutional Staff
+                            Database</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Active faculty,
+                            NYSC, TP, and non-academic personnel</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Identity</th>
+                                <th class="py-3 px-3">Track / Qual</th>
+                                <th class="py-3 px-3">Contact / Auth Email</th>
+                                <th class="py-3 px-3 text-right">System Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staffRegistryBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                    <div id="staffPaginationControls"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentCredentials" class="hidden grid lg:grid-cols-12 gap-8 items-start animate-fade-in flex-1">
+            <div
+                class="lg:col-span-12 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col min-h-[500px]">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-slate-200 pb-4 mb-6 gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide"><i
+                                class="fa-solid fa-users-gear text-amber-500 mr-2"></i> Access Control & Data Editor
+                        </h2>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Resolve lockout issues, reset forgotten
+                            passwords, and correct critical bio-data errors.</p>
+                    </div>
+                    <div class="relative w-full sm:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="credSearchInput" onkeyup="filterCredentials()"
+                            placeholder="Search Student or Staff ID..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-gussNavy">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead
+                            class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-600 font-black border-b border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4">User Profile</th>
+                                <th class="py-3 px-4">Entity Type</th>
+                                <th class="py-3 px-4">Auth Status</th>
+                                <th class="py-3 px-4 text-center">Account Lock</th>
+                                <th class="py-3 px-4 text-right">Tech Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="credentialsBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentIdcard" class="hidden grid lg:grid-cols-12 gap-8 items-start animate-fade-in flex-1">
+            <!-- Left Column: Identity Roster & Spooler -->
+            <div class="lg:col-span-4 flex flex-col gap-4">
+                <div
+                    class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col h-full max-h-[600px]">
+                    <h2
+                        class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2 flex justify-between items-center">
+                        <span><i class="fa-solid fa-magnifying-glass text-blue-500 mr-2"></i> Identity Roster</span>
+                        <!-- Spooler Counter Badge -->
+                        <span id="spoolerCountBadge"
+                            class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm hidden">0
+                            Selected</span>
+                    </h2>
+
+                    <div class="flex gap-2 mb-4 bg-slate-100 p-1 rounded-lg shrink-0">
+                        <button onclick="loadIdRoster('STUDENT')" id="idFilterStudent"
+                            class="flex-1 text-[10px] font-black uppercase tracking-widest py-1.5 rounded bg-white shadow-sm text-gussNavy border border-slate-200 transition-all">Students</button>
+                        <button onclick="loadIdRoster('STAFF')" id="idFilterStaff"
+                            class="flex-1 text-[10px] font-black uppercase tracking-widest py-1.5 rounded text-slate-500 hover:text-gussNavy transition-all">Staff</button>
+                    </div>
+
+                    <div class="relative mb-4 shrink-0 flex gap-2">
+                        <input type="text" id="idSearchInput" onkeyup="filterIdRoster()"
+                            placeholder="Search Name or ID..."
+                            class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-4 pr-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-200">
+                        <!-- Bulk Select Button -->
+                        <button onclick="toggleBulkSelect()" id="btnBulkSelect"
+                            class="bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-300 rounded-xl px-3 flex items-center justify-center transition-colors"
+                            title="Select All Visible">
+                            <i class="fa-regular fa-square-check"></i>
+                        </button>
+                    </div>
+
+                    <!-- The Roster List (Scrollable) -->
+                    <div id="idRosterList" class="space-y-2 flex-1 overflow-y-auto pr-1 pb-2"></div>
+
+                    <!-- The Print Spooler Checkout Button (Sticky at Bottom) -->
+                    <div class="mt-auto pt-4 border-t border-slate-200 shrink-0">
+                        <button onclick="executeBulkPrint()" id="btnExecuteBulk" disabled
+                            class="w-full bg-slate-300 text-slate-500 font-black py-3 rounded-xl text-[10px] uppercase tracking-widest transition-all shadow-sm flex items-center justify-center gap-2 cursor-not-allowed">
+                            <i class="fa-solid fa-print"></i> Print Batch (0)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="lg:col-span-8 bg-slate-200 border border-slate-300 rounded-3xl p-8 shadow-inner flex flex-col items-center justify-center min-h-[500px] relative">
+
+                <div id="emptyIdState" class="text-center text-slate-400">
+                    <i class="fa-solid fa-id-badge text-6xl mb-4 opacity-50"></i>
+                    <p class="font-bold uppercase tracking-widest text-xs">Select an entity to render Smart ID</p>
+                </div>
+
+                <div id="activeIdState" class="hidden flex-col items-center w-full">
+                    <div class="w-full flex justify-end mb-6">
+                        <button onclick="printIdCard()"
+                            class="bg-gussNavy hover:bg-slate-800 text-white font-black px-6 py-2.5 rounded-xl shadow-md uppercase tracking-wider text-xs transition-colors"><i
+                                class="fa-solid fa-print mr-2"></i> Print Template</button>
+                    </div>
+
+                    <div id="printable-id-container" class="flex flex-col md:flex-row gap-6 items-center">
+                        <div
+                            class="w-[215px] h-[340px] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden relative id-card-bg flex flex-col">
+                            <div
+                                class="bg-gussGreen text-white text-center py-2 px-1 border-b-4 border-gussGold z-10 shrink-0">
+                                <img src="assets/images/logo_img.png"
+                                    class="w-6 h-6 mx-auto mb-1 bg-white rounded-full p-0.5" alt="Logo">
+                                <h4 class="text-[8px] font-black uppercase leading-tight">Govt. Unity Sec.
+                                    School<br>Ringim</h4>
+                            </div>
+
+                            <div class="flex-1 flex flex-col items-center p-3 z-10">
+                                <img id="idPhoto" src=""
+                                    class="w-20 h-20 object-cover border-2 border-slate-300 shadow-sm mb-2 rounded-md bg-slate-100">
+                                <h2 id="idName"
+                                    class="text-[11px] font-black text-gussNavy uppercase text-center leading-tight mb-0.5 w-full truncate">
+                                    ---</h2>
+                                <p id="idRoleBadge"
+                                    class="text-[8px] font-bold text-white bg-gussGold px-2 py-0.5 rounded-full uppercase tracking-widest mb-2 shadow-sm">
+                                    STUDENT</p>
+
+                                <div class="w-full space-y-1 mt-auto mb-2 border-t border-slate-200 pt-2"
+                                    id="idDynamicFields"></div>
+
+                                <div class="w-full flex justify-between items-end mt-auto w-full">
+                                    <div class="flex flex-col items-center w-1/2">
+                                        <img id="idDirectorSignature" src=""
+                                            class="h-6 object-contain mix-blend-multiply mb-0.5" alt="Auth Sig">
+                                        <span
+                                            class="text-[5px] font-black uppercase text-slate-500 border-t border-slate-300 pt-0.5 w-3/4 text-center">Authorized
+                                            Sign</span>
+                                    </div>
+                                    <div class="bg-slate-800 text-white text-center px-2 py-1 rounded text-[5px] font-mono tracking-widest w-1/2"
+                                        id="idValidityText">VALID TILL: 2029</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="w-[215px] h-[340px] bg-white rounded-xl shadow-2xl border border-slate-200 overflow-hidden flex flex-col p-3 text-[7px] font-medium text-slate-600 text-justify relative">
+                            <h4
+                                class="text-center font-black text-gussNavy uppercase tracking-widest text-[9px] mb-2 border-b border-slate-200 pb-1">
+                                Conditions of Use</h4>
+                            <ul class="list-disc pl-3 space-y-1 mb-auto">
+                                <li>This card is the property of G.U.S.S Ringim and must be surrendered upon request.
+                                </li>
+                                <li>It is non-transferable and must be worn visibly at all times.</li>
+                                <li>Loss of this card must be reported to the Registry immediately.</li>
+                            </ul>
+                            <div class="text-center mt-3 mb-3">
+                                <p class="font-black text-slate-800 mb-0.5">If found, please return to:</p>
+                                <p>The Principal's Office,<br>Govt. Unity Secondary School,<br>P.M.B 1001, Ringim,
+                                    Jigawa State.</p>
+                            </div>
+                            <div class="mt-auto border-t border-slate-200 pt-2 flex flex-col items-center">
+                                <div
+                                    class="h-6 w-3/4 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNmZmYiLz48cGF0aCBkPSJNMCAwaDJ2MTAwSDB6bTQgMGgxdjEwMEg0em0zIDBoM3YxMDBINHptNCAwaDF2MTAwaC0xem0yIDBoNHYxMDBoLTR6bTUgMGgydjEwMGgtMnptMyAwaDF2MTAwaC0xem0zIDBoM3YxMDBoLTN6IiBmaWxsPSIjMDAwIiB0cmFuc2Zvcm09InNjYWxlKDUpIi8+PC9zdmc+')] bg-repeat-x opacity-80 mb-1">
+                                </div>
+                                <span id="idBarcodeText"
+                                    class="font-mono text-[6px] tracking-[0.2em] font-bold">---</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- BATCH PRINT SPOOLER & PDF PREVIEW MODAL (TOP ELEVATION)   -->
+        <!-- ========================================================= -->
+        <div id="batchPreviewModal"
+            class="hidden fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[250] items-center justify-center p-4">
+            <div
+                class="bg-white rounded-3xl w-full max-w-5xl h-[90vh] flex flex-col shadow-2xl overflow-hidden animate-fade-in border border-slate-700">
+
+                <!-- MODAL HEADER -->
+                <div
+                    class="bg-gussNavy p-5 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                    <div>
+                        <h3 class="font-black text-lg uppercase tracking-wide flex items-center gap-3">
+                            <i class="fa-solid fa-layer-group text-blue-400"></i> Master Print Spooler
+                        </h3>
+                        <p class="text-[10px] text-slate-400 font-bold tracking-widest mt-1 uppercase"
+                            id="batchPreviewSubtitle">
+                            Compiling A4 Layout...
+                        </p>
+                    </div>
+                    <button type="button" onclick="closeBatchPreview()"
+                        class="text-slate-400 hover:text-white transition-colors text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- PREVIEW VIEWPORT -->
+                <div class="flex-1 bg-slate-200 relative flex items-center justify-center">
+                    <div id="batchLoadingState"
+                        class="absolute inset-0 flex flex-col items-center justify-center bg-slate-100 z-10">
+                        <i class="fa-solid fa-gear fa-spin text-5xl text-blue-500 mb-4"></i>
+                        <h4 class="font-black text-gussNavy uppercase tracking-widest text-sm">Rendering A4 Matrices
+                        </h4>
+                        <p class="text-xs text-slate-500 mt-2 font-bold">Please wait while Jasper Engine compiles the
+                            batch...</p>
+                    </div>
+                    <iframe id="pdfPreviewFrame" class="w-full h-full border-0 hidden z-20"></iframe>
+                </div>
+
+                <!-- FOOTER WITH DUAL ACTION BUTTONS (Z-INDEX SAFE) -->
+                <div
+                    class="p-4 border-t border-slate-200 bg-white flex flex-col sm:flex-row justify-between items-center gap-4 shrink-0">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center">
+                        <i class="fa-solid fa-circle-check text-emerald-500 mr-2 text-sm"></i> Document Compiled & Ready
+                    </span>
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                        <!-- CANCEL BUTTON WITH EXPLICIT ID -->
+                        <button type="button" id="btnCancelBatch" onclick="closeBatchPreview()"
+                            class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-sm flex items-center gap-2">
+                            <i class="fa-solid fa-xmark"></i> Cancel / Close
+                        </button>
+                        <!-- PRINT BUTTON -->
+                        <button type="button" id="btnConfirmBatch"
+                            onclick="document.getElementById('pdfPreviewFrame').contentWindow.print()"
+                            class="bg-gussNavy hover:bg-slate-800 text-white font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-md transition-colors flex items-center gap-2 hidden">
+                            <i class="fa-solid fa-print text-gussGold"></i> Send to Physical Printer
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentArchive" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-slate-200 pb-4 mb-4 gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide"><i
+                                class="fa-solid fa-box-archive text-amber-500 mr-2"></i> Immutable Master Ledger</h2>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Search and view complete, unedited graphical
+                            dossiers of every registered entity.</p>
+                    </div>
+                    <div class="flex gap-2 bg-slate-100 p-1 rounded-lg">
+                        <button onclick="switchArchiveFilter('STUDENT')" id="archiveFilterStudent"
+                            class="flex-1 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded bg-white shadow-sm text-gussNavy border border-slate-200 transition-all">Students</button>
+                        <button onclick="switchArchiveFilter('STAFF')" id="archiveFilterStaff"
+                            class="flex-1 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded text-slate-500 hover:text-gussNavy transition-all">Staff</button>
+                    </div>
+                </div>
+
+                <div class="relative mb-6">
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                    <input type="text" id="archiveSearchInput" onkeyup="executeArchiveSearch()"
+                        placeholder="Search exact Name, ID, or NIN..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-10 pr-4 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-amber-500">
+                </div>
+
+                <div id="archiveSearchResults"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[500px] overflow-y-auto pr-2">
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= NEW: STATUTORY POSTINGS MODULE ================= -->
+        <div id="tabContentPostings" class="hidden grid lg:grid-cols-12 gap-8 items-start animate-fade-in flex-1">
+
+            <!-- Left Column: The Handover Engine -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                    <h2
+                        class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-file-signature text-blue-500 mr-2"></i> Executive Handover Engine
+                    </h2>
+                    <p class="text-[10px] text-slate-500 font-bold mb-6 uppercase tracking-widest leading-relaxed">
+                        Execute government-mandated transfers, suspensions, and acting appointments for the Big Four
+                        statutory offices.
+                    </p>
+
+                    <form id="statutoryPostingForm" class="space-y-5">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Target
+                                Statutory Office</label>
+                            <select id="statOfficeSelect"
+                                class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-gussNavy focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required onchange="detectOutgoingExecutive()">
+                                <option value="" disabled selected>Select Office...</option>
+                                <option value="ROLE_DIRECTOR">Office of the Executive Director (Principal)</option>
+                                <option value="ROLE_DEPUTY_DIR_ACADEMICS">Office of the Deputy Director (Academics)
+                                </option>
+                                <option value="ROLE_DEPUTY_DIR_ADMIN">Office of the Deputy Director (Administration)
+                                </option>
+                                <option value="ROLE_BURSAR">Office of the Central Bursar</option>
+                            </select>
+                        </div>
+
+                        <!-- Dynamic Display of Outgoing Officer -->
+                        <div id="outgoingOfficerPanel"
+                            class="hidden bg-slate-100 p-3 rounded-xl border border-slate-200 flex justify-between items-center">
+                            <div>
+                                <span
+                                    class="text-[8px] font-black uppercase tracking-widest text-slate-400 block">Current
+                                    Occupant (Outgoing)</span>
+                                <span id="outgoingOfficerName"
+                                    class="text-xs font-bold text-slate-800 uppercase">---</span>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-from-bracket text-slate-300"></i>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-red-600 uppercase tracking-widest">Departure
+                                Status for Outgoing Officer</label>
+                            <select id="statDepartureReason"
+                                class="w-full bg-red-50 border border-red-200 rounded-lg px-3 py-2 text-xs font-bold text-red-900 focus:outline-none focus:ring-2 focus:ring-red-500"
+                                required>
+                                <option value="" disabled selected>Select Departure Reason...</option>
+                                <option value="TRANSFERRED_OUT">Transferred to another Institution</option>
+                                <option value="REDEPLOYED">Redeployed to Ministry / Board</option>
+                                <option value="RETIRED">Retired from Service</option>
+                                <option value="SUSPENDED_INVESTIGATION">Suspended (Pending Investigation)</option>
+                                <option value="MEDICAL_INCAPACITATED">Medical Leave / Incapacitated</option>
+                                <option value="DECEASED">Deceased</option>
+                                <option value="DISMISSED_GOVERNMENT">Permanently Dismissed by Government</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4 border-t border-slate-100">
+                            <div class="flex flex-col gap-2">
+                                <label
+                                    class="font-black text-[10px] text-emerald-600 uppercase tracking-widest">Incoming
+                                    Officer (Replacement)</label>
+                                <select id="statIncomingSelect"
+                                    class="w-full bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 text-xs font-bold text-emerald-900 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                    required>
+                                    <!-- Populated by JS -->
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-3 bg-blue-50 p-3 rounded-lg border border-blue-100">
+                            <input type="checkbox" id="statActingToggle"
+                                class="w-4 h-4 text-blue-600 bg-white border-slate-300 rounded focus:ring-blue-500 focus:ring-2">
+                            <label for="statActingToggle"
+                                class="font-bold text-[10px] text-blue-900 uppercase tracking-widest">Appoint in an
+                                ACTING Capacity (Temporary)</label>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Ministry
+                                Reference Number</label>
+                            <input type="text" id="statMinistryRef" placeholder="e.g. MOHEST/JG/2026/089"
+                                class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                required>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-gussNavy hover:bg-slate-800 text-white font-black py-3.5 rounded-xl text-[10px] uppercase tracking-widest shadow-lg transition-colors mt-2 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> Execute Executive Handover
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Column: Live Statutory Board -->
+            <div class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide">The Statutory Board</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Live central
+                            hierarchy monitor</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center shadow-inner">
+                        <i class="fa-solid fa-sitemap"></i>
+                    </div>
+                </div>
+
+                <div id="statutoryBoardGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentSystem" class="hidden flex-col gap-6 animate-fade-in flex-1 max-w-4xl mx-auto w-full">
+            <div class="bg-red-50 border border-red-200 rounded-3xl p-8 shadow-sm">
+                <h2 class="text-lg font-black text-red-900 uppercase tracking-wide mb-2"><i
+                        class="fa-solid fa-triangle-exclamation text-red-600 mr-2"></i> Database Engineering Zone</h2>
+                <p class="text-xs text-red-600 mb-6">Critical database diagnostics. System timeline advancement has been
+                    migrated to the Executive Director Console to prevent conflicts.</p>
+
+                <div class="grid sm:grid-cols-3 gap-4">
+                    <button onclick="exportDatabase()"
+                        class="bg-emerald-600 hover:bg-emerald-700 text-white font-black px-4 py-4 rounded-2xl text-[10px] uppercase tracking-widest shadow-sm transition-colors flex flex-col items-center justify-center gap-2">
+                        <i class="fa-solid fa-download text-xl"></i> Export Local JSON Backup
+                    </button>
+                    <button onclick="clearSystemCache()"
+                        class="bg-white hover:bg-slate-50 border border-slate-300 text-slate-700 font-black px-4 py-4 rounded-2xl text-[10px] uppercase tracking-widest shadow-sm transition-colors flex flex-col items-center justify-center gap-2">
+                        <i class="fa-solid fa-broom text-xl text-slate-400"></i> Clear System Cache
+                    </button>
+                    <button onclick="nukeDatabase()"
+                        class="bg-red-600 hover:bg-red-700 text-white font-black px-4 py-4 rounded-2xl text-[10px] uppercase tracking-widest shadow-md transition-colors flex flex-col items-center justify-center gap-2">
+                        <i class="fa-solid fa-skull-crossbones text-xl"></i> Factory Wipe DB
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Full Data Edit Modal -->
+    <div id="editDataModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl p-6 max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4 shrink-0">
+                <h3 class="font-black text-lg text-gussNavy uppercase tracking-wide"><i
+                        class="fa-solid fa-pen-to-square text-blue-500 mr-2"></i> Edit Core Identity</h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600"><i
+                        class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="space-y-4 overflow-y-auto pr-2 flex-1 no-scrollbar">
+                <input type="hidden" id="editEntityId">
+                <input type="hidden" id="editEntityType">
+
+                <div class="flex items-center gap-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <img id="editPhotoPreview" src="" class="w-16 h-16 rounded-lg object-cover border border-slate-300">
+                    <div class="w-full">
+                        <label class="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Update
+                            Photograph</label>
+                        <input type="file" id="editPhotoInput" accept="image/*"
+                            onchange="processMediaUpload(this, 'editPhotoPreview')"
+                            class="text-[10px] font-bold text-slate-500 w-full">
+                    </div>
+                </div>
+
+                <!-- SIGNATURE UPLOAD BLOCK -->
+                <div class="mt-4 border-t border-slate-100 pt-4">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Override
+                        Signature (White Background)</label>
+                    <div class="flex items-center gap-4">
+                        <div
+                            class="w-24 h-10 bg-slate-100 border border-slate-200 rounded flex items-center justify-center overflow-hidden shrink-0">
+                            <img id="editSignaturePreview" src="" class="w-full h-full object-contain" alt="Signature">
+                        </div>
+                        <div class="flex-1">
+                            <input type="file" id="editSignatureInput" accept="image/*" class="hidden"
+                                onchange="processSignatureEditPreview(this)">
+                            <button type="button" onclick="document.getElementById('editSignatureInput').click()"
+                                class="bg-slate-800 text-white text-[10px] font-bold px-3 py-1.5 rounded uppercase tracking-wider hover:bg-slate-700 transition-colors">
+                                <i class="fa-solid fa-upload mr-1"></i> Upload Fresh Signature
+                            </button>
+                            <p class="text-[9px] text-slate-400 mt-1">Upload a clear signature on a solid white
+                                background (JPEG/PNG).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Full Legal
+                        Name</label>
+                    <input type="text" id="editNameInput"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-2">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Phone
+                            Number</label>
+                        <input type="text" id="editPhoneInput"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Personal
+                            Email</label>
+                        <input type="email" id="editPersonalEmailInput"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-blue-300">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mt-3">
+                    <div class="flex flex-col gap-2">
+                        <label class="block text-[10px] font-black text-blue-500 uppercase tracking-widest">Official
+                            Email (Overwrite)</label>
+                        <input type="email" id="editOfficialEmailInput"
+                            class="w-full bg-blue-50 border border-blue-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 hidden" id="editDobContainer">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Date of
+                        Birth</label>
+                    <input type="date" id="editDobInput"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+
+                <div class="flex flex-col gap-2 hidden" id="editQualContainer">
+                    <label
+                        class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Qualification</label>
+                    <input type="text" id="editQualInput"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Residential
+                        Address</label>
+                    <input type="text" id="editAddressInput"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div class="col-span-2"><label
+                            class="block text-[10px] font-black text-slate-500 uppercase tracking-widest">Next of Kin
+                            (NOK)</label></div>
+                    <input type="text" id="editNokName" placeholder="NOK Name"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none">
+                    <input type="text" id="editNokPhone" placeholder="NOK Phone"
+                        class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono focus:outline-none">
+                </div>
+            </div>
+            <button onclick="saveProfileUpdates()"
+                class="w-full bg-gussNavy hover:bg-slate-800 text-white font-black py-3 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors mt-4 shrink-0">Save
+                Force Updates</button>
+        </div>
+    </div>
+
+    <!-- MASTER DOSSIER MODAL -->
+    <div id="dossierModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] scale-95 transition-transform duration-300"
+            id="dossierContent">
+            <div
+                class="bg-gussNavy p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-address-card text-gussGold"></i> Executive Master Dossier</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Complete Unedited
+                        Identity Record</p>
+                </div>
+                <button onclick="closeDossierModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1 bg-slate-50" id="dossierBody"></div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/ict_registry_app.js"></script>
+
+    <!-- ========================================================= -->
+    <!-- ICT ADMINISTRATOR PROFILE & DIGITAL SIGNATURE (READ-ONLY) -->
+    <!-- ========================================================= -->
+    <div id="adminProfileModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 space-y-5 animate-fade-in">
+            <div class="flex justify-between items-center border-b border-slate-200 pb-3">
+                <h3 class="font-black text-sm text-gussNavy uppercase tracking-wide flex items-center gap-2">
+                    <i class="fa-solid fa-user-gear text-blue-600"></i> ICT Admin Credentials
+                </h3>
+                <button onclick="closeAdminProfileModal()"
+                    class="text-slate-400 hover:text-slate-600 transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex flex-col gap-1.5">
+                    <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Administrator Full
+                        Name</label>
+                    <div id="adminNameInput"
+                        class="w-full bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 text-xs font-black text-slate-800 uppercase">
+                        Loading...
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+                    <label class="font-black text-[10px] text-slate-400 uppercase tracking-widest">Official Digital
+                        Signature</label>
+                    <div
+                        class="w-full h-24 bg-white border border-slate-200 rounded-xl flex items-center justify-center overflow-hidden p-2 shadow-inner relative">
+                        <img id="modalAdminSigPreview" src="" class="max-h-full object-contain hidden"
+                            alt="Admin Signature">
+                        <span id="modalAdminSigPlaceholder"
+                            class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">No Signature
+                            Set</span>
+                    </div>
+                </div>
+
+                <!-- ZERO-TRUST IMMUTABILITY NOTICE -->
+                <div
+                    class="flex items-start gap-2.5 bg-blue-50 border border-blue-200 text-blue-900 p-3 rounded-xl text-[9px] font-bold leading-relaxed">
+                    <i class="fa-solid fa-shield-halved text-blue-600 text-sm mt-0.5 shrink-0"></i>
+                    <span><strong>SECURITY NOTICE:</strong> Central Administrator credentials and signatures are
+                        cryptographically bound in PostgreSQL. Re-stamping requires a formal Director-Level Statutory
+                        Handover.</span>
+                </div>
+
+                <button type="button" id="btnGenerateVaultKey" onclick="generateMasterVaultKey()"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white px-4 py-3.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-md shadow-red-500/20 flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-key"></i> Generate Master Vault Key
+                </button>
+            </div>
+
+            <div class="pt-2">
+                <button onclick="closeAdminProfileModal()"
+                    class="w-full py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-widest transition-colors">
+                    Close Terminal
+                </button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

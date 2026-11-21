@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Intranet Portal | G.U.S.S. Ringim</title>
+
+    <!-- SEO & Intranet Meta Tags -->
+    <meta name="description"
+        content="Secure Student Intranet Portal for G.U.S.S. Ringim. Access academic records, financial ledgers, and digital clearance.">
+    <meta name="robots" content="noindex, nofollow"> <!-- Blocks search engines to protect secure intranet data -->
+    <meta name="author" content="HaiDev Agency">
+
+    <!-- Open Graph / Link Sharing Optimization -->
+    <meta property="og:title" content="Student Intranet | G.U.S.S. Ringim">
+    <meta property="og:description" content="Official digital workspace for admitted students.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="assets/images/logo_img.png">
+
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+
+    <!-- ================= LOGIN FIREWALL ================= -->
+    <div id="login-firewall"
+        class="min-h-screen flex items-center justify-center p-4 bg-slate-900 relative overflow-hidden">
+        <div
+            class="absolute inset-0 opacity-10 bg-[url('assets/images/logo_img.png')] bg-center bg-no-repeat bg-contain blur-sm">
+        </div>
+
+        <div class="bg-white p-8 sm:p-10 rounded-[2rem] shadow-2xl w-full max-w-md relative z-10">
+            <div class="text-center mb-8">
+                <img src="assets/images/logo_img.png" class="w-20 mx-auto mb-4" alt="Logo">
+                <h1 class="text-xl font-black text-gussNavy uppercase tracking-widest">Student Intranet</h1>
+                <p class="text-xs text-slate-500 font-medium mt-1">Authenticate using your Official Credentials</p>
+            </div>
+
+            <form id="studentLoginForm" class="space-y-5">
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Admission
+                        Number</label>
+                    <input type="text" id="loginAdmNo" placeholder="GUSSR/2026/..."
+                        class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 font-mono font-bold uppercase tracking-widest focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all"
+                        required>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] font-black text-slate-500 uppercase tracking-widest flex justify-between">
+                        <span>Access Password</span>
+                        <a href="#forgot" class="text-gussGreen hover:underline normal-case tracking-normal">Forgot
+                            Password?</a>
+                    </label>
+                    <input type="password" id="loginPassword" placeholder="••••••••"
+                        class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-3.5 focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all"
+                        required>
+                </div>
+                <button type="submit"
+                    class="w-full bg-gussGreen hover:bg-emerald-800 text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-lg transition-colors mt-2">Access
+                    Portal <i class="fa-solid fa-arrow-right-to-bracket ml-2"></i></button>
+            </form>
+            <div class="mt-6 text-center text-[10px] text-slate-400 font-medium leading-relaxed">
+                First time logging in? Use the temporary password provided on your screening dashboard.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= MASTER DASHBOARD ================= -->
+    <div id="portal-workspace" class="hidden h-screen flex overflow-hidden bg-slate-50">
+
+        <!-- Mobile Sidebar Overlay -->
+        <div id="sidebar-overlay" onclick="toggleSidebar()"
+            class="fixed inset-0 bg-slate-900/50 z-20 hidden lg:hidden backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Left Sidebar Navigation -->
+        <aside id="sidebar"
+            class="bg-gussNavy w-72 shrink-0 flex flex-col justify-between fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-all duration-300 z-30 shadow-2xl lg:shadow-none">
+            <div>
+                <div class="p-6 flex items-center justify-between border-b border-slate-800">
+                    <div class="flex items-center gap-4">
+                        <img src="assets/images/logo_img.png" class="w-10 shrink-0" alt="Logo">
+                        <h2
+                            class="sidebar-text text-white font-black uppercase tracking-widest text-sm leading-tight transition-opacity duration-200">
+                            Student<br>Intranet</h2>
+                    </div>
+                    <button onclick="toggleDesktopSidebar()" class="hidden lg:block text-slate-400 hover:text-white"><i
+                            class="fa-solid fa-bars-staggered"></i></button>
+                    <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white"><i
+                            class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+
+                <nav class="p-4 space-y-2 overflow-x-hidden">
+                    <button onclick="switchPortalTab('overview')" id="nav-overview"
+                        class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 transition-all whitespace-nowrap"><i
+                            class="fa-solid fa-border-all text-base w-5 text-center shrink-0"></i> <span
+                            class="sidebar-text transition-opacity duration-200">Overview Board</span></button>
+                    <button onclick="switchPortalTab('vault')" id="nav-vault"
+                        class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 hover:text-white transition-all whitespace-nowrap"><i
+                            class="fa-solid fa-vault text-base w-5 text-center shrink-0"></i> <span
+                            class="sidebar-text transition-opacity duration-200">Documents Vault</span></button>
+                    <button onclick="switchPortalTab('ledger')" id="nav-ledger"
+                        class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 hover:text-white transition-all whitespace-nowrap"><i
+                            class="fa-solid fa-wallet text-base w-5 text-center shrink-0"></i> <span
+                            class="sidebar-text transition-opacity duration-200">Financial Ledger</span></button>
+                    <button onclick="switchPortalTab('clearance')" id="nav-clearance"
+                        class="nav-btn hidden w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 hover:text-white transition-all whitespace-nowrap"><i
+                            class="fa-solid fa-clipboard-check text-base w-5 text-center shrink-0"></i> <span
+                            class="sidebar-text transition-opacity duration-200">Clearance Tracker</span></button>
+                    <button onclick="switchPortalTab('profile')" id="nav-profile"
+                        class="nav-btn w-full flex items-center gap-3 px-4 py-3.5 rounded-xl text-xs font-black uppercase tracking-widest text-slate-400 hover:bg-slate-800 hover:text-white transition-all whitespace-nowrap"><i
+                            class="fa-solid fa-user-gear text-base w-5 text-center shrink-0"></i> <span
+                            class="sidebar-text transition-opacity duration-200">My Profile</span></button>
+                </nav>
+            </div>
+
+            <div class="p-4 border-t border-slate-800 overflow-x-hidden">
+                <button onclick="logoutStudent()"
+                    class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-red-400 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all whitespace-nowrap"><i
+                        class="fa-solid fa-power-off text-base w-5 text-center shrink-0"></i> <span
+                        class="sidebar-text transition-opacity duration-200">Sign Out</span></button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+            <header class="bg-white border-b border-slate-200 z-10 shrink-0">
+                <div class="flex items-center justify-between p-4 lg:px-8">
+                    <div class="flex items-center gap-4">
+                        <button onclick="toggleSidebar()"
+                            class="lg:hidden text-slate-600 hover:text-gussGreen text-xl"><i
+                                class="fa-solid fa-bars"></i></button>
+                        <h2 id="topbar-title"
+                            class="font-black text-gussNavy uppercase tracking-widest text-sm hidden sm:block">Overview
+                            Board</h2>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <!-- Notification Bell -->
+                        <div class="relative cursor-pointer mr-2" onclick="openNotificationsModal()">
+                            <i
+                                class="fa-solid fa-bell text-slate-400 hover:text-gussGreen transition-colors text-lg"></i>
+                            <span id="notifBadge" class="hidden absolute -top-1 -right-1 flex h-3 w-3">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                                <span
+                                    class="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[8px] items-center justify-center text-white font-black">!</span>
+                            </span>
+                        </div>
+
+                        <span id="networkStatusIndicator"
+                            class="bg-emerald-900/50 border border-emerald-700 text-emerald-400 px-3 py-1 rounded-full text-[10px] font-black tracking-widest flex items-center gap-2 shadow-sm ml-2">
+                            <i class="fa-solid fa-wifi"></i> LIVE
+                        </span>
+
+                        <span id="badge-term"
+                            class="bg-blue-100 text-blue-800 px-3 py-1 rounded-md text-[9px] font-black uppercase tracking-widest border border-blue-200">---</span>
+                        <div class="flex items-center gap-2 text-right ml-2 border-l border-slate-200 pl-4">
+                            <span id="top-student-name"
+                                class="font-bold text-xs uppercase tracking-wide text-slate-700 hidden sm:block">---</span>
+                            <img id="top-student-photo" src=""
+                                class="w-9 h-9 rounded-lg object-cover border border-slate-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Internal Student Broadcast Ticker -->
+                <div id="studentBroadcastBanner"
+                    class="hidden bg-gussNavy text-gussGold text-[10px] font-bold py-2 px-4 flex items-center shadow-inner overflow-hidden border-t border-slate-800">
+                    <i class="fa-solid fa-bullhorn mr-3 animate-pulse shrink-0"></i>
+                    <div class="flex-1 overflow-hidden w-full">
+                        <marquee scrollamount="5" class="tracking-widest uppercase w-full block"
+                            id="broadcastTickerText">---</marquee>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+
+                <!-- 1. OVERVIEW BOARD -->
+                <div id="view-overview" class="portal-view block space-y-6 max-w-6xl mx-auto">
+                    <div
+                        class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200 flex flex-col md:flex-row gap-6 sm:gap-8 items-start relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -z-10"></div>
+                        <img id="dash-photo" src=""
+                            class="w-24 h-24 sm:w-32 sm:h-32 rounded-2xl object-cover shadow-md border-4 border-white shrink-0">
+                        <div class="flex-1 w-full space-y-4">
+                            <div>
+                                <h1 id="dash-name"
+                                    class="text-xl sm:text-2xl font-black uppercase text-gussNavy tracking-wide mb-1">
+                                    ---</h1>
+                                <span id="dash-pathway"
+                                    class="text-[10px] font-black uppercase tracking-widest bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">---</span>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-xs sm:text-sm">
+                                <div>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Admission
+                                        No.</p>
+                                    <p id="dash-admNo" class="font-mono font-black text-gussGreen text-sm sm:text-base">
+                                        ---</p>
+                                </div>
+                                <div class="pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">NIN Linked
+                                    </p>
+                                    <p id="dash-nin" class="font-mono font-bold text-slate-700">---</p>
+                                </div>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Active Class
+                                </p>
+                                <p id="dash-class" class="font-black text-slate-800">---</p>
+                            </div>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Hostel Block
+                                </p>
+                                <p id="dash-hostel" class="font-black text-slate-800">---</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guardians Board -->
+                    <div>
+                        <h3 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-3 pl-1">Official
+                            Institutional Guardians</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div
+                                class="bg-slate-900 text-white rounded-3xl p-6 shadow-md border border-slate-800 flex items-center gap-5">
+                                <div
+                                    class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-xl text-gussGold shrink-0 border border-slate-700">
+                                    <i class="fa-solid fa-chalkboard-user"></i>
+                                </div>
+                                <div>
+                                    <span
+                                        class="block text-[9px] font-black uppercase tracking-widest text-emerald-400 mb-1">Assigned
+                                        Form Master</span>
+                                    <p id="dash-form-master" class="text-sm font-bold tracking-wide uppercase">---</p>
+                                    <p class="text-xs font-mono text-slate-400 mt-1"><i
+                                            class="fa-solid fa-phone text-[10px] mr-1"></i> <span
+                                            id="dash-form-phone">---</span></p>
+                                </div>
+                            </div>
+
+                            <div
+                                class="bg-slate-900 text-white rounded-3xl p-6 shadow-md border border-slate-800 flex items-center gap-5">
+                                <div
+                                    class="w-14 h-14 bg-slate-800 rounded-full flex items-center justify-center text-xl text-amber-500 shrink-0 border border-slate-700">
+                                    <i class="fa-solid fa-building-user"></i>
+                                </div>
+                                <div>
+                                    <span
+                                        class="block text-[9px] font-black uppercase tracking-widest text-amber-400 mb-1">Assigned
+                                        House Warden</span>
+                                    <p id="dash-house-master" class="text-sm font-bold tracking-wide uppercase">---</p>
+                                    <p class="text-xs font-mono text-slate-400 mt-1"><i
+                                            class="fa-solid fa-phone text-[10px] mr-1"></i> <span
+                                            id="dash-house-phone">---</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. DIGITAL DOCUMENTS VAULT -->
+                <div id="view-vault" class="portal-view hidden space-y-6 max-w-6xl mx-auto">
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200">
+                        <div
+                            class="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-slate-100 pb-6 mb-6 gap-4">
+                            <div>
+                                <h3 class="text-lg font-black text-gussNavy uppercase tracking-wide">Academic Records
+                                    Vault</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Access your historical and current
+                                    institutional documents.</p>
+                            </div>
+                            <div
+                                class="flex flex-wrap gap-2 bg-slate-50 p-2 rounded-xl border border-slate-200 w-full lg:w-auto">
+                                <select id="vault-session-select"
+                                    class="bg-white border border-slate-200 text-xs font-bold text-slate-700 rounded-lg px-3 py-2 outline-none focus:border-gussGreen flex-1"></select>
+                                <select id="vault-term-select"
+                                    class="bg-white border border-slate-200 text-xs font-bold text-slate-700 rounded-lg px-3 py-2 outline-none focus:border-gussGreen flex-1"></select>
+                                <button
+                                    class="bg-gussGreen hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-colors"><i
+                                        class="fa-solid fa-magnifying-glass"></i> Fetch</button>
+                            </div>
+                        </div>
+
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            <!-- Admission Letter Card -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between h-48 group hover:border-gussGreen hover:shadow-md transition-all">
+                                <div class="flex justify-between items-start">
+                                    <div
+                                        class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-lg flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-envelope-open-text"></i>
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded">Permanent</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 uppercase text-sm">Provisional Admission Letter
+                                    </h4>
+                                    <p class="text-[10px] text-slate-500 font-medium mt-1">Valid across all sessions.
+                                    </p>
+                                </div>
+                                <button onclick="printStudentAdmissionLetter()"
+                                    class="w-full bg-slate-800 hover:bg-gussGreen text-white font-black py-2 rounded-lg text-[10px] uppercase tracking-widest transition-colors shadow-sm"><i
+                                        class="fa-solid fa-print mr-1"></i> Download</button>
+                            </div>
+
+                            <!-- Term 1 Report -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between h-48 group hover:border-blue-500 hover:shadow-md transition-all">
+                                <div class="flex justify-between items-start">
+                                    <div
+                                        class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </div>
+                                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400">Queried
+                                        Result</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 uppercase text-sm">Termly Report Sheet</h4>
+                                    <p id="vault-active-term-text" class="text-[10px] text-blue-600 font-bold mt-1">---
+                                        | ---</p>
+                                </div>
+                                <button onclick="viewTermResult()"
+                                    class="w-full bg-blue-50 text-blue-600 border border-blue-200 hover:bg-blue-600 hover:text-white font-black py-2 rounded-lg text-[10px] uppercase tracking-widest transition-colors shadow-sm"><i
+                                        class="fa-solid fa-eye mr-1"></i> View Result</button>
+                            </div>
+
+                            <!-- Academic Transcript -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between h-48 opacity-60">
+                                <div class="flex justify-between items-start">
+                                    <div
+                                        class="w-10 h-10 bg-slate-200 text-slate-500 rounded-lg flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-award"></i>
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-200 px-2 py-0.5 rounded">Graduation
+                                        Only</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 uppercase text-sm">Official Academic Transcript
+                                    </h4>
+                                    <p class="text-[10px] text-amber-600 font-bold mt-1"><i
+                                            class="fa-solid fa-lock"></i> Locked</p>
+                                </div>
+                                <button disabled
+                                    class="w-full bg-slate-300 text-slate-500 font-black py-2 rounded-lg text-[10px] uppercase tracking-widest cursor-not-allowed">Unavailable</button>
+                            </div>
+
+                            <!-- Final Clearance Certificate -->
+                            <div
+                                class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between h-48 opacity-60">
+                                <div class="flex justify-between items-start">
+                                    <div
+                                        class="w-10 h-10 bg-slate-200 text-slate-500 rounded-lg flex items-center justify-center text-lg">
+                                        <i class="fa-solid fa-file-shield"></i>
+                                    </div>
+                                    <span
+                                        class="text-[9px] font-black uppercase tracking-widest text-slate-400 border border-slate-200 px-2 py-0.5 rounded">Graduation
+                                        Only</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-800 uppercase text-sm">Final Clearance Certificate
+                                    </h4>
+                                    <p class="text-[10px] text-amber-600 font-bold mt-1"><i
+                                            class="fa-solid fa-lock"></i> Locked (Pending Signatures)</p>
+                                </div>
+                                <button disabled
+                                    class="w-full bg-slate-300 text-slate-500 font-black py-2 rounded-lg text-[10px] uppercase tracking-widest cursor-not-allowed">Unavailable</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. FINANCIAL LEDGER -->
+                <div id="view-ledger" class="portal-view hidden space-y-6 max-w-6xl mx-auto">
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div
+                            class="p-6 sm:p-8 border-b border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-slate-50/50">
+                            <div>
+                                <h3 class="text-lg font-black text-gussNavy uppercase tracking-wide"><i
+                                        class="fa-solid fa-coins text-gussGold mr-2"></i> Remita Fee Management</h3>
+                                <p class="text-xs text-slate-500 font-medium mt-1">Generate RRR codes and track your
+                                    official payment receipts.</p>
+                            </div>
+                        </div>
+
+                        <div class="p-6 sm:p-8 border-b border-slate-100">
+                            <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Pending
+                                Obligations & Quick Payments</h4>
+                            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4" id="paymentInitiatorGrid">
+                                <!-- Dynamically populated -->
+                            </div>
+                        </div>
+
+                        <div class="overflow-x-auto p-6 sm:p-8">
+                            <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest mb-4">Transaction
+                                History</h4>
+                            <table class="w-full text-left border-collapse whitespace-nowrap">
+                                <thead>
+                                    <tr
+                                        class="bg-slate-100 text-[10px] font-black text-slate-500 uppercase tracking-widest rounded-lg">
+                                        <th class="p-4 first:rounded-l-lg">Payment Description</th>
+                                        <th class="p-4">RRR Reference</th>
+                                        <th class="p-4">Amount</th>
+                                        <th class="p-4">Status</th>
+                                        <th class="p-4 text-right last:rounded-r-lg">Action / Receipt</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ledgerTableBody"
+                                    class="text-sm font-medium text-slate-700 divide-y divide-slate-100">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. CLEARANCE TRACKER -->
+                <div id="view-clearance" class="portal-view hidden space-y-6 max-w-6xl mx-auto">
+                    <div class="bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-lg border border-slate-800">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fa-solid fa-traffic-light text-2xl text-gussGold"></i>
+                            <h3 class="text-xl font-black uppercase tracking-wide">Graduation Clearance Protocol</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 font-medium leading-relaxed max-w-3xl">This matrix tracks your
+                            exit clearance status across all critical administrative nodes. A red flag indicates an
+                            outstanding debt, unreturned item, or disciplinary hold. You cannot generate your final
+                            certificate until all nodes turn green.</p>
+
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
+                            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex flex-col gap-3">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Library Node
+                                </h4>
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm"><i
+                                        class="fa-solid fa-circle-check"></i> Cleared</div>
+                            </div>
+                            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex flex-col gap-3">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Bursary Node
+                                </h4>
+                                <div class="flex items-center gap-2 text-red-400 font-bold text-sm"><i
+                                        class="fa-solid fa-circle-xmark"></i> Flagged (Debt)</div>
+                            </div>
+                            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex flex-col gap-3">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Sports /
+                                    Games Node</h4>
+                                <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm"><i
+                                        class="fa-solid fa-circle-check"></i> Cleared</div>
+                            </div>
+                            <div class="bg-slate-800 border border-slate-700 p-5 rounded-2xl flex flex-col gap-3">
+                                <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400">Science Labs
+                                    Node</h4>
+                                <div class="flex items-center gap-2 text-slate-500 font-bold text-sm"><i
+                                        class="fa-solid fa-circle-minus"></i> Pending Action</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-6 border-t border-slate-800 flex justify-end">
+                            <button disabled
+                                class="bg-slate-700 text-slate-500 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest cursor-not-allowed"><i
+                                    class="fa-solid fa-lock mr-2"></i> Print Digital Certificate</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. MY PROFILE (DATA LOCKER) -->
+                <div id="view-profile" class="portal-view hidden space-y-6 max-w-4xl mx-auto">
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-200 overflow-hidden">
+                        <div class="flex overflow-x-auto border-b border-slate-200 bg-slate-50/50 no-scrollbar">
+                            <button onclick="switchProfileTab('personal')" id="ptab-personal"
+                                class="profile-tab-btn flex-1 whitespace-nowrap px-6 py-4 text-xs font-black uppercase tracking-widest border-b-2 border-gussGreen text-gussGreen transition-colors">Identity
+                                Data</button>
+                            <button onclick="switchProfileTab('contact')" id="ptab-contact"
+                                class="profile-tab-btn flex-1 whitespace-nowrap px-6 py-4 text-xs font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-colors">Contact
+                                / NOK</button>
+                            <button onclick="switchProfileTab('medical')" id="ptab-medical"
+                                class="profile-tab-btn flex-1 whitespace-nowrap px-6 py-4 text-xs font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-colors">Medical
+                                Logs</button>
+                            <button onclick="switchProfileTab('security')" id="ptab-security"
+                                class="profile-tab-btn flex-1 whitespace-nowrap px-6 py-4 text-xs font-black uppercase tracking-widest border-b-2 border-transparent text-slate-400 hover:text-slate-600 transition-colors">Security
+                                Settings</button>
+                        </div>
+
+                        <form id="studentProfileForm" class="p-6 sm:p-8">
+                            <!-- Identity Data -->
+                            <div id="pview-personal" class="profile-sub-view block space-y-6">
+                                <div
+                                    class="bg-slate-100 p-4 rounded-xl flex gap-3 text-sm text-slate-600 font-medium mb-2 border border-slate-200">
+                                    <i class="fa-solid fa-lock text-slate-400 mt-1"></i>
+                                    <p>Core identity parameters are locked by the Central Registry. To request a change
+                                        to your legal name or origin, please visit the Administration Block physically.
+                                    </p>
+                                </div>
+                                <div class="grid sm:grid-cols-2 gap-5">
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Full
+                                            Legal Name</label><input type="text" id="prof-name" disabled
+                                            class="bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-700 cursor-not-allowed">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Date
+                                            of Birth</label><input type="text" id="prof-dob" disabled
+                                            class="bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 font-bold font-mono text-slate-700 cursor-not-allowed">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">State
+                                            of Origin</label><input type="text" id="prof-state" disabled
+                                            class="bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-700 cursor-not-allowed">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">LGA</label><input
+                                            type="text" id="prof-lga" disabled
+                                            class="bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 font-bold text-slate-700 cursor-not-allowed">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Data -->
+                            <div id="pview-contact" class="profile-sub-view hidden space-y-6">
+                                <div class="flex flex-col gap-2"><label
+                                        class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Permanent
+                                        Residential Address</label><input type="text" id="prof-address"
+                                        class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                </div>
+                                <div class="pt-4 border-t border-slate-100 space-y-5">
+                                    <h4 class="text-xs font-black text-gussNavy uppercase tracking-wide">Emergency
+                                        Contact (Next of Kin)</h4>
+                                    <div class="grid sm:grid-cols-2 gap-5">
+                                        <div class="flex flex-col gap-2"><label
+                                                class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Full
+                                                Name</label><input type="text" id="prof-nok-name"
+                                                class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                        </div>
+                                        <div class="flex flex-col gap-2"><label
+                                                class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Phone
+                                                Number</label><input type="text" id="prof-nok-phone"
+                                                class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-mono font-bold focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="saveMutableProfileData()"
+                                    class="bg-gussGreen text-white font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-md hover:bg-emerald-800 transition-colors">Save
+                                    Contact Updates</button>
+                            </div>
+
+                            <!-- Medical Data -->
+                            <div id="pview-medical" class="profile-sub-view hidden space-y-6">
+                                <div class="grid sm:grid-cols-2 gap-5">
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Critical
+                                            Medical Allergies</label><input type="text" id="prof-med-allergies"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Routine
+                                            Medications</label><input type="text" id="prof-routine-meds"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                    <div class="flex flex-col gap-2 sm:col-span-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Clinical
+                                            Conditions / Disability Notes</label><input type="text" id="prof-disability"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                </div>
+                                <button type="button" onclick="saveMutableProfileData()"
+                                    class="bg-gussGreen text-white font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-md hover:bg-emerald-800 transition-colors">Save
+                                    Medical Updates</button>
+                            </div>
+
+                            <!-- Security -->
+                            <div id="pview-security" class="profile-sub-view hidden space-y-6">
+                                <div
+                                    class="bg-amber-50 p-4 rounded-xl flex gap-3 text-sm text-amber-800 font-medium mb-4 border border-amber-200">
+                                    <i class="fa-solid fa-shield-halved mt-1"></i>
+                                    <p>If you are still using the default temporary password (GUSSR-2026-TEMP), please
+                                        update it immediately to secure your account.</p>
+                                </div>
+                                <div class="grid sm:grid-cols-2 gap-5 max-w-2xl">
+                                    <div class="flex flex-col gap-2 sm:col-span-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Current
+                                            Password</label><input type="password" id="sec-current-pass"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">New
+                                            Password</label><input type="password" id="sec-new-pass"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                    <div class="flex flex-col gap-2"><label
+                                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Confirm
+                                            New Password</label><input type="password" id="sec-confirm-pass"
+                                            class="bg-white border border-slate-300 rounded-xl px-4 py-3 font-medium focus:outline-none focus:border-gussGreen focus:ring-2 focus:ring-gussGreen/20 transition-all">
+                                    </div>
+                                </div>
+                                <button type="button" onclick="updateStudentPassword()"
+                                    class="bg-slate-900 text-white font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest shadow-md hover:bg-slate-800 transition-colors">Update
+                                    Access Password</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Modal -->
+    <div id="notifModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-start justify-center p-4 pt-20 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[80vh] scale-95 transition-transform duration-300"
+            id="notifContent">
+            <div class="bg-gussNavy p-5 flex justify-between items-center text-white shrink-0">
+                <h3 class="font-black text-sm uppercase tracking-wide flex items-center gap-2"><i
+                        class="fa-solid fa-bell text-gussGold"></i> Institutional Comms</h3>
+                <button onclick="closeNotificationsModal()" class="text-slate-400 hover:text-white transition-colors"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 bg-slate-50 space-y-4" id="notifBody">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/student_portal_app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <title>DD Administration Console | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Deputy Director of Administration Terminal for Government Unity Secondary School.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="HaiDev Agency">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner z-[60]">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-building-shield text-gussGold mr-1"></i>
+                OPERATIONS & WELFARE NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-shield text-blue-400"></i> Role: DD Administration
+            </span>
+            <span
+                class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4 cursor-pointer hover:text-white transition-colors"
+                onclick="openDDProfileSettings()">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeDDNameDisplay">Loading...</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="window.location.href='staff_login.html'"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">DD
+                        Administration Console</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Discipline, Operations &
+                        Non-Academic Staff</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6">
+
+        <div class="flex bg-slate-200/50 p-1.5 rounded-2xl w-full shadow-sm overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('omnisearch')" id="tabBtnOmnisearch"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white shadow text-gussNavy border border-slate-200"><i
+                    class="fa-solid fa-earth-africa mr-2 text-blue-500"></i> Omni-Search</button>
+            <button onclick="switchTab('approvals')" id="tabBtnApprovals"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-user-gear mr-2 text-emerald-500"></i> Non-Academic Approvals</button>
+            <button onclick="switchTab('welfare')" id="tabBtnWelfare"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-umbrella-beach mr-2 text-orange-500"></i> Staff Welfare</button>
+            <button onclick="switchTab('discipline')" id="tabBtnDiscipline"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-gavel mr-2 text-red-500"></i> Disciplinary Board</button>
+            <button onclick="switchTab('hostels')" id="tabBtnHostels"
+                class="flex-1 whitespace-nowrap px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                    class="fa-solid fa-building-user mr-2 text-purple-500"></i> Hostels Management</button>
+        </div>
+
+        <div id="tabContentOmnisearch" class="block animate-fade-in space-y-6 flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide mb-3"><i
+                        class="fa-solid fa-magnifying-glass text-blue-500 mr-2"></i> Global Omni-Search Gateway</h2>
+                <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-4">Search across all active
+                    students and institutional staff to view Master Dossiers.</p>
+                <div class="relative">
+                    <input type="text" id="omniSearchInput" onkeyup="executeOmniSearch()"
+                        placeholder="Search Name, ID, or Admission Number..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-4 pr-3 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-300">
+                </div>
+                <div id="omniSearchResults"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6 max-h-[500px] overflow-y-auto pr-2">
+                </div>
+            </div>
+
+            <div class="bg-blue-50 border border-blue-200 rounded-3xl p-6 shadow-sm mt-6">
+                <h2 class="text-sm font-black text-blue-900 uppercase tracking-wide mb-3"><i
+                        class="fa-solid fa-bullhorn text-blue-500 mr-2"></i> Publish Institutional Broadcast</h2>
+                <div class="flex flex-col gap-3">
+                    <textarea id="broadcastMessageInput" rows="2"
+                        placeholder="Enter official announcement to broadcast to all staff portals..."
+                        class="w-full bg-white border border-blue-300 rounded-xl p-3 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                    <div class="flex justify-end">
+                        <button onclick="publishBroadcast()"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-black px-6 py-2.5 rounded-xl text-xs uppercase tracking-widest shadow-md transition-colors"><i
+                                class="fa-solid fa-paper-plane mr-2"></i> Transmit Broadcast</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentApprovals" class="hidden animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Operations Staff Onboarding
+                            Queue</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Review and
+                            approve non-teaching staff (Admin, Security, Medical, Maintenance).</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Identity</th>
+                                <th class="py-3 px-3">Qualification / Role</th>
+                                <th class="py-3 px-3">Contact</th>
+                                <th class="py-3 px-3 text-right">Approval Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalsBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentWelfare" class="hidden animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Staff Welfare & Leave
+                            Management</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Place staff on
+                            official leave to temporarily freeze their portal access.</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Identity</th>
+                                <th class="py-3 px-3">Department</th>
+                                <th class="py-3 px-3 text-center">Current Status</th>
+                                <th class="py-3 px-3 text-right">Administrative Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="welfareBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-6">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Leave Applications Review
+                            Queue</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Review, approve,
+                            or reject official staff leave requests.</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Applicant Identity</th>
+                                <th class="py-3 px-3">Leave Details</th>
+                                <th class="py-3 px-3">Handover Notes</th>
+                                <th class="py-3 px-3 text-right">Review Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaveApprovalsBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- DD ADMIN: PROCESSED LEAVE HISTORY -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm mb-6">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide"><i
+                                class="fa-solid fa-clock-rotate-left text-slate-400 mr-2"></i> Institutional Leave
+                            Ledger</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Historical audit
+                            trail of all processed staff leave applications.</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Staff Identity</th>
+                                <th class="py-3 px-3">Leave Details</th>
+                                <th class="py-3 px-3 text-center">Status</th>
+                                <th class="py-3 px-3">Admin Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="allLeaveHistoryBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentDiscipline" class="hidden animate-fade-in flex-1 space-y-6">
+            <div class="bg-red-50 border border-red-200 rounded-3xl p-6 shadow-sm">
+                <h2 class="text-sm font-black text-red-900 uppercase tracking-wide mb-4 border-b border-red-200 pb-2"><i
+                        class="fa-solid fa-triangle-exclamation text-red-500 mr-2"></i> Log Student Infraction (3-Strike
+                    Active)</h2>
+
+                <div class="grid md:grid-cols-2 gap-4 mb-4">
+                    <div class="flex flex-col gap-2 relative">
+                        <label class="font-black text-[10px] text-red-700 uppercase tracking-widest">Search Student
+                            Identity</label>
+                        <input type="text" id="discSearchInput" onkeyup="filterDisciplineStudents()"
+                            placeholder="Type Name or Adm No..."
+                            class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-300">
+                        <div id="discSearchResults"
+                            class="absolute top-[60px] left-0 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto hidden">
+                        </div>
+                        <input type="hidden" id="discSelectedStudentId">
+                        <input type="hidden" id="discSelectedStudentName">
+                        <input type="hidden" id="discSelectedStudentClass">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-red-700 uppercase tracking-widest">Infraction
+                            Level</label>
+                        <select id="discLevelSelect"
+                            class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-300">
+                            <option value="Warning">Level 1: Official Warning</option>
+                            <option value="Probation">Level 2: Probation & Fatigue</option>
+                            <option value="Suspension">Level 3: Suspension</option>
+                            <option value="Dismissal">Level 4: Complete Dismissal</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2 mb-4">
+                    <label class="font-black text-[10px] text-red-700 uppercase tracking-widest">Official Reason /
+                        Details</label>
+                    <input type="text" id="discReasonInput" placeholder="e.g., Unauthorized absence from prep..."
+                        class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-red-300">
+                </div>
+                <div class="flex flex-col gap-2 mb-4">
+                    <label class="font-black text-[10px] text-red-700 uppercase tracking-widest">Issued Penalty</label>
+                    <input type="text" id="discPenaltyInput" placeholder="e.g., 2 weeks suspension + manual fatigue..."
+                        class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-red-300">
+                </div>
+                <div class="flex justify-end">
+                    <button onclick="logDisciplinaryAction()"
+                        class="bg-red-600 hover:bg-red-700 text-white font-black px-6 py-2.5 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors"><i
+                            class="fa-solid fa-gavel mr-1"></i> Enforce & Log Penalty</button>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[300px]">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-sm font-black text-slate-700 uppercase tracking-wide">Central Disciplinary Registry
+                    </h3>
+                    <select id="disciplineFilter" onchange="renderDisciplineRegistry()"
+                        class="bg-slate-50 border border-slate-300 rounded-lg px-3 py-1.5 text-xs font-bold text-slate-700 focus:outline-none">
+                        <option value="ALL">All Levels</option>
+                        <option value="Warning">Warnings</option>
+                        <option value="Probation">Probation</option>
+                        <option value="Suspension">Suspensions</option>
+                        <option value="Dismissal">Dismissals</option>
+                    </select>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Identity</th>
+                                <th class="py-3 px-3">Level</th>
+                                <th class="py-3 px-3">Infraction Details & Penalty</th>
+                                <th class="py-3 px-3 text-right">Administrative Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeDisciplineBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentHostels" class="hidden animate-fade-in flex-1 space-y-6">
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Warden Appointment -->
+                <div class="bg-purple-50 border border-purple-200 rounded-3xl p-6 shadow-sm">
+                    <h2
+                        class="text-sm font-black text-purple-900 uppercase tracking-wide mb-4 border-b border-purple-200 pb-2">
+                        <i class="fa-solid fa-building-user text-purple-500 mr-2"></i> Appoint House Warden
+                    </h2>
+
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-purple-700 uppercase tracking-widest">Target
+                                Hostel</label>
+                            <select id="hmHostelSelect"
+                                class="w-full bg-white border border-purple-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300"></select>
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-purple-700 uppercase tracking-widest">Approved
+                                Staff</label>
+                            <select id="hmStaffSelect"
+                                class="w-full bg-white border border-purple-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-purple-300"></select>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-end">
+                        <button onclick="assignHouseMaster()"
+                            class="bg-purple-600 hover:bg-purple-700 text-white font-black px-6 py-2.5 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors w-full"><i
+                                class="fa-solid fa-key mr-1"></i> Appoint</button>
+                    </div>
+                </div>
+
+                <!-- Hostel Reassignment Utility -->
+                <div class="bg-indigo-50 border border-indigo-200 rounded-3xl p-6 shadow-sm">
+                    <h2
+                        class="text-sm font-black text-indigo-900 uppercase tracking-wide mb-4 border-b border-indigo-200 pb-2">
+                        <i class="fa-solid fa-right-left text-indigo-500 mr-2"></i> Administrative Hostel Transfer
+                    </h2>
+
+                    <div class="space-y-4">
+                        <div class="flex flex-col gap-2 relative">
+                            <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Search
+                                Student</label>
+                            <input type="text" id="hostelTransferSearchInput" onkeyup="filterHostelTransferStudents()"
+                                placeholder="Name or Adm No..."
+                                class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                            <div id="hostelTransferSearchResults"
+                                class="absolute top-[60px] left-0 w-full bg-white border border-slate-200 rounded-lg shadow-xl z-10 max-h-48 overflow-y-auto hidden">
+                            </div>
+                            <input type="hidden" id="hostelTransferStudentId">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="flex flex-col gap-2">
+                                <label
+                                    class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Current</label>
+                                <input type="text" id="hostelTransferCurrent"
+                                    class="w-full bg-slate-100 border border-slate-200 rounded-lg px-3 py-2 text-[10px] font-bold text-slate-500 cursor-not-allowed"
+                                    readonly>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <label
+                                    class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Destination</label>
+                                <select id="hostelTransferNew"
+                                    class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2 text-[10px] font-bold focus:outline-none focus:ring-2 focus:ring-indigo-300"></select>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col gap-2">
+                            <label class="font-black text-[10px] text-indigo-700 uppercase tracking-widest">Official
+                                Reason</label>
+                            <input type="text" id="hostelTransferReason"
+                                placeholder="e.g. Administrative realignment..."
+                                class="w-full bg-white border border-indigo-300 rounded-lg px-3 py-2.5 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-300">
+                        </div>
+
+                        <button onclick="executeHostelTransfer()"
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-2.5 rounded-lg text-xs uppercase tracking-widest shadow-md transition-colors mt-2"><i
+                                class="fa-solid fa-shuffle mr-1"></i> Authorize Transfer</button>
+                    </div>
+                </div>
+
+                <!-- SYSTEM INFRASTRUCTURE DICTIONARY -->
+                <div class="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 shadow-sm flex flex-col">
+                    <h2
+                        class="text-sm font-black text-emerald-900 uppercase tracking-wide mb-4 border-b border-emerald-200 pb-2">
+                        <i class="fa-solid fa-hammer text-emerald-500 mr-2"></i> Infrastructure Management
+                    </h2>
+                    <p class="text-[10px] text-slate-500 font-bold tracking-widest mb-4 uppercase">Update the master
+                        database when new hostels are commissioned or old ones are scrapped.</p>
+
+                    <div class="space-y-3 mt-auto">
+                        <button onclick="guiAddHostel()"
+                            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black py-2.5 rounded-lg text-[10px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Commission New Hostel
+                        </button>
+
+                        <button onclick="guiRemoveHostel()"
+                            class="w-full bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:text-red-700 font-black py-2.5 rounded-lg text-[10px] uppercase tracking-widest shadow-sm transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-trash-can"></i> Scrap Existing Hostel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[300px]">
+                <h3 class="text-sm font-black text-slate-700 uppercase tracking-wide mb-4">Hostel Capacity & Warden
+                    Matrix</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4" id="hostelCapacityGrid"></div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- MASTER DOSSIER MODAL -->
+    <div id="dossierModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[120] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-[2rem] w-full max-w-4xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] scale-95 transition-transform duration-300"
+            id="dossierContent">
+            <div
+                class="bg-gussNavy p-6 flex justify-between items-center text-white shrink-0 border-b border-slate-700">
+                <div>
+                    <h3 class="font-black text-xl uppercase tracking-wide flex items-center gap-3"><i
+                            class="fa-solid fa-address-card text-gussGold"></i> Executive Master Dossier</h3>
+                    <p class="text-[11px] text-slate-400 font-medium mt-1 uppercase tracking-widest">Complete Unedited
+                        Identity Record</p>
+                </div>
+                <button onclick="closeDossierModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-2xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1 bg-slate-50" id="dossierBody"></div>
+        </div>
+    </div>
+
+    <!-- DD PROFILE & SIGNATURE MODAL (STRICTLY READ-ONLY) -->
+    <div id="ddProfileModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <div>
+                    <h3 class="font-black text-lg text-gussNavy uppercase tracking-wide"><i
+                            class="fa-solid fa-id-card-clip text-gussGold mr-2"></i> Official Credentials</h3>
+                    <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">Central ICT Registry
+                        Source of Truth</p>
+                </div>
+                <button onclick="document.getElementById('ddProfileModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6 space-y-3">
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 block mb-1">Active
+                        Officer Name</span>
+                    <div class="font-bold text-sm text-slate-700 bg-white px-3 py-2 rounded-lg border border-slate-200"
+                        id="readOnlyDDName">Loading...</div>
+                </div>
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-blue-400 block mb-1">Official
+                        Digital Signature</span>
+                    <div
+                        class="bg-white p-3 rounded-lg border border-slate-200 text-center min-h-[80px] flex items-center justify-center">
+                        <img id="ddSignaturePreview" src=""
+                            class="h-16 object-contain mx-auto mix-blend-multiply opacity-80"
+                            alt="No Signature Uploaded">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-start gap-3">
+                <i class="fa-solid fa-lock text-slate-400 mt-0.5"></i>
+                <p class="text-[10px] text-slate-500 font-medium leading-relaxed">Your identity parameters and digital
+                    signature are cryptographically locked. If you require a modification, you must physically visit the
+                    Central ICT Administrator.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- REMOVE HOSTEL MODAL -->
+    <div id="removeHostelModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <h3 class="font-black text-lg text-red-600 uppercase tracking-wide"><i
+                        class="fa-solid fa-trash-can mr-2"></i> Scrap Hostel</h3>
+                <button onclick="document.getElementById('removeHostelModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div class="flex flex-col gap-2 mb-6">
+                <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Select Hostel to
+                    Remove</label>
+                <select id="removeHostelSelect"
+                    class="w-full bg-white border border-red-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-red-300"></select>
+            </div>
+            <button onclick="executeRemoveHostel()"
+                class="w-full py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all"><i
+                    class="fa-solid fa-trash-can mr-1"></i> Confirm Deletion</button>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/dd_admin_app.js"></script>
+
+</body>
+
+</html>

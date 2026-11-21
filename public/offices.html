@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offices & Faculty Hubs | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Explore the operational offices including Admissions, Staff Rooms, and Examination Complexes at Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-slate-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=1920"
+                alt="Offices" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-slate-800 border border-slate-500/50 text-slate-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Operational Framework
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Faculty & Admin <span class="text-slate-400">Offices</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The independent nerve centers
+                managing student admissions, psychological welfare, and national examination integrity.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+
+            <!-- Admissions Office -->
+            <div
+                class="bg-slate-50 border border-slate-200 rounded-[2rem] p-10 shadow-sm relative overflow-hidden group hover:shadow-lg transition-shadow flex flex-col justify-between">
+                <i
+                    class="fa-solid fa-file-signature absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-emerald-100 transition-colors"></i>
+                <div>
+                    <div
+                        class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-3xl mb-6 relative z-10">
+                        <i class="fa-solid fa-address-card"></i>
+                    </div>
+                    <h3 class="text-2xl font-black text-gussNavy uppercase tracking-wide relative z-10 mb-4">Admissions
+                        Office</h3>
+
+                    <div class="flex items-center gap-4 mb-6 relative z-10">
+                        <div id="fac-admissions_office-img"
+                            class="w-12 h-12 rounded-full border-2 border-emerald-500 overflow-hidden image-placeholder text-[8px] bg-slate-200 shrink-0">
+                            OFFICER</div>
+                        <div>
+                            <p id="fac-admissions_office-name" class="text-xs font-black uppercase text-slate-800">
+                                Awaiting Assignment</p>
+                            <p id="fac-admissions_office-role"
+                                class="text-[9px] text-emerald-600 font-bold uppercase tracking-widest">Chief Admissions
+                                Officer</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-sm text-slate-600 leading-relaxed relative z-10">
+                        <p>Responsible for the entire lifecycle of new student intakes, screening, and evaluations. This
+                            office is the primary gateway for all scholars entering the institution.</p>
+                        <p><strong>Exchange Program Logistics:</strong> They coordinate the vital Northern States
+                            Exchange Programme. This includes arranging interstate transportation with state ministries
+                            and processing all necessary legal paperwork.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guidance & Counseling Office -->
+            <div
+                class="bg-blue-50 border border-blue-200 rounded-[2rem] overflow-hidden shadow-sm group hover:shadow-lg transition-shadow flex flex-col">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800"
+                    alt="Counseling Session" class="w-full h-48 object-cover">
+                <div class="p-10 relative flex-1">
+                    <h3 class="text-2xl font-black text-blue-900 uppercase tracking-wide mb-4">Guidance & Counseling
+                    </h3>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div id="fac-guidance_office-img"
+                            class="w-12 h-12 rounded-full border-2 border-blue-500 overflow-hidden image-placeholder text-[8px] bg-blue-100 text-blue-600 shrink-0">
+                            G&C</div>
+                        <div>
+                            <p id="fac-guidance_office-name" class="text-xs font-black uppercase text-slate-800">
+                                Awaiting Assignment</p>
+                            <p id="fac-guidance_office-role"
+                                class="text-[9px] text-blue-600 font-bold uppercase tracking-widest">Counselor / Campus
+                                Guide</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-sm text-blue-900/80 leading-relaxed">
+                        <p>An independent, discreet office dedicated entirely to student psychology, wellness, and
+                            career mapping. The G&C officer actively counsels scholars on academic pressures and social
+                            development.</p>
+                        <p><strong>Crucial Routing & Support:</strong> The office is instrumental in assisting JSS 3
+                            students determine their exact Senior Departmental pathways based on scientific aptitude,
+                            while simultaneously offering deep mental-health support to Exchange Students battling
+                            homesickness.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Rooms Full Width -->
+            <div
+                class="bg-slate-50 border border-slate-200 rounded-[2rem] p-10 shadow-sm relative overflow-hidden group hover:shadow-lg transition-shadow">
+                <i
+                    class="fa-solid fa-users-rectangle absolute -right-6 -bottom-6 text-9xl text-slate-200 group-hover:text-amber-100 transition-colors"></i>
+                <div class="grid lg:grid-cols-2 gap-10 relative z-10 items-center">
+                    <div>
+                        <div
+                            class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-gussNavy uppercase tracking-wide mb-4">Staff Rooms I & II
+                        </h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-6 text-justify">
+                            The primary sanctuaries for our academic faculty. These massive administrative halls provide
+                            a comfortable, climate-controlled environment where teachers execute script marking, peer
+                            reviews, and syllabus planning. Form Masters use this base to track the performance of their
+                            respective Class Sets.
+                        </p>
+                    </div>
+                    <div class="bg-white border border-amber-100 p-8 rounded-2xl shadow-sm">
+                        <h4 class="font-black text-slate-800 text-xs uppercase mb-4 border-b border-slate-100 pb-3">
+                            Facility Amenities</h4>
+                        <ul class="grid grid-cols-2 gap-4 text-xs font-bold text-slate-500">
+                            <li><i class="fa-solid fa-check text-amber-500 mr-2"></i> Dedicated Desks</li>
+                            <li><i class="fa-solid fa-check text-amber-500 mr-2"></i> Lounge Cushions</li>
+                            <li><i class="fa-solid fa-check text-amber-500 mr-2"></i> Air Conditioning</li>
+                            <li><i class="fa-solid fa-check text-amber-500 mr-2"></i> Refrigerators</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Halls Full Width -->
+            <div class="bg-gussNavy text-white rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:flex-row">
+                <div class="md:w-1/2 p-10 flex flex-col justify-center">
+                    <h3 class="text-2xl font-black uppercase tracking-wide text-gussGold mb-4">Examination Complexes
+                    </h3>
+                    <p class="text-sm text-slate-300 leading-relaxed text-justify mb-6">
+                        Completely separate from standard Area Classes, these specialized halls are under the direct
+                        jurisdiction of the Examination Office. They are utilized strictly for high-security terminal
+                        assessments, Mock exams, and national certifications (WAEC, NECO). During weekends, they
+                        seamlessly transform to host the Islamiyyah theological classes.
+                    </p>
+                </div>
+                <div class="md:w-1/2 relative h-64 md:h-auto">
+                    <img src="https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?auto=format&fit=crop&q=80&w=800"
+                        alt="Exam Halls" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gussNavy/20"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

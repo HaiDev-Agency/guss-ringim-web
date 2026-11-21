@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chief Security Officer Console | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Physical Access & Security Control Terminal for Government Unity Secondary School.">
+    <meta name="author" content="HaiDev Agency">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <!-- Top Admin Bar -->
+    <div
+        class="bg-slate-950 text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-800 shadow-inner relative z-[60] no-print">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-shield-halved text-blue-500 mr-1"></i>
+                SECURITY & ACCESS NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-walkie-talkie text-amber-400"></i> Role: Chief Security Officer
+            </span>
+            <span class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4">
+                <i class="fa-regular fa-circle-user mr-1 text-blue-400"></i> <span
+                    id="activeCsoNameDisplay">Loading...</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!-- App Switcher -->
+            <div id="multiRoleSwitcher" class="hidden relative">
+                <button onclick="toggleAppSwitcher()"
+                    class="bg-purple-900/50 hover:bg-purple-800 border border-purple-500/50 text-purple-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm text-[10px] uppercase">
+                    <i class="fa-solid fa-layer-group"></i> Switch Role <i
+                        class="fa-solid fa-chevron-down text-[8px]"></i>
+                </button>
+                <div id="appSwitcherDropdown"
+                    class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-[70] flex flex-col gap-1">
+                </div>
+            </div>
+
+            <!-- Notification Bell -->
+            <div class="relative cursor-pointer ml-2" onclick="openNotificationsModal()">
+                <i class="fa-solid fa-bell text-slate-400 hover:text-white transition-colors text-base"></i>
+                <span id="notifBadge" class="hidden absolute -top-1 -right-1 flex h-3 w-3">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span
+                        class="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[8px] items-center justify-center text-white font-black">!</span>
+                </span>
+            </div>
+
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-white"></span></span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-slate-900 uppercase leading-tight">Chief Security
+                        Console</h1>
+                    <p class="text-[10px] text-blue-600 tracking-widest uppercase font-bold">Perimeter Control & Exeat
+                        Verification</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="openLeaveModal()"
+                    class="bg-slate-100 hover:bg-slate-200 text-slate-600 border border-slate-300 px-4 py-2 rounded-lg text-[10px] font-black uppercase tracking-widest transition-all shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-umbrella-beach text-orange-500"></i> HR Leave
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6 no-print">
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex items-center gap-5">
+                <div
+                    class="w-14 h-14 bg-amber-50 text-amber-500 rounded-full flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-ticket"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Active Gate Passes
+                    </p>
+                    <h3 id="statActiveExeats" class="text-3xl font-black text-slate-800 font-mono">0</h3>
+                </div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex items-center gap-5">
+                <div class="w-14 h-14 bg-red-50 text-red-500 rounded-full flex items-center justify-center text-2xl"><i
+                        class="fa-solid fa-clock-rotate-left"></i></div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Overdue Returns
+                    </p>
+                    <h3 id="statOverdue" class="text-3xl font-black text-red-600 font-mono">0</h3>
+                </div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm flex items-center gap-5">
+                <div class="w-14 h-14 bg-blue-50 text-blue-500 rounded-full flex items-center justify-center text-2xl">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <div>
+                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-0.5">System Status</p>
+                    <h3 class="text-base font-black text-blue-600 tracking-wider uppercase mt-1">Operational</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-6 items-start">
+
+            <!-- Quick-Scan Verification Engine -->
+            <div class="lg:col-span-5 flex flex-col gap-6">
+                <div class="bg-slate-900 text-white border border-slate-800 rounded-3xl p-8 shadow-xl">
+                    <h2
+                        class="text-sm font-black text-blue-400 uppercase tracking-widest mb-4 border-b border-slate-800 pb-3 flex items-center gap-2">
+                        <i class="fa-solid fa-barcode"></i> Gate Verification Scanner
+                    </h2>
+                    <p class="text-xs text-slate-400 mb-6 leading-relaxed">Enter a student's Admission Number to
+                        instantly verify their Exeat status or check for active disciplinary suspensions.</p>
+
+                    <form onsubmit="verifyStudentAccess(event)" class="relative mb-6">
+                        <input type="text" id="scanInput" placeholder="GUSSR/2026/..."
+                            class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-4 pr-12 py-4 text-sm font-mono font-bold text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all uppercase tracking-widest"
+                            autocomplete="off" required>
+                        <button type="submit"
+                            class="absolute right-3 top-3 w-8 h-8 bg-blue-600 hover:bg-blue-500 text-white rounded-lg flex items-center justify-center transition-colors"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
+                    </form>
+
+                    <!-- Dynamic Verification Result -->
+                    <div id="scanResultPane"
+                        class="hidden rounded-2xl p-5 border-2 transition-all duration-300 animate-fade-in">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Exeat Ledger -->
+            <div
+                class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl shadow-sm flex flex-col h-full min-h-[500px]">
+                <div
+                    class="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 rounded-t-3xl">
+                    <div>
+                        <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide"><i
+                                class="fa-solid fa-list-check text-slate-400 mr-2"></i> Live Exeat Control Ledger</h3>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Synchronized with
+                            House Master Terminals</p>
+                    </div>
+                    <div class="relative w-48">
+                        <i class="fa-solid fa-filter absolute left-3 top-2.5 text-slate-400 text-[10px]"></i>
+                        <select id="exeatFilter" onchange="renderExeatLedger()"
+                            class="w-full bg-white border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-[10px] font-black uppercase text-slate-600 focus:outline-none focus:ring-1 focus:ring-blue-400">
+                            <option value="ACTIVE">Show Active Only</option>
+                            <option value="OVERDUE">Show Overdue Only</option>
+                            <option value="ALL">Show All Records</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-4">Resident / ID</th>
+                                <th class="py-3 px-4">Pass Details</th>
+                                <th class="py-3 px-4 text-center">Status</th>
+                                <th class="py-3 px-4 text-right">Auth Node</th>
+                            </tr>
+                        </thead>
+                        <tbody id="csoExeatBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Self-Service Leave Modal -->
+    <div id="leaveModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <h3 class="font-black text-lg text-orange-600 uppercase tracking-wide mb-2"><i
+                    class="fa-solid fa-plane-departure mr-2"></i> Official Leave Request</h3>
+            <p
+                class="text-[10px] text-slate-500 font-bold tracking-widest uppercase border-b border-slate-200 pb-4 mb-4">
+                Request digital clearance from DD Admin</p>
+
+            <form onsubmit="submitLeaveRequest(event)" class="space-y-4">
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Type of Leave</label>
+                    <select id="leaveType"
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required>
+                        <option value="Medical">Medical Leave</option>
+                        <option value="Casual">Casual Leave</option>
+                        <option value="Compassionate">Compassionate Leave</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Start
+                            Date</label>
+                        <input type="date" id="leaveStart"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Expected
+                            Return</label>
+                        <input type="date" id="leaveEnd"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Handover Notes /
+                        Instructions</label>
+                    <textarea id="leaveNotes" rows="3"
+                        placeholder="Brief details regarding perimeter security handovers..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required></textarea>
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="document.getElementById('leaveModal').classList.add('hidden')"
+                        class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all">Submit
+                        Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/cso_terminal_app.js"></script>
+
+    <!-- FIRST LOGIN MANDATORY SECURITY MODAL -->
+    <div id="staffFirstLoginModal"
+        class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-10 text-center transform scale-95 transition-transform opacity-0"
+            id="staffFirstLoginContent">
+            <div
+                class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gussNavy uppercase tracking-tight mb-2">Secure Your Account</h2>
+            <p class="text-sm text-slate-600 mb-8 leading-relaxed">You are currently using a system-generated access
+                key. By institutional policy, you must create a permanent, private password before accessing your
+                dashboard.</p>
+
+            <form id="staffFirstPasswordForm" class="space-y-4">
+                <input type="password" id="act-current-pass" required placeholder="Current Temporary Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="setupNewStaffPass" required placeholder="Enter Permanent Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+                <input type="password" id="confirmNewStaffPass" required placeholder="Confirm Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+
+                <button type="submit" id="btnSaveNewPass"
+                    class="w-full bg-gussGold text-gussNavy py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-500/30">
+                    Activate My Account <i class="fa-solid fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

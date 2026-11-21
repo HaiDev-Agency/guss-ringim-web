@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Security | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header
+        class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-emerald-600">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1585829365295-ab7cd400c167?auto=format&fit=crop&q=80&w=1920"
+                alt="Security" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-emerald-900/40 border border-emerald-500/50 text-emerald-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Safeguarding
+                Scholars</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Campus <span class="text-emerald-500">Security</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">An integrated security network
+                combining internal gatekeepers, environmental hazard prevention, and external town policing.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-16 items-start">
+
+            <!-- Perimeter & Community Forces -->
+            <div class="space-y-12">
+                <div>
+                    <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Perimeter Defense</h2>
+                    <div class="w-16 h-1.5 bg-emerald-600 mt-4 rounded-full"></div>
+                    <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                        The entire university-scale acreage of G.U.S.S. Ringim is fortified by high fencing. The campus
+                        features <strong>three massive entry gates</strong>, manned around the clock by official school
+                        gatekeepers under the supervision of the DD Administration.
+                    </p>
+                    <p class="text-sm text-slate-600 mt-4 leading-relaxed text-justify">
+                        Internally, the Quarter Masters and Quarter Prefects maintain strict borders, ensuring students
+                        cannot trespass into the En-suite Staff Quarters.
+                    </p>
+                </div>
+
+                <div class="bg-blue-50 border border-blue-200 p-8 rounded-[2rem] shadow-sm">
+                    <h3 class="text-xl font-black text-blue-900 uppercase tracking-wide mb-4 flex items-center gap-3"><i
+                            class="fa-solid fa-shield-halved text-blue-600"></i> Tactical Community Support</h3>
+                    <p class="text-sm text-blue-800 leading-relaxed text-justify mb-6">
+                        The school enjoys an incredibly robust and symbiotic relationship with the Ringim town
+                        community. To guarantee absolute safety for the 5,000+ exchange scholars, the administration
+                        collaborates continuously with external security forces.
+                    </p>
+                    <ul class="space-y-3 text-xs font-bold text-slate-700">
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-blue-600"></i> The
+                            Nigerian Police Force (NPF)</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-blue-600"></i>
+                            MOPOLS (Mobile Police) Detachments</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-blue-600"></i> Local
+                            Town Vigilante Groups</li>
+                        <li class="flex items-center gap-3"><i class="fa-solid fa-check-circle text-blue-600"></i>
+                            Operation Salama Units</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Hazard Prevention (Labor) -->
+            <div class="bg-slate-50 border border-slate-200 rounded-[2rem] p-10 shadow-lg">
+                <div
+                    class="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <h3 class="text-2xl font-black text-gussNavy uppercase tracking-wide mb-4">Hazard Prevention</h3>
+                <h4 class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-6">The True Purpose of
+                    Labor Day</h4>
+
+                <p class="text-sm text-slate-600 leading-relaxed text-justify mb-6">
+                    While Wednesday Labor Day enforces discipline, its primary, vital objective is biological security.
+                    The vast nature of the campus grounds naturally leads to the rapid growth of wild vegetation and
+                    bushes.
+                </p>
+
+                <div class="bg-white border border-slate-200 p-6 rounded-xl relative overflow-hidden">
+                    <i class="fa-solid fa-staff-snake absolute -right-4 -bottom-4 text-8xl text-slate-100"></i>
+                    <p class="text-sm text-slate-700 leading-relaxed text-justify relative z-10 font-medium">
+                        The Labor Masters and Sanitation Prefects deploy student zones specifically to clear uncleared
+                        bushes and stagnant water. This intense, routine environmental sanitation is an absolute
+                        necessity designed to protect scholars against venomous snakes, deadly mosquito breeding
+                        grounds, and other natural hazards.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

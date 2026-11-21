@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bursary & Finance Terminal | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Central Bursary and Financial Control Terminal for Government Unity Secondary School.">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner relative z-[60] no-print">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-vault text-gussGold mr-1"></i> FINANCIAL
+                CONTROL NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-coins text-emerald-400"></i> Role: Central Bursar
+            </span>
+            <span class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeBursarNameDisplay">Loading...</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <!-- App Switcher -->
+            <div id="multiRoleSwitcher" class="hidden relative">
+                <button onclick="toggleAppSwitcher()"
+                    class="bg-purple-900/50 hover:bg-purple-800 border border-purple-500/50 text-purple-300 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm text-[10px] uppercase">
+                    <i class="fa-solid fa-layer-group"></i> Switch Role <i
+                        class="fa-solid fa-chevron-down text-[8px]"></i>
+                </button>
+                <div id="appSwitcherDropdown"
+                    class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-[70] flex flex-col gap-1">
+                </div>
+            </div>
+
+            <!-- Notification Bell -->
+            <div class="relative cursor-pointer ml-2" onclick="openNotificationsModal()">
+                <i class="fa-solid fa-bell text-slate-400 hover:text-white transition-colors text-base"></i>
+                <span id="notifBadge" class="hidden absolute -top-1 -right-1 flex h-3 w-3">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                    <span
+                        class="relative inline-flex rounded-full h-3 w-3 bg-red-500 text-[8px] items-center justify-center text-white">!</span>
+                </span>
+            </div>
+
+            <span id="gradingTimerDisplay"
+                class="hidden sm:flex items-center gap-2 bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-md text-[10px] shadow-inner ml-4">
+                <i class="fa-solid fa-spinner fa-spin"></i> Syncing...
+            </span>
+
+            <div class="flex items-center gap-1 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner relative ml-4"
+                id="timeMachineWidget">
+                <button onclick="activateLiveSession()" id="tmLiveBtn"
+                    class="bg-gussNavy text-gussGold px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-slate-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1"><span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span><span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span></span>Live
+                </button>
+                <div class="relative">
+                    <button onclick="toggleTmDropdown('tmSessionDropdown')"
+                        class="text-slate-300 hover:text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-colors flex items-center gap-2">
+                        <span id="tmSessionText">Select Session</span> <i
+                            class="fa-solid fa-chevron-down text-[8px] opacity-70"></i>
+                    </button>
+                    <div id="tmSessionDropdown"
+                        class="hidden absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-[70] max-h-64 overflow-y-auto">
+                    </div>
+                </div>
+                <div class="relative">
+                    <button onclick="toggleTmDropdown('tmTermDropdown')" id="tmTermTriggerBtn"
+                        class="text-slate-500 px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-colors flex items-center gap-2 cursor-not-allowed"
+                        disabled>
+                        <span id="tmTermText">Term</span> <i class="fa-solid fa-chevron-down text-[8px] opacity-70"></i>
+                    </button>
+                    <div id="tmTermDropdown"
+                        class="hidden absolute top-full right-0 mt-2 w-40 bg-white rounded-xl shadow-2xl border border-slate-200 py-2 z-[70] max-h-64 overflow-y-auto">
+                    </div>
+                </div>
+            </div>
+
+            <span id="academicSessionDisplay"
+                class="text-gussGold hidden lg:inline border-l border-slate-700 pl-3">2026/2027 SESSION | 1ST
+                TERM</span>
+
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">Bursary &
+                        Financial Control</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Revenue & Arrears
+                        Management Engine</p>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6 no-print">
+
+        <div class="flex flex-col xl:flex-row gap-6 justify-between items-start xl:items-end">
+            <div class="flex bg-slate-200/50 p-1.5 rounded-2xl w-full xl:w-auto shadow-sm overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('schedules')" id="tabBtnSchedules"
+                    class="flex-1 whitespace-nowrap xl:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white shadow text-gussNavy border border-slate-200"><i
+                        class="fa-solid fa-file-invoice-dollar mr-2"></i> Fee Templates</button>
+                <button onclick="switchTab('ledger')" id="tabBtnLedger"
+                    class="flex-1 whitespace-nowrap xl:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                        class="fa-solid fa-money-check-dollar mr-2"></i> Audit Ledger</button>
+                <button onclick="switchTab('enforcement')" id="tabBtnEnforcement"
+                    class="flex-1 whitespace-nowrap xl:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                        class="fa-solid fa-gavel mr-2"></i> Defaulters Matrix</button>
+            </div>
+
+            <div
+                class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row items-start lg:items-center gap-6 w-full xl:w-auto">
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Gateway Status</h3>
+                    <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                        <span class="text-[10px] font-bold text-slate-600">REMITA PORTAL</span>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="paymentGatewayToggle" class="sr-only peer"
+                                onchange="togglePaymentGateway()">
+                            <div
+                                class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-emerald-500">
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-col sm:flex-row gap-4 border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 w-full lg:w-auto">
+                    <div>
+                        <label
+                            class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Payment
+                            Deadline</label>
+                        <div class="flex items-center gap-2">
+                            <input type="date" id="financeDeadlineInput"
+                                class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[10px] font-bold text-slate-700 focus:outline-none">
+                            <button onclick="setFinancialDeadline()"
+                                class="bg-gussNavy hover:bg-slate-800 text-white text-[9px] font-black uppercase px-2 py-2 rounded transition-all shadow-sm">Enforce</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Bursary
+                            Broadcast Engine</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="bursaryBroadcastInput" placeholder="Push financial notice..."
+                                class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-[10px] font-bold text-slate-700 focus:outline-none w-48">
+                            <button onclick="pushBursaryAnnouncement()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-[10px] transition-colors shadow-sm"><i
+                                    class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                    <div class="flex items-end pl-2">
+                        <button onclick="executeTermArchiving()"
+                            class="bg-slate-800 hover:bg-slate-900 text-white font-black text-[10px] uppercase tracking-wider px-4 py-2 rounded-lg shadow-sm transition-all"><i
+                                class="fa-solid fa-clock-rotate-left mr-1"></i> Archive</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 shadow-sm flex items-center justify-between w-full">
+            <div class="flex items-center gap-4">
+                <div
+                    class="w-10 h-10 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div>
+                    <p class="text-[9px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Verified Termly
+                        Revenue</p>
+                    <p class="text-xl font-black text-emerald-900 font-mono" id="totalRevenueMetrics">₦0.00</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-[9px] font-black uppercase tracking-widest text-emerald-700 mb-0.5">Pending Queue</p>
+                <p class="text-sm font-black text-emerald-900 font-mono" id="pendingVerificationCount">0 Students</p>
+            </div>
+        </div>
+
+        <div id="tabContentSchedules"
+            class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex-1 animate-fade-in block">
+            <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Sectional Fee Templating</h2>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Configure automated billing models based on
+                        school sections and departments.</p>
+                </div>
+                <button onclick="document.getElementById('newTemplateForm').classList.toggle('hidden')"
+                    class="bg-gussNavy hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider px-5 py-2.5 rounded-xl shadow-sm transition-all"><i
+                        class="fa-solid fa-plus mr-1"></i> New Template</button>
+            </div>
+
+            <div id="newTemplateForm"
+                class="hidden bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 animate-fade-in">
+                <h4
+                    class="text-xs font-black uppercase tracking-widest text-slate-600 mb-4 border-b border-slate-200 pb-2">
+                    Generate New Billing Template</h4>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div class="col-span-1 lg:col-span-2">
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Target
+                            Section/Department</label>
+                        <select id="scheduleScope"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                            <option value="JUNIOR SECONDARY">Junior Secondary</option>
+                            <option value="SENIOR SECONDARY (SCIENCE)">Senior Secondary (Science)</option>
+                            <option value="SENIOR SECONDARY (ARTS/COMMERCIAL)">Senior Secondary (Arts/Commercial)
+                            </option>
+                            <option value="EXCHANGE SCHEME">Exchange Programme Students</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Tuition
+                            Fee (₦)</label>
+                        <input type="number" id="feeTuition" placeholder="0"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Boarding
+                            Maintenance (₦)</label>
+                        <input type="number" id="feeBoarding" placeholder="0"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">PTA
+                            Levy (₦)</label>
+                        <input type="number" id="feePTA" placeholder="0"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Medical
+                            Levy (₦)</label>
+                        <input type="number" id="feeMedical" placeholder="0"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold focus:outline-none focus:ring-2 focus:ring-emerald-200">
+                    </div>
+                    <div class="col-span-1 lg:col-span-2 flex items-end justify-end">
+                        <button onclick="saveFeeSchedule()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black uppercase tracking-wider px-8 py-2.5 rounded-lg shadow-md transition-all w-full lg:w-auto"><i
+                                class="fa-solid fa-cloud-arrow-up mr-1"></i> Deploy Template</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6" id="schedulesGrid"></div>
+        </div>
+
+        <div id="tabContentLedger" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col min-h-[500px]">
+                <div
+                    class="flex flex-col sm:flex-row justify-between items-start sm:items-end border-b border-slate-200 pb-4 mb-6 gap-4">
+                    <div>
+                        <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Verification Audit Queue
+                        </h2>
+                        <p class="text-xs text-slate-500 font-medium mt-1">Audit and verify payments initiated by
+                            students on the Remita portal.</p>
+                    </div>
+                    <div class="relative w-full sm:w-72">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-sm"></i>
+                        <input type="text" id="ledgerSearchInput" onkeyup="filterLedger()"
+                            placeholder="Search by RRR or ID..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-gussNavy">
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead
+                            class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-600 font-black border-b border-slate-200">
+                            <tr>
+                                <th class="py-3 px-4">Student Identity</th>
+                                <th class="py-3 px-4">Section/Scope</th>
+                                <th class="py-3 px-4 font-mono text-blue-700">RRR Reference</th>
+                                <th class="py-3 px-4">Amount Expected</th>
+                                <th class="py-3 px-4 text-center">Status</th>
+                                <th class="py-3 px-4 text-right">Verification Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledgerBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentEnforcement" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div class="bg-red-50 border border-red-200 rounded-3xl p-6 shadow-sm flex flex-col min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-red-200 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-lg font-black text-red-900 uppercase tracking-wide"><i
+                                class="fa-solid fa-triangle-exclamation mr-2 text-red-500"></i> Active Defaulters Matrix
+                        </h2>
+                        <p class="text-xs text-red-600 font-medium mt-1">Students with outstanding or unverified
+                            balances. Apply enforcement to withhold results.</p>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto flex-1 bg-white rounded-xl shadow-inner border border-red-100">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead
+                            class="bg-red-100/50 text-[10px] uppercase tracking-widest text-red-800 font-black border-b border-red-200">
+                            <tr>
+                                <th class="py-3 px-4">Student Identity</th>
+                                <th class="py-3 px-4">Assigned Class</th>
+                                <th class="py-3 px-4 text-red-600">Arrears Due</th>
+                                <th class="py-3 px-4 text-center">Registry Status</th>
+                                <th class="py-3 px-4 text-right">Administrative Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="defaultersBody" class="divide-y divide-red-50 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Notification Modal -->
+    <div id="notifModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-start justify-center p-4 pt-20 opacity-0 transition-opacity duration-300 no-print">
+        <div class="bg-white rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[80vh] scale-95 transition-transform duration-300"
+            id="notifContent">
+            <div class="bg-gussNavy p-5 flex justify-between items-center text-white shrink-0">
+                <h3 class="font-black text-sm uppercase tracking-wide flex items-center gap-2"><i
+                        class="fa-solid fa-bell text-gussGold"></i> Institutional Comms</h3>
+                <button onclick="closeNotificationsModal()" class="text-slate-400 hover:text-white transition-colors"><i
+                        class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1 bg-slate-50 space-y-4" id="notifBody"></div>
+        </div>
+    </div>
+
+    <!-- Self-Service Leave Modal -->
+    <div id="leaveModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <h3 class="font-black text-lg text-orange-600 uppercase tracking-wide mb-2"><i
+                    class="fa-solid fa-plane-departure mr-2"></i> Official Leave Request</h3>
+            <p
+                class="text-[10px] text-slate-500 font-bold tracking-widest uppercase border-b border-slate-200 pb-4 mb-4">
+                Request digital clearance from DD Admin</p>
+
+            <form onsubmit="submitLeaveRequest(event)" class="space-y-4">
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Type of Leave</label>
+                    <select id="leaveType"
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required>
+                        <option value="Medical">Medical Leave</option>
+                        <option value="Casual">Casual Leave</option>
+                        <option value="Maternity">Maternity/Paternity</option>
+                        <option value="Compassionate">Compassionate Leave</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Start
+                            Date</label>
+                        <input type="date" id="leaveStart"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Expected
+                            Return</label>
+                        <input type="date" id="leaveEnd"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Handover Notes /
+                        Instructions</label>
+                    <textarea id="leaveNotes" rows="3"
+                        placeholder="Brief details for the DD Admin regarding your duties..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required></textarea>
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="document.getElementById('leaveModal').classList.add('hidden')"
+                        class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all">Submit
+                        Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Security Modal -->
+    <div id="securityModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[110] flex items-center justify-center p-4 no-print">
+        <div
+            class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 text-center border-t-4 border-red-600">
+            <div
+                class="w-20 h-20 rounded-full mx-auto flex items-center justify-center text-4xl mb-4 bg-red-100 text-red-600">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+            </div>
+            <h3 class="font-black text-xl text-gussNavy uppercase tracking-wide mb-2" id="securityTitle">Confirm Action
+            </h3>
+            <p class="text-sm text-slate-500 font-medium mb-6" id="securityMessage">Are you sure you want to proceed?
+            </p>
+
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('securityModal').classList.add('hidden')"
+                    class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                <button id="securityConfirmBtn"
+                    class="flex-1 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-lg transition-all">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/bursary_terminal_app.js"></script>
+
+    <!-- FIRST LOGIN MANDATORY SECURITY MODAL -->
+    <div id="staffFirstLoginModal"
+        class="fixed inset-0 bg-slate-900/95 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-10 text-center transform scale-95 transition-transform opacity-0"
+            id="staffFirstLoginContent">
+            <div
+                class="w-20 h-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">
+                <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <h2 class="text-2xl font-black text-gussNavy uppercase tracking-tight mb-2">Secure Your Account</h2>
+            <p class="text-sm text-slate-600 mb-8 leading-relaxed">You are currently using a system-generated access
+                key. By institutional policy, you must create a permanent, private password before accessing your
+                dashboard.</p>
+
+            <form id="staffFirstPasswordForm" class="space-y-4">
+                <input type="password" id="act-current-pass" required placeholder="Current Temporary Password"
+                    class="w-full p-3.5 bg-slate-800 border border-slate-700 rounded-xl text-center text-white font-black text-xs focus:border-amber-500 outline-none transition-colors">
+                <input type="password" id="setupNewStaffPass" required placeholder="Enter Permanent Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+                <input type="password" id="confirmNewStaffPass" required placeholder="Confirm Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-gussGold outline-none transition-colors">
+
+                <button type="submit" id="btnSaveNewPass"
+                    class="w-full bg-gussGold text-gussNavy py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-500/30">
+                    Activate My Account <i class="fa-solid fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

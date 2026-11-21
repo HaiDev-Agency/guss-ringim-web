@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Command Dashboard | RINOBA Portal</title>
+
+    <meta name="description"
+        content="Secure digital dashboard for the RINOBA Alumni Network. Access networking hubs, financial ledgers, and secure electoral voting.">
+    <meta name="keywords" content="RINOBA Dashboard, Alumni Portal, GUSS Ringim, ELECO Voting">
+    <meta name="author" content="HaiDev Agency">
+
+    <script type="module" src="assets/js/security_guard.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+
+    <link rel="icon" type="image/png" href="../public/assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rinobaBlue: '#1E3A8A',
+                        rinobaGold: '#D4AF37'
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-active {
+            display: flex !important;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100 text-slate-800 font-sans antialiased flex h-screen overflow-hidden">
+
+    <aside id="sidebar"
+        class="w-64 bg-slate-900 text-slate-300 flex-col hidden lg:flex h-full shadow-2xl z-40 fixed lg:relative transition-transform transform lg:translate-x-0 border-r border-slate-800">
+        <div class="p-6 border-b border-slate-800 text-center relative">
+            <button id="closeSidebar" class="absolute top-4 right-4 text-white lg:hidden"><i
+                    class="fa-solid fa-xmark text-xl"></i></button>
+            <img src="../alumni/assets/images/RINOBA-Rounded-Logo.png" alt="RINOBA Logo"
+                class="h-20 w-auto mx-auto mb-3 object-contain filter drop-shadow-lg">
+            <h2 class="text-xs font-black text-white uppercase tracking-widest">Alumni Portal</h2>
+        </div>
+
+        <nav class="flex-1 px-4 py-8 space-y-2 overflow-y-auto">
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 bg-rinobaBlue text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-dashboard"><i class="fa-solid fa-border-all w-5"></i> Dashboard</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-profile"><i class="fa-solid fa-user-pen w-5"></i> My Profile</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-connections"><i class="fa-solid fa-users w-5"></i> Connections</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-voting"><i class="fa-solid fa-check-to-slot w-5"></i> Executive Voting</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-endowment"><i class="fa-solid fa-landmark-dome w-5"></i> Endowment Fund</button>
+            <button
+                class="nav-btn w-full flex items-center gap-3 px-4 py-3 hover:bg-slate-800 hover:text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-colors"
+                data-target="view-network"><i class="fa-solid fa-globe w-5"></i> Network Hub</button>
+        </nav>
+
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="window.executeSystemLogout()"
+                class="flex items-center gap-3 px-4 py-3 hover:bg-red-500/10 text-red-400 rounded-xl text-xs font-bold uppercase tracking-wider transition-colors w-full">
+                <i class="fa-solid fa-arrow-right-from-bracket w-5"></i> Secure Logout
+            </button>
+        </div>
+    </aside>
+
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden"></div>
+
+    <main class="flex-1 h-full overflow-y-auto relative bg-slate-50" id="mainDashboardView">
+        <header
+            class="lg:hidden bg-slate-900 p-4 flex justify-between items-center text-white sticky top-0 z-20 shadow-md border-b-2 border-rinobaGold">
+            <div class="flex items-center gap-3">
+                <img src="../alumni/assets/images/RINOBA-Regtangle-Logo.png" class="h-8 object-contain"
+                    alt="RINOBA Logo">
+            </div>
+            <button id="openSidebar" class="text-2xl focus:outline-none"><i class="fa-solid fa-bars"></i></button>
+        </header>
+
+        <div class="p-6 sm:p-10 max-w-6xl mx-auto space-y-8 pb-20">
+
+            <!-- SECTION: DASHBOARD -->
+            <section id="view-dashboard" class="tab-content active space-y-8">
+                <div
+                    class="bg-white rounded-[2rem] p-8 sm:p-10 shadow-sm border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+                    <div
+                        class="absolute right-0 top-0 w-64 h-64 bg-rinobaGold/10 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none">
+                    </div>
+
+                    <div class="flex items-center gap-6 relative z-10 w-full md:w-auto">
+                        <img id="dashUserAvatar" src=""
+                            class="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-slate-100 shadow-md object-cover bg-white shrink-0">
+                        <div class="text-left">
+                            <span id="dashUserId"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-400 block mb-1">RINOBA/YYYY/XXX</span>
+                            <h1
+                                class="text-2xl sm:text-3xl font-black text-rinobaBlue uppercase tracking-wide mb-1 sm:mb-2">
+                                Welcome Back, <br class="sm:hidden"><span id="dashUserName">Alumnus</span></h1>
+                            <p class="text-xs sm:text-sm text-slate-600 font-medium line-clamp-1">
+                                <i class="fa-solid fa-briefcase text-rinobaGold mr-1"></i> <span
+                                    id="dashUserRole">Profession</span> | <span id="dashUserSet">Class Set</span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative z-10 shrink-0 w-full md:w-auto mt-4 md:mt-0">
+                        <button
+                            class="action-btn w-full md:w-auto bg-rinobaGold hover:bg-yellow-500 text-slate-900 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-colors"
+                            data-target="view-profile">
+                            <i class="fa-solid fa-pen mr-2"></i> Update Profile
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid lg:grid-cols-3 gap-6">
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 w-2 h-full bg-blue-500"></div>
+                        <div
+                            class="w-14 h-14 bg-blue-50 text-rinobaBlue rounded-xl flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-users-viewfinder"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-black text-slate-800" id="liveAlumniCount">0</h4>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Total Registered
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4 relative overflow-hidden">
+                        <div class="absolute right-0 top-0 w-2 h-full bg-emerald-500"></div>
+                        <div
+                            class="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center text-2xl shrink-0">
+                            <i class="fa-solid fa-landmark"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-2xl font-black text-slate-800" id="liveEndowment">₦0</h4>
+                            <p class="text-[9px] font-bold uppercase tracking-widest text-slate-400">Endowment Raised
+                            </p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-6 rounded-2xl border border-slate-800 shadow-xl flex items-center gap-4 cursor-pointer hover:bg-slate-800 transition-colors"
+                        onclick="window.openNotifications()">
+                        <div
+                            class="w-12 h-12 bg-white/10 text-rinobaGold rounded-full flex items-center justify-center text-xl shrink-0 relative">
+                            <i class="fa-solid fa-bell fa-shake"></i>
+                            <span id="notifBadge"
+                                class="absolute top-0 right-0 w-3 h-3 bg-red-500 border-2 border-slate-900 rounded-full hidden"></span>
+                        </div>
+                        <div class="flex-1 overflow-hidden">
+                            <div class="flex justify-between items-center">
+                                <h4 class="text-[10px] font-black text-rinobaGold uppercase tracking-widest">Smart
+                                    Updates</h4>
+                                <i class="fa-solid fa-chevron-right text-slate-500 text-xs"></i>
+                            </div>
+                            <p class="text-xs text-slate-300 mt-1 font-medium line-clamp-2 leading-tight"
+                                id="liveTicker">System initialized. Awaiting updates.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Verification Banner (Shown when PENDING_VERIFICATION) -->
+                <div id="pendingVerificationBanner"
+                    class="hidden bg-amber-50 border-l-4 border-amber-500 p-6 rounded-2xl shadow-sm">
+                    <h3 class="text-xs font-black text-amber-900 uppercase tracking-widest flex items-center gap-2">
+                        <i class="fa-solid fa-hourglass-half text-amber-600"></i> Profile Pending Verification
+                    </h3>
+                    <p class="text-xs text-amber-800 mt-1.5 leading-relaxed font-medium">
+                        Your account is currently awaiting verification (<span id="pendingRefLabel"
+                            class="font-mono font-bold"></span>).
+                        Directory connections, Network Hub posting, and ELECO voting unlock automatically once <strong>2
+                            verified classmates</strong> from your Class Set, your Set Coordinator, or Secretariat
+                        confirm your identity.
+                    </p>
+                </div>
+
+                <!-- Peer Vouching Queue (Shown to VERIFIED Alumni for same Class Set) -->
+                <div id="classmateVouchPanel"
+                    class="hidden bg-white border border-slate-200 rounded-3xl p-6 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div>
+                            <h3
+                                class="text-sm font-black text-rinobaBlue uppercase tracking-wide flex items-center gap-2">
+                                <i class="fa-solid fa-user-check text-emerald-500"></i> Classmates Awaiting Verification
+                            </h3>
+                            <p class="text-[11px] text-slate-500 font-medium">Confirm classmates you personally
+                                recognize from your Class Set.</p>
+                        </div>
+                        <span id="vouchQueueCount"
+                            class="bg-blue-50 text-rinobaBlue px-3 py-1 rounded-full text-[10px] font-black uppercase">0
+                            Pending</span>
+                    </div>
+                    <div id="classmateVouchGrid" class="grid sm:grid-cols-2 gap-4"></div>
+                </div>
+                <!-- Set Coordinator Invite Generator (Shown only if isSetCoordinator === true) -->
+                <div id="setCoordinatorPanel"
+                    class="hidden bg-slate-900 text-white rounded-3xl p-6 shadow-xl border border-slate-800 space-y-4">
+                    <div
+                        class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                        <div>
+                            <span
+                                class="bg-rinobaGold text-slate-900 px-2.5 py-0.5 rounded text-[9px] font-black uppercase tracking-widest">Set
+                                Coordinator Tools</span>
+                            <h3 class="text-sm font-black uppercase tracking-wide mt-2">Fast-Track Invite Codes (<span
+                                    id="coordSetLabel"></span>)</h3>
+                            <p class="text-[11px] text-slate-400">Generate invite codes for verified classmates in your
+                                set WhatsApp group.</p>
+                        </div>
+                        <form id="coordInviteForm" class="flex items-center gap-2">
+                            <input type="number" id="coordInviteUses" value="25" min="1" max="200"
+                                class="w-20 p-2.5 rounded-xl bg-slate-800 border border-slate-700 text-xs font-bold text-center text-white">
+                            <button type="submit"
+                                class="bg-rinobaGold hover:bg-yellow-400 text-slate-900 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest">Generate
+                                Code</button>
+                        </form>
+                    </div>
+                    <div id="coordInvitesList" class="grid sm:grid-cols-2 gap-3 text-xs"></div>
+                </div>
+            </section>
+
+            <!-- SECTION: CONNECTIONS -->
+            <section id="view-connections" class="tab-content space-y-8">
+                <div class="mb-8 border-b border-slate-200 pb-4">
+                    <h2 class="text-2xl font-black text-rinobaBlue uppercase tracking-wide">Network Connections</h2>
+                    <p class="text-sm text-slate-500 mt-1">Manage contact requests from the directory.</p>
+                </div>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-inbox text-rinobaGold"></i> Received Requests
+                        </h3>
+                        <div id="receivedRequestsContainer" class="space-y-4"></div>
+                    </div>
+                    <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 shadow-sm">
+                        <h3
+                            class="text-sm font-black uppercase tracking-widest text-slate-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-rinobaBlue"></i> Sent Requests
+                        </h3>
+                        <div id="sentRequestsContainer" class="space-y-4"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: PROFILE & SECURITY -->
+            <section id="view-profile" class="tab-content bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+                <h2
+                    class="text-2xl font-black text-rinobaBlue uppercase tracking-wide mb-6 border-b border-slate-100 pb-4">
+                    Manage Profile</h2>
+                <form id="profileUpdateForm" class="space-y-8 mb-12">
+                    <div class="flex items-center gap-6 mb-8">
+                        <div
+                            class="relative w-24 h-24 rounded-full border-4 border-slate-100 overflow-hidden group cursor-pointer shadow-inner">
+                            <img id="profileImagePreview" src="" class="w-full h-full object-cover">
+                            <div
+                                class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <i class="fa-solid fa-camera text-white text-xl"></i>
+                            </div>
+                            <input type="file" id="profileImageInput" class="absolute inset-0 opacity-0 cursor-pointer"
+                                accept="image/*">
+                        </div>
+                        <div>
+                            <h4 class="font-black text-slate-800">Profile Photograph</h4>
+                            <p class="text-xs text-slate-500 mt-1">Click image to upload a new portrait to the cloud
+                                vault.</p>
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Full Legal
+                                Name</label><input type="text" id="profName" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Nickname</label><input
+                                type="text" id="profNick"
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Class
+                                Set</label><input type="text" id="profSet"
+                                class="w-full mt-2 p-3 bg-slate-50 border border-slate-200 rounded-lg text-sm cursor-not-allowed font-medium text-slate-500"
+                                readonly></div>
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Class
+                                Graduated</label><input type="text" id="profClass" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Hostel</label><input
+                                type="text" id="profHostel" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Prefecture
+                                (If any)</label><input type="text" id="profPrefecture" placeholder="e.g. Head Student"
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Academic
+                                Qualification</label><input type="text" id="profQual" placeholder="e.g. B.Sc, MBBS"
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Current
+                                Profession</label><input type="text" id="profJob" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div class="md:col-span-2"><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Job
+                                Title</label><input type="text" id="profRole"
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">State</label><input
+                                type="text" id="profState" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Phone</label><input
+                                type="tel" id="profPhone" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium font-mono">
+                        </div>
+                        <div class="md:col-span-2"><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Secure Email
+                                Address</label><input type="email" id="profEmail" required
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                        </div>
+                        <div class="md:col-span-2"><label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500">Testimonial</label><textarea
+                                id="profQuote" required rows="3"
+                                class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none resize-none font-medium"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" id="btnUpdateProfile"
+                        class="w-full md:w-auto mt-8 bg-rinobaBlue text-white px-10 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-900 transition-colors shadow-md">Apply
+                        Profile Changes</button>
+                </form>
+
+                <h3
+                    class="text-xl font-black text-slate-800 uppercase tracking-wide mb-6 border-t border-slate-100 pt-8">
+                    Security Settings</h3>
+                <form id="passwordChangeForm" class="space-y-6 max-w-lg">
+                    <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Current
+                            Password</label><input type="password" id="secCurrentPass" required
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                    </div>
+                    <div><label class="text-[10px] font-black uppercase tracking-widest text-slate-500">New Password
+                            (Min. 8 characters)</label><input type="password" id="secNewPass" required minlength="8"
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                    </div>
+                    <button type="submit" id="btnChangePass"
+                        class="bg-slate-900 text-white px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-black transition-colors shadow-md">Rotate
+                        Password</button>
+                </form>
+            </section>
+
+            <!-- SECTION: ENDOWMENT -->
+            <section id="view-endowment" class="tab-content space-y-8">
+                <div
+                    class="bg-rinobaBlue text-white rounded-[2rem] p-10 flex flex-col md:flex-row justify-between items-center gap-8 shadow-xl relative overflow-hidden">
+                    <i class="fa-solid fa-vault absolute right-10 top-1/2 -translate-y-1/2 text-9xl text-white/5"></i>
+                    <div class="relative z-10 text-center md:text-left">
+                        <h2 class="text-3xl font-black uppercase tracking-wide mb-2">Alma Mater Endowment</h2>
+                        <p class="text-sm text-blue-200 max-w-md leading-relaxed font-medium">Fund physical
+                            infrastructure, sponsor scholarships, and cement your legacy at G.U.S.S. Ringim.</p>
+                    </div>
+                    <div class="relative z-10 shrink-0">
+                        <button onclick="window.openDonationModal()"
+                            class="bg-rinobaGold hover:bg-yellow-400 text-slate-900 px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-lg transition-transform hover:-translate-y-1">
+                            Make a Donation <i class="fa-solid fa-credit-card ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 bg-slate-50 flex justify-between items-center">
+                        <h3 class="font-black text-slate-800 uppercase tracking-wide">Your Verified Ledger</h3>
+                        <span
+                            class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest"
+                            id="myTotalDonations">Total: ₦0</span>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-400 border-b border-slate-200">
+                                    <th class="px-6 py-4 font-black">Reference</th>
+                                    <th class="px-6 py-4 font-black">Date</th>
+                                    <th class="px-6 py-4 font-black">Project</th>
+                                    <th class="px-6 py-4 font-black">Amount</th>
+                                    <th class="px-6 py-4 font-black text-center">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-sm text-slate-600" id="donationLedgerBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: EXECUTIVE VOTING (DYNAMIC ELECO UI) -->
+            <section id="view-voting" class="tab-content space-y-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-black text-rinobaBlue uppercase tracking-wide">Election Engine</h2>
+                    <p class="text-sm text-slate-500 mt-2 font-medium">Certified by the Independent Electoral Committee
+                        (ELECO).</p>
+                </div>
+
+                <div class="flex justify-between items-center max-w-3xl mx-auto mb-12 relative">
+                    <div class="absolute top-1/2 left-0 w-full h-1 bg-slate-200 -z-10 -translate-y-1/2"></div>
+                    <div id="elecoPhaseLine"
+                        class="absolute top-1/2 left-0 w-[15%] h-1 bg-rinobaBlue -z-10 -translate-y-1/2 transition-all duration-500">
+                    </div>
+
+                    <div class="text-center bg-slate-50 p-2 rounded-full">
+                        <div
+                            class="eleco-circle w-12 h-12 rounded-full bg-rinobaBlue text-white flex items-center justify-center font-black text-lg mx-auto shadow-md border-4 border-white transition-colors duration-300">
+                            <i class="fa-solid fa-hand-paper"></i>
+                        </div>
+                        <p
+                            class="eleco-text text-[10px] font-black uppercase tracking-widest mt-2 text-rinobaBlue transition-colors">
+                            Declaration</p>
+                    </div>
+                    <div class="text-center bg-slate-50 p-2 rounded-full">
+                        <div
+                            class="eleco-circle w-12 h-12 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center font-black text-lg mx-auto shadow-md border-4 border-white transition-colors duration-300">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <p
+                            class="eleco-text text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500 transition-colors">
+                            Campaigns</p>
+                    </div>
+                    <div class="text-center bg-slate-50 p-2 rounded-full">
+                        <div
+                            class="eleco-circle w-12 h-12 rounded-full bg-slate-200 text-slate-400 flex items-center justify-center font-black text-lg mx-auto shadow-md border-4 border-white transition-colors duration-300">
+                            <i class="fa-solid fa-check-to-slot"></i>
+                        </div>
+                        <p
+                            class="eleco-text text-[10px] font-black uppercase tracking-widest mt-2 text-slate-500 transition-colors">
+                            Live Voting</p>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white border border-slate-200 rounded-2xl p-10 text-center shadow-sm relative overflow-hidden">
+                    <div id="elecoTimerContainer"
+                        class="absolute top-0 right-0 bg-red-50 border-b border-l border-red-100 px-4 py-2 rounded-bl-xl hidden">
+                        <span class="text-[9px] font-black text-red-400 uppercase tracking-widest block mb-1">Time
+                            Remaining</span>
+                        <p id="elecoCountdown"
+                            class="text-sm font-black text-red-600 font-mono tracking-widest animate-pulse">00:00:00</p>
+                    </div>
+
+                    <span id="elecoStatusPill"
+                        class="inline-block bg-blue-100 text-rinobaBlue px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest mb-4 border border-blue-200 mt-8 sm:mt-0 transition-colors">Phase
+                        1: Declarations Open</span>
+                    <h3 id="elecoTitle"
+                        class="text-xl font-black text-slate-800 uppercase tracking-wide mb-4 transition-colors">Submit
+                        Your Intent</h3>
+                    <p id="elecoDesc"
+                        class="text-sm text-slate-600 mb-8 max-w-xl mx-auto transition-colors leading-relaxed">The
+                        Electoral Committee is accepting official dossiers and credentials for moderation.</p>
+                    <button id="elecoActionBtn" onclick="window.executeElecoAction()"
+                        class="bg-rinobaGold hover:bg-yellow-400 text-slate-900 px-8 py-3 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-colors">
+                        <i class="fa-solid fa-file-signature mr-2"></i> Declare Intent
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION: NETWORK HUB -->
+            <section id="view-network" class="tab-content space-y-6">
+                <div id="threadListView">
+                    <div class="flex justify-between items-end mb-8 border-b border-slate-200 pb-4">
+                        <div>
+                            <h2 class="text-2xl font-black text-rinobaBlue uppercase tracking-wide">Network Hub</h2>
+                            <p class="text-sm text-slate-500 mt-1 font-medium">Relational alumni discussion forum.</p>
+                        </div>
+                        <button onclick="window.openNewThreadModal()"
+                            class="bg-rinobaBlue text-white px-5 py-2.5 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-blue-900 transition-colors shadow-sm">
+                            <i class="fa-solid fa-pen-to-square mr-1"></i> New Thread
+                        </button>
+                    </div>
+                    <div id="threadsContainer" class="space-y-4"></div>
+                </div>
+
+                <div id="threadDetailView" class="hidden">
+                    <button onclick="window.closeThreadDetail()"
+                        class="mb-6 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-rinobaBlue transition-colors">
+                        <i class="fa-solid fa-arrow-left mr-2"></i> Back to Board
+                    </button>
+                    <div
+                        class="bg-white border-t-4 border-rinobaBlue rounded-t-2xl border-x border-slate-200 p-8 shadow-sm">
+                        <span id="activeThreadTag"
+                            class="bg-blue-50 text-rinobaBlue border border-blue-100 px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest mb-3 inline-block">General</span>
+                        <h2 id="activeThreadTitle" class="text-2xl font-black text-slate-900 mb-6">Loading...</h2>
+                        <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-6">
+                            <img id="activeThreadImg" src=""
+                                class="w-12 h-12 rounded-full border-2 border-slate-200 object-cover">
+                            <div>
+                                <h4 id="activeThreadAuthor" class="text-sm font-black text-slate-800">Author</h4>
+                                <p id="activeThreadTime"
+                                    class="text-[9px] text-slate-400 font-bold uppercase tracking-widest">Just now</p>
+                            </div>
+                        </div>
+                        <p id="activeThreadBody" class="text-sm text-slate-700 leading-relaxed font-medium"></p>
+                    </div>
+                    <div class="bg-slate-50 border-x border-b border-slate-200 rounded-b-2xl p-8 shadow-sm">
+                        <div id="repliesContainer" class="space-y-6 mb-8"></div>
+                        <div class="pt-6 border-t border-slate-300">
+                            <label
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-500 block mb-2">Post
+                                a Reply</label>
+                            <textarea id="replyInput" rows="3"
+                                class="w-full p-4 border border-slate-300 rounded-xl text-sm focus:border-rinobaBlue focus:outline-none resize-none mb-3 font-medium"
+                                placeholder="Type your response..."></textarea>
+                            <button onclick="window.submitReply()"
+                                class="bg-rinobaBlue hover:bg-blue-900 text-white px-6 py-3 rounded-lg text-[10px] font-black uppercase tracking-widest transition-colors shadow-md">Submit
+                                Reply</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- ELECO MODAL 1: Structured Declaration Form -->
+    <div id="elecoDeclarationModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl p-8 transform scale-95 transition-transform opacity-0 flex flex-col max-h-[90vh]"
+            id="elecoDeclarationContent">
+            <div class="flex justify-between items-center mb-6 shrink-0 border-b border-slate-200 pb-4">
+                <h3 class="font-black text-slate-800 uppercase tracking-wide"><i
+                        class="fa-solid fa-file-signature text-rinobaBlue mr-2"></i> Declaration of Intent</h3>
+                <button onclick="window.closeElecoModals()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500"></i></button>
+            </div>
+            <div class="overflow-y-auto pr-2 flex-1">
+                <form id="declarationForm" class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Target
+                            Portfolio</label>
+                        <select id="decRole" required
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm font-bold text-slate-700 focus:border-rinobaBlue outline-none">
+                            <option value="">Loading available ranks...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Upload
+                            Credentials (CV/Degrees)</label>
+                        <input type="file" id="decCredentials" required accept=".pdf,image/*"
+                            class="w-full mt-2 p-2 border border-slate-300 rounded-lg text-sm bg-slate-50">
+                        <p class="text-[9px] text-slate-400 mt-1 italic">Merge credentials into one file. Streamed
+                            directly to Backblaze B2 Vault.</p>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Campaign Slogan /
+                            Motive</label>
+                        <input type="text" id="decSlogan" required placeholder="E.g., Moving RINOBA Forward"
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none font-medium">
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Academic &
+                            Professional Pedigree</label>
+                        <textarea id="decPedigree" required rows="3"
+                            placeholder="Detail your academic background and professional milestones..."
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none resize-none font-medium"></textarea>
+                    </div>
+                    <div>
+                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Core Action
+                            Plan</label>
+                        <textarea id="decActionPlan" required rows="5"
+                            placeholder="Detail your step-by-step plans for the RINOBA network if elected..."
+                            class="w-full mt-2 p-3 border border-slate-300 rounded-lg text-sm focus:border-rinobaBlue outline-none resize-none font-medium"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-rinobaBlue text-white py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-900 transition-colors shadow-md mt-4">
+                        Commit Declaration to ELECO
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- ELECO MODAL 2: View Candidates -->
+    <div id="elecoCandidatesModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[70] hidden items-center justify-center p-4">
+        <div class="bg-slate-100 rounded-3xl w-full max-w-4xl shadow-2xl p-8 transform scale-95 transition-transform opacity-0 flex flex-col max-h-[90vh]"
+            id="elecoCandidatesContent">
+            <div class="flex justify-between items-center mb-6 shrink-0 border-b border-slate-300 pb-4">
+                <h3 class="font-black text-slate-800 uppercase tracking-wide"><i
+                        class="fa-solid fa-users-viewfinder text-rinobaBlue mr-2"></i> Approved Candidates</h3>
+                <button onclick="window.closeElecoModals()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-1 grid sm:grid-cols-2 gap-6" id="candidatesGrid"></div>
+        </div>
+    </div>
+
+    <!-- ELECO MODAL 3: Digital Voting Ballot -->
+    <div id="elecoVotingModal"
+        class="fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[70] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl p-8 transform scale-95 transition-transform opacity-0 flex flex-col max-h-[90vh]"
+            id="elecoVotingContent">
+            <div class="flex justify-between items-center mb-6 shrink-0 border-b border-slate-200 pb-4">
+                <h3 class="font-black text-slate-800 uppercase tracking-wide"><i
+                        class="fa-solid fa-check-to-slot text-emerald-600 mr-2"></i> Verified Anonymous Ballot</h3>
+                <button onclick="window.closeElecoModals()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500"></i></button>
+            </div>
+            <div class="overflow-y-auto flex-1 pr-2 space-y-8" id="votingBallotForm"></div>
+            <button onclick="window.submitVotes()" id="btnSubmitVotes"
+                class="w-full bg-emerald-600 text-white py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-colors shadow-md mt-6 shrink-0">
+                Seal & Cast Digital Ballot
+            </button>
+        </div>
+    </div>
+
+    <!-- ELECO MODAL 4: Candidate Dossier Detail -->
+    <div id="alumniDossierModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl relative transform transition-all scale-95 opacity-0 flex flex-col max-h-[85vh]"
+            id="alumniDossierContent">
+            <div
+                class="bg-slate-100 p-6 flex justify-between items-center rounded-t-3xl border-b border-slate-200 shrink-0">
+                <h3 class="font-black uppercase tracking-wide text-slate-800"><i
+                        class="fa-solid fa-folder-open text-rinobaBlue mr-2"></i> Official Candidate Dossier</h3>
+                <button onclick="window.closeDossierModal()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-red-500 transition-colors"></i></button>
+            </div>
+            <div class="p-8 overflow-y-auto flex-1">
+                <div class="flex items-center gap-4 mb-6 border-b border-slate-100 pb-6">
+                    <img id="pubManImg" src=""
+                        class="w-16 h-16 rounded-full border-2 border-slate-200 object-cover bg-slate-100">
+                    <div>
+                        <h2 id="pubManName" class="text-xl font-black text-slate-900 uppercase">Name</h2>
+                        <p class="text-xs font-bold text-rinobaBlue uppercase tracking-widest mt-1">Contesting for:
+                            <span id="pubManRole">Role</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="space-y-6" id="pubManText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Smart Notification Drawer -->
+    <div id="notifModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md shadow-2xl overflow-hidden transform scale-95 transition-transform opacity-0 flex flex-col max-h-[80vh]"
+            id="notifContent">
+            <div class="bg-slate-900 p-6 flex justify-between items-center text-white shrink-0">
+                <h3 class="font-black uppercase tracking-wide flex items-center gap-2"><i
+                        class="fa-solid fa-bell text-rinobaGold"></i> Smart Updates</h3>
+                <button onclick="window.closeNotifications()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-white"></i></button>
+            </div>
+            <div class="p-4 flex-1 overflow-y-auto space-y-3 bg-slate-50" id="notifList"></div>
+        </div>
+    </div>
+
+    <!-- Donation Modal (Paystack Integrated) -->
+    <div id="donationModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-sm shadow-2xl p-8 text-center relative" id="donationContent">
+            <button onclick="window.closeDonationModal()"
+                class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i
+                    class="fa-solid fa-xmark text-xl"></i></button>
+            <div
+                class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-credit-card"></i>
+            </div>
+            <h3 class="font-black text-slate-800 uppercase tracking-wide mb-2">Fund The Legacy</h3>
+            <select id="donationPurpose"
+                class="w-full p-3 border border-slate-300 rounded-xl text-sm font-bold text-slate-600 mb-4 focus:border-emerald-500 outline-none">
+                <option value="">Loading categories...</option>
+            </select>
+            <input type="number" id="donationAmount" placeholder="Amount (₦)" min="1000"
+                class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-xl mb-4 focus:border-emerald-500 outline-none">
+            <button onclick="window.processDonation()"
+                class="w-full bg-emerald-600 text-white py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-emerald-700 transition-colors shadow-md">
+                Proceed to Paystack Checkout
+            </button>
+        </div>
+    </div>
+
+    <!-- New Thread Modal -->
+    <div id="newThreadModal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl p-8" id="newThreadContent">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-black text-slate-800 uppercase tracking-wide">Create New Thread</h3>
+                <button onclick="window.closeNewThreadModal()"><i
+                        class="fa-solid fa-xmark text-xl text-slate-400 hover:text-slate-800"></i></button>
+            </div>
+            <div class="space-y-4">
+                <select id="threadCategory"
+                    class="w-full p-3 border border-slate-300 rounded-xl text-sm font-bold text-slate-600 focus:border-rinobaBlue focus:outline-none">
+                    <option value="GENERAL">General Discussion</option>
+                    <option value="CAREER_MENTORSHIP">Career &amp; Mentorship</option>
+                    <option value="BUSINESS_TECH">Business &amp; Tech</option>
+                    <option value="CLASS_REUNIONS">Class Reunions</option>
+                    <option value="ENDOWMENT_PROJECTS">Endowment Projects</option>
+                </select>
+                <input type="text" id="threadTitle" placeholder="Thread Title..."
+                    class="w-full p-3 border border-slate-300 rounded-xl text-sm font-bold focus:border-rinobaBlue focus:outline-none">
+                <textarea id="threadBody" rows="4" placeholder="What's on your mind?"
+                    class="w-full p-3 border border-slate-300 rounded-xl text-sm focus:border-rinobaBlue focus:outline-none resize-none font-medium"></textarea>
+                <button onclick="window.submitNewThread()"
+                    class="w-full bg-rinobaBlue text-white py-3 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-blue-900 transition-colors shadow-md">
+                    Publish to Network Hub
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIRST LOGIN MODAL -->
+    <div id="firstLoginModal"
+        class="fixed inset-0 bg-slate-900/90 backdrop-blur-md z-[100] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-[2rem] w-full max-w-md shadow-2xl p-10 text-center transform scale-95 transition-transform"
+            id="firstLoginContent">
+            <div class="text-6xl mb-6 animate-bounce">🎉</div>
+            <h2 class="text-3xl font-black text-rinobaBlue uppercase tracking-tight mb-2">Welcome Home!</h2>
+            <p class="text-sm text-slate-600 mb-8 leading-relaxed font-medium">Congratulations on officially claiming
+                your RINOBA profile. Please replace your system-generated access key with a permanent private password.
+            </p>
+            <form id="firstPasswordForm" class="space-y-4">
+                <input type="password" id="setupNewPass" required minlength="8"
+                    placeholder="Enter Permanent Password (Min. 8 chars)"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-rinobaBlue outline-none">
+                <input type="password" id="setupConfirmPass" required minlength="8"
+                    placeholder="Confirm Permanent Password"
+                    class="w-full p-4 border border-slate-300 rounded-xl text-center font-black text-sm focus:border-rinobaBlue outline-none">
+                <button type="submit"
+                    class="w-full bg-rinobaGold text-slate-900 py-4 rounded-xl text-xs font-black uppercase tracking-widest hover:bg-yellow-500 transition-colors shadow-lg shadow-yellow-500/30">
+                    Secure My Account <i class="fa-solid fa-lock ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/alumni_dashboard_app.js"></script>
+</body>
+
+</html>

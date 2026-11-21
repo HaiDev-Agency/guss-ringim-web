@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parents Teachers Association (PTA) | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Engage with the Parents Teachers Association of Government Unity Secondary School, Ringim. View executives and submit suggestions.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[40vh] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80&w=1920"
+                alt="PTA" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center">
+            <span
+                class="bg-gussGold/20 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Community Partnership
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Parents Teachers <br><span class="text-gussGold">Association</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Bridging the gap between the
+                school's administration and the families we serve across the 19 Northern States.</p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Parents Teachers Association</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Left Column: Executives -->
+                <div class="lg:col-span-7 space-y-12">
+                    <div>
+                        <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The Executive Committee
+                        </h2>
+                        <div class="w-16 h-1.5 bg-gussGold mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-500 mt-4 leading-relaxed">The PTA Executive Committee works closely
+                            with the Director and the Disciplinary Board to ensure a safe, highly productive environment
+                            for all boarding scholars.</p>
+                    </div>
+
+                    <!-- Handled via app.js -->
+                    <div id="dynamicPtaGrid" class="grid sm:grid-cols-2 gap-6">
+                        <!-- Data injected here -->
+                    </div>
+                </div>
+
+                <!-- Right Column: Suggestion Form -->
+                <div class="lg:col-span-5">
+                    <div class="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 shadow-lg sticky top-28">
+                        <h3 class="text-xl font-black text-slate-800 uppercase mb-2 flex items-center gap-2"><i
+                                class="fa-solid fa-envelope-open-text text-gussGreen"></i> Submit a Suggestion</h3>
+                        <p class="text-xs text-slate-500 mb-8 leading-relaxed">Do you have an observation regarding
+                            student welfare, campus infrastructure, or the Northern States Exchange Programme? Let the
+                            PTA know.</p>
+
+                        <form class="space-y-5"
+                            onsubmit="event.preventDefault(); alert('Your suggestion has been forwarded to the PTA Secretariat.'); this.reset();">
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Full
+                                    Name</label>
+                                <input type="text" required
+                                    class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gussGreen">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Phone or
+                                    Email</label>
+                                <input type="text" required
+                                    class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gussGreen">
+                            </div>
+                            <div class="space-y-1.5">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-400">Your
+                                    Suggestion / Observation</label>
+                                <textarea rows="4" required
+                                    class="w-full bg-white border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gussGreen resize-none"></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full bg-gussNavy hover:bg-black text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-md flex items-center justify-center gap-2">
+                                Send to Secretariat <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <!-- Admission Modal and App.js -->
+    <div id="admissionListModal"
+        class="hidden fixed inset-0 bg-slate-900/90 backdrop-blur-sm z-[100] flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <!-- Content handled by JS -->
+    </div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

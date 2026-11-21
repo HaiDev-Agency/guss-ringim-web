@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frequently Asked Questions | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Find answers to the most frequently asked questions regarding admissions, boarding rules, the non-gadget policy, and campus life at G.U.S.S. Ringim.">
+    <meta name="author" content="HaiDev Agency">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[40vh] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1516321497487-e288fb19713f?auto=format&fit=crop&q=80&w=1920"
+                alt="FAQs" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center">
+            <span
+                class="bg-gussGold/20 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Information Desk
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Frequently Asked <br><span class="text-gussGold">Questions</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Everything you need to know
+                about boarding life, academic policies, gadget restrictions, and admissions.</p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Frequently Asked Questions</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Dynamic FAQs Accordion Section -->
+    <section class="py-24 bg-white relative">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="mb-12 relative">
+                <input type="text" id="faqSearchInput" onkeyup="filterFaqs()"
+                    placeholder="Type a keyword (e.g. Phones, Food, Exchange)..."
+                    class="w-full bg-slate-50 border border-slate-300 rounded-2xl pl-12 pr-4 py-4 text-sm font-bold text-gussNavy focus:outline-none focus:ring-2 focus:ring-gussGreen shadow-inner">
+                <i class="fa-solid fa-magnifying-glass absolute left-4 top-4 text-slate-400 text-lg"></i>
+            </div>
+
+            <!-- Handled via app.js -->
+            <div id="dynamicFaqsContainer" class="space-y-4">
+                <!-- Data injected here -->
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

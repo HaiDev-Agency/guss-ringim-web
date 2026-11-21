@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Government Unity Secondary School (G.U.S.S.) Ringim | Official Web Portal</title>
+
+    <!-- SEO Optimization & Meta Tags -->
+    <meta name="description"
+        content="Official web portal of Government Unity Secondary School (G.U.S.S) Ringim. Fostering integration, academic excellence, and cross-regional leadership across Northern Nigeria.">
+    <meta name="keywords" content="GUSS Ringim, Unity School Jigawa, Northern Nigeria exchange program, GEPSU, RINOBA">
+    <meta name="author" content="HaiDev Agency">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- Hidden Audio Player for Anthem -->
+    <audio id="anthemAudio" src="assets/media/school-anthem.mp3" preload="none"></audio>
+
+    <div id="guss-header"></div>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gussNavy overflow-hidden min-h-[85vh] flex items-center">
+        <!-- JS Driven Background Slider -->
+        <div id="heroBgContainer" class="absolute inset-0 z-0">
+            <div class="hero-slide active"
+                style="background-image: url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=1920');">
+            </div>
+            <div class="hero-slide"
+                style="background-image: url('https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1920');">
+            </div>
+            <div class="hero-slide"
+                style="background-image: url('https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&q=80&w=1920');">
+            </div>
+        </div>
+
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div
+            class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 py-20 lg:py-0 grid lg:grid-cols-12 gap-12 items-center w-full">
+            <div class="lg:col-span-7 space-y-6 text-white">
+                <span
+                    class="bg-emerald-900/80 border border-emerald-500/50 text-emerald-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest inline-flex items-center gap-2 shadow-inner backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Regional Integration Gateway
+                </span>
+
+                <h1
+                    class="text-3xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] drop-shadow-2xl">
+                    Nineteen States,<br> <span class="text-gussGold">Stand as One.</span>
+                </h1>
+
+                <p
+                    class="text-xs sm:text-sm text-slate-200 leading-relaxed font-medium max-w-2xl border-l-4 border-gussGold pl-4 bg-slate-900/30 py-2 backdrop-blur-sm rounded-r-lg shadow-lg">
+                    Operating on a standard university-scale acreage, G.U.S.S. Ringim is a high-level educational
+                    ecosystem in Jigawa State. We foster academic brilliance and regional unity for over 5,000 active
+                    boarding scholars.
+                </p>
+
+                <div
+                    class="border-l-4 border-gussGold bg-slate-900/40 p-4 rounded-r-xl max-w-xl backdrop-blur-md border-t border-r border-b border-white/5 shadow-xl">
+                    <p class="italic text-slate-200 font-serif text-[11px] leading-relaxed mb-3">
+                        "So blessed and versatile, Nineteen states stand as one, Honor, respect, binding us, Sustaining
+                        our fraternity."
+                    </p>
+
+                    <div
+                        class="flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-slate-700/50 pt-3 gap-3">
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <span
+                                class="text-[9px] text-gussGold font-black tracking-widest uppercase flex items-center gap-1.5">
+                                <i class="fa-solid fa-music"></i> Sovereign School Anthem
+                            </span>
+                            <button onclick="toggleAnthemAudio()" id="btnPlayAnthem"
+                                class="bg-gussGold hover:bg-yellow-500 text-gussNavy px-3 py-1 rounded-md text-[8px] uppercase tracking-wider transition-colors inline-flex items-center gap-1 font-black shadow-sm">
+                                <i class="fa-solid fa-play" id="iconPlayAnthem"></i> <span
+                                    id="textPlayAnthem">Listen</span>
+                            </button>
+                        </div>
+                        <a href="anthems.html"
+                            class="text-[9px] text-white hover:text-gussGold uppercase tracking-widest font-bold underline transition-colors whitespace-nowrap">Read
+                            Full Anthem</a>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 pt-2">
+                    <a href="../portals/application.html"
+                        class="bg-gussGreen hover:bg-emerald-800 text-white font-black px-8 py-3 rounded-xl text-xs uppercase tracking-widest shadow-lg transition-all flex items-center gap-2">Apply
+                        Now <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="lg:col-span-5 grid grid-cols-2 gap-4 mt-8 lg:mt-0">
+                <div
+                    class="bg-emerald-900/40 backdrop-blur-md border border-emerald-700/50 p-6 sm:p-8 rounded-3xl hover:-translate-y-1 transition-transform shadow-xl">
+                    <div
+                        class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-3 text-lg">
+                        <i class="fa-solid fa-users"></i>
+                    </div>
+                    <h4 class="text-3xl font-black text-gussGold">5,000+</h4>
+                    <p class="text-[10px] text-emerald-100 font-bold uppercase tracking-widest mt-1.5">Active Scholars
+                    </p>
+                </div>
+                <div
+                    class="bg-emerald-900/40 backdrop-blur-md border border-emerald-700/50 p-6 sm:p-8 rounded-3xl hover:-translate-y-1 transition-transform shadow-xl">
+                    <div
+                        class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-3 text-lg">
+                        <i class="fa-solid fa-hotel"></i>
+                    </div>
+                    <h4 class="text-3xl font-black text-gussGold">19</h4>
+                    <p class="text-[10px] text-emerald-100 font-bold uppercase tracking-widest mt-1.5">Boarding Houses
+                    </p>
+                </div>
+                <div
+                    class="bg-emerald-900/40 backdrop-blur-md border border-emerald-700/50 p-6 sm:p-8 rounded-3xl hover:-translate-y-1 transition-transform shadow-xl">
+                    <div
+                        class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-3 text-lg">
+                        <i class="fa-solid fa-flag"></i>
+                    </div>
+                    <h4 class="text-3xl font-black text-gussGold">19</h4>
+                    <p class="text-[10px] text-emerald-100 font-bold uppercase tracking-widest mt-1.5">Exchanged States
+                    </p>
+                </div>
+                <div
+                    class="bg-emerald-900/40 backdrop-blur-md border border-emerald-700/50 p-6 sm:p-8 rounded-3xl hover:-translate-y-1 transition-transform shadow-xl">
+                    <div
+                        class="w-10 h-10 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center mb-3 text-lg">
+                        <i class="fa-solid fa-mosque"></i>
+                    </div>
+                    <h4 class="text-3xl font-black text-gussGold">3</h4>
+                    <p class="text-[10px] text-emerald-100 font-bold uppercase tracking-widest mt-1.5">Campus Mosques
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Sections (Zig-Zag) -->
+    <section class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Academic Integration</h2>
+                <div class="w-24 h-1.5 bg-gussGold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-24">
+                <div class="relative h-80 rounded-[2rem] overflow-hidden shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=800"
+                        alt="Unique Primary"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                        <span
+                            class="bg-blue-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md">Demonstration
+                            Subsidiary</span>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div
+                        class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <i class="fa-solid fa-child-reaching"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Unique Nursery & Primary</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">A self-contained, model demonstration school
+                        operating safely within the campus grounds behind the E.I.M laboratories. We lay the
+                        foundational blocks of literacy, numeracy, and cognitive development in a highly secure,
+                        child-friendly environment.</p>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-24">
+                <div class="space-y-6 order-2 lg:order-1">
+                    <div
+                        class="w-12 h-12 bg-emerald-100 text-gussGreen rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <i class="fa-solid fa-flask"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Junior & Senior Secondary</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">Structured strictly into the <strong>Junior
+                            Section (JSS 1-3)</strong> and <strong>Senior Section (SSS 1-3)</strong>. The Senior
+                        curriculum branches into highly specialized departments with dedicated, standalone laboratories
+                        for Physics, Chemistry, Biology, Technical Drawing (T.D), and Electrical Installation (E.I.M).
+                    </p>
+                    <ul class="space-y-3 text-xs font-bold text-slate-500">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gussGold"></i> General Core
+                            Subjects (English, Maths, Civic, IRS)</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-gussGold"></i> Departmental
+                            Specializations (Science, Arts, Commercial)</li>
+                    </ul>
+                </div>
+                <div class="relative h-80 rounded-[2rem] overflow-hidden shadow-2xl order-1 lg:order-2 group">
+                    <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800"
+                        alt="Secondary Labs"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                        <span
+                            class="bg-gussGreen text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md">Area
+                            Classes & Labs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="relative h-80 rounded-[2rem] overflow-hidden shadow-2xl group">
+                    <img src="https://images.unsplash.com/photo-1585036156171-384164a8c675?auto=format&fit=crop&q=80&w=800"
+                        alt="Islamiyyah"
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                        <span
+                            class="bg-amber-600 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full shadow-md">Weekend
+                            Evening Program</span>
+                    </div>
+                </div>
+                <div class="space-y-6">
+                    <div
+                        class="w-12 h-12 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+                        <i class="fa-solid fa-book-quran"></i>
+                    </div>
+                    <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Islamiyyah Section</h3>
+                    <p class="text-sm text-slate-600 leading-relaxed">A rigorous, structured theological program
+                        operating on weekend evenings. Students focus on Quranic memorization, Tajweed, Hadith, and
+                        Fiqh, utilizing our high-capacity examination halls. Upon successful completion, scholars
+                        celebrate in a grand graduation ceremony hosted by the Emir of Ringim.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campus Life (Glassmorphism) -->
+    <section class="relative py-24 bg-gussNavy overflow-hidden border-b border-slate-900">
+        <div
+            class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1541829070764-84a7d30dd3f3?auto=format&fit=crop&q=80&w=1920')] bg-cover bg-center opacity-10 mix-blend-screen">
+        </div>
+        <div class="absolute inset-0 bg-gradient-to-b from-gussNavy via-gussNavy/95 to-slate-900"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-xs font-black uppercase tracking-widest text-gussGold mb-2">The Area Hostels & Student
+                    Life</h2>
+                <h3 class="text-3xl sm:text-4xl font-extrabold text-white uppercase tracking-wide">A Sovereign Boarding
+                    Ecosystem</h3>
+                <div class="w-24 h-1.5 bg-gussGreen mx-auto mt-6 rounded-full"></div>
+            </div>
+
+            <div class="grid lg:grid-cols-3 gap-8 mb-16">
+                <div
+                    class="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors shadow-2xl">
+                    <i class="fa-solid fa-bed text-4xl text-amber-400 mb-6"></i>
+                    <h4 class="text-xl font-black text-white uppercase mb-3">19 Area Hostels</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">Each hostel block is governed by dedicated
+                        House Masters and House Captains. The boarding area features its own Grand Mosque for Khams
+                        Salawat (daily prayers) and public facilities supervised closely by Sanitation Prefects.</p>
+                    <div class="flex flex-wrap gap-2 text-[9px] font-bold uppercase tracking-widest">
+                        <span class="bg-black/30 border border-white/5 text-white px-2 py-1 rounded">Aminu Yahaya</span>
+                        <span class="bg-black/30 border border-white/5 text-white px-2 py-1 rounded">Dutse House</span>
+                        <span class="bg-black/30 border border-white/5 text-white px-2 py-1 rounded">Taura House</span>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors shadow-2xl">
+                    <i class="fa-solid fa-utensils text-4xl text-emerald-400 mb-6"></i>
+                    <h4 class="text-xl font-black text-white uppercase mb-3">Kitchen & Dining</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">A massive complex serving 3 square meals
+                        daily, firmly monitored by Kitchen Masters and Prefects. The campus also houses a dedicated
+                        School Clinic Sub-Unit for immediate medical attention under the Health Master.</p>
+                </div>
+
+                <div
+                    class="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-8 hover:bg-white/10 transition-colors shadow-2xl">
+                    <i class="fa-solid fa-seedling text-4xl text-blue-400 mb-6"></i>
+                    <h4 class="text-xl font-black text-white uppercase mb-3">Sports & Labor</h4>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-4">Features a Main Football Stadium, Basketball
+                        courts, and Volleyball pitches. Students engage in mandatory Wednesday Labor Days and maintain
+                        vast school farmlands yielding fresh fruits managed by Garden Masters.</p>
+                </div>
+            </div>
+
+            <!-- Unions & Clubs -->
+            <div
+                class="bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-[2rem] p-8 sm:p-12 shadow-2xl">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div class="space-y-6">
+                        <h3 class="text-2xl font-black text-white uppercase tracking-wide mb-2"><i
+                                class="fa-solid fa-sitemap text-gussGold mr-2"></i> Student Union Hierarchy</h3>
+                        <p class="text-sm text-slate-400 leading-relaxed">Student governance mirrors high-level
+                            legislative assemblies. From the Head Student down to Club Executives, leadership is
+                            cultivated through structured, independent unions.</p>
+
+                        <div class="space-y-4">
+                            <div class="bg-black/40 border border-white/5 p-4 rounded-xl">
+                                <h5 class="font-bold text-emerald-400 uppercase text-xs mb-1">GEPSU</h5>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">General Exchange Programme
+                                    Students Union. Represents boarding scholars from the 17 non-host Northern States.
+                                    Features local sub-unions (e.g. KASEPSA, GOSSA, KASSU, BOSSU) guided by State
+                                    Patrons.</p>
+                            </div>
+                            <div class="bg-black/40 border border-white/5 p-4 rounded-xl">
+                                <h5 class="font-bold text-blue-400 uppercase text-xs mb-1">JIKASU</h5>
+                                <p class="text-[11px] text-slate-300 leading-relaxed">Jigawa-Kano Students Union. The
+                                    unified executive body representing the host state and Kano. Operates mini
+                                    sub-cabinets for precise local government area representation.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3
+                            class="text-lg font-black text-white uppercase tracking-wide mb-6 border-b border-slate-700 pb-3">
+                            Active Clubs & Societies</h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-newspaper text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">Press Club</div>
+                            </div>
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-laptop-code text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">CITAD Hub</div>
+                            </div>
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-microscope text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">JETS Club</div>
+                            </div>
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-hands-praying text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">MSSN Society</div>
+                            </div>
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-theater-masks text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">Hausa Drama</div>
+                            </div>
+                            <div
+                                class="bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                                <i class="fa-solid fa-calculator text-xl text-slate-300 mb-2"></i>
+                                <div class="text-[10px] font-bold text-white uppercase">Maths Club</div>
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-5 text-center italic">* The use of electronic smart
+                            gadgets (excluding approved scientific calculators) is strictly prohibited on campus per the
+                            Disciplinary Committee rules.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recent News & Events (CMS Managed) -->
+    <section id="news-room" class="py-20 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+                <div>
+                    <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Recent News & Events</h2>
+                    <p class="mt-2 text-slate-500 font-medium">The latest updates, term dates, and stories from our
+                        campus.</p>
+                </div>
+                <a href="news_room.html"
+                    class="bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 font-black px-6 py-3 rounded-xl text-xs uppercase tracking-widest transition-colors shadow-sm whitespace-nowrap">View
+                    All News <i class="fa-solid fa-arrow-right ml-1"></i></a>
+            </div>
+
+            <div id="dynamicNewsGrid" class="grid md:grid-cols-3 gap-8">
+                <!-- Rendered via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Notable Alumni (CMS Managed) -->
+    <section id="rinoba" class="py-20 bg-slate-900 text-white relative border-t-4 border-gussGold">
+        <div class="absolute inset-0 opacity-5 bg-center bg-no-repeat bg-contain blur-sm"
+            style="background-image: url('assets/images/logo_img.png');"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span
+                    class="text-[10px] font-black uppercase tracking-widest text-gussGold bg-yellow-900/30 px-4 py-1.5 rounded-full inline-block mb-4 border border-yellow-200/20">Pioneer
+                    to Infinity</span>
+                <h2 class="text-3xl font-black uppercase tracking-wide text-white">Notable Alumni (RINOBA)</h2>
+                <div class="w-24 h-1.5 bg-gussGreen mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <div id="dynamicAlumniGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Rendered via JS -->
+            </div>
+
+            <div class="mt-12 text-center">
+                <button type="button" data-open-modal="documentVerifyModal"
+                    class="inline-flex items-center gap-2 text-gussGold font-bold hover:text-white hover:underline transition-colors">Verify
+                    Digital Graduation Tokens <i class="fa-solid fa-shield-halved text-sm"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

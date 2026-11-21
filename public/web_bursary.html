@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office of the Bursar | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="The financial node of Government Unity Secondary School, Ringim. Managing fees, payments, and institutional clearance.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-amber-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&q=80&w=1920"
+                alt="Bursary" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-amber-900/40 border border-amber-500/50 text-amber-300 font-bold px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Institutional Financial Node
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Office of the <span class="text-amber-500">Bursar</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Securing and managing the
+                financial operations of the institution.</p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Office of the Bursar</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Bursar Profile -->
+                <div class="lg:col-span-4 space-y-6 sticky top-28">
+                    <div data-directorate-office="ROLE_BURSAR"
+                        class="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 shadow-xl text-center relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 bg-amber-500 text-white text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl shadow-md">
+                            Active</div>
+                        <div data-dir-img
+                            class="w-48 h-48 mx-auto rounded-full border-4 border-amber-500 mb-6 overflow-hidden image-placeholder text-xs bg-slate-800 text-slate-500 shadow-inner">
+                            [ BURSAR <br> PORTRAIT IMG ]
+                        </div>
+                        <h2 data-dir-name class="text-xl font-black text-gussNavy uppercase tracking-wide">Malam [Name
+                            Withheld]</h2>
+                        <span data-dir-role
+                            class="text-[10px] text-amber-600 font-bold uppercase tracking-widest block my-2">School
+                            Bursar</span>
+                        <div class="w-12 h-1 bg-amber-500 mx-auto my-4 rounded-full"></div>
+                        <p class="text-sm text-slate-500 leading-relaxed font-medium">Ensuring transparent financial
+                            clearance and operational funding.</p>
+
+                        <div class="mt-8 pt-6 border-t border-slate-200 space-y-3">
+                            <a href="../portals/bursary_terminal.html"
+                                class="flex items-center justify-center gap-3 w-full bg-slate-800 hover:bg-black text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"><i
+                                    class="fa-solid fa-vault"></i> Go to Bursary Portal</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Operations -->
+                <div class="lg:col-span-8 space-y-12">
+                    <div>
+                        <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Financial Operations</h3>
+                        <div class="w-16 h-1.5 bg-amber-500 mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                            Located within the Administration Block, the Bursar is the chief financial officer of
+                            G.U.S.S. Ringim. This office is responsible for the collection, documentation, and
+                            auditing of all fees and payments remitted by the student body and parent partners.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div
+                            class="bg-amber-50 border border-amber-100 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-file-invoice-dollar text-3xl text-amber-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">Student Fees & Levies</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed">Manages the generation of invoices for
+                                school fees, PTA levies, and specialized club or laboratory practical dues.</p>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-clipboard-check text-3xl text-emerald-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">Graduation Clearance</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Provides the final financial clearance
+                                required before any Senior student can receive their SSCE certificates or digital RINOBA
+                                tokens.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office of the Director | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="The Office of the Director at Government Unity Secondary School, Ringim. The apex authority guiding regional integration and academic excellence.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-gussGold">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920"
+                alt="Director Office" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-yellow-900/40 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Apex Authority
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Office of the <span class="text-gussGold">Director</span>
+            </h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The supreme command shaping the
+                future of over 5,000 scholars across Northern Nigeria.</p>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">Office of the Director</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- Director Profile Sidebar -->
+                <div class="lg:col-span-4 space-y-6 sticky top-28">
+                    <div data-directorate-office="ROLE_DIRECTOR"
+                        class="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 shadow-xl text-center relative overflow-hidden">
+                        <div
+                            class="absolute top-0 right-0 bg-gussGreen text-white text-[9px] font-black uppercase tracking-widest px-4 py-1.5 rounded-bl-xl shadow-md">
+                            Active</div>
+                        <div data-dir-img
+                            class="w-48 h-48 mx-auto rounded-full border-4 border-gussGold mb-6 overflow-hidden image-placeholder text-xs bg-slate-800 text-slate-500 shadow-inner">
+                            [ DIRECTOR <br> PORTRAIT IMG ]
+                        </div>
+                        <h2 data-dir-name class="text-2xl font-black text-gussNavy uppercase tracking-wide">H.E.
+                            [Current Name]</h2>
+                        <span data-dir-role
+                            class="text-xs text-gussGreen font-bold uppercase tracking-widest block my-2">School
+                            Director</span>
+                        <div class="w-12 h-1 bg-gussGold mx-auto my-4 rounded-full"></div>
+                        <p class="text-sm text-slate-500 leading-relaxed font-medium">Over 20 years of excellence in
+                            educational administration and regional youth integration.</p>
+
+                        <div class="mt-8 pt-6 border-t border-slate-200 space-y-3">
+                            <a href="mailto:director@gussringim.sch.ng"
+                                class="flex items-center justify-center gap-3 w-full bg-slate-800 hover:bg-black text-white py-3 rounded-xl text-xs font-bold uppercase tracking-widest transition-colors"><i
+                                    class="fa-solid fa-envelope"></i> Contact Office</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mandate & Responsibilities -->
+                <div class="lg:col-span-8 space-y-12">
+                    <div>
+                        <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The Executive Mandate</h3>
+                        <div class="w-16 h-1.5 bg-gussGold mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                            At Government Unity Secondary School, Ringim, the traditional "Principal" hierarchy has been
+                            elevated to a robust collegiate model. The Office of the Director serves as the
+                            apex authority, bearing ultimate responsibility for the institution's strategic vision,
+                            academic standardizations, and the successful execution of the 19 Northern States Exchange
+                            Programme.
+                        </p>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div
+                            class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-file-signature text-3xl text-emerald-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">Global Command</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Retains absolute authority over all
+                                admissions processes, testing network overrides, and acts as the final signatory for all
+                                graduating certificates and administrative policies.</p>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-users-viewfinder text-3xl text-blue-600 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">Directorate Leadership</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Directly coordinates the Deputy Director I
+                                (Administration) and Deputy Director II (Academic) to ensure flawless synergy across the
+                                campus ecosystem.</p>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-handshake-angle text-3xl text-amber-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">Stakeholder Relations</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Serves as the primary liaison between
+                                G.U.S.S. Ringim and external bodies including the Jigawa MOHEST, UBEC, RINOBA, and the
+                                Emirate Council during official events.</p>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 p-8 rounded-3xl shadow-sm hover:shadow-lg transition-shadow group">
+                            <i
+                                class="fa-solid fa-scale-balanced text-3xl text-purple-500 mb-4 group-hover:scale-110 transition-transform"></i>
+                            <h4 class="text-lg font-black text-slate-800 uppercase mb-2">System Overrides</h4>
+                            <p class="text-sm text-slate-500 leading-relaxed">Possesses the exclusive executive
+                                privilege to implement major disciplinary pardons, approve state patron recommendations,
+                                and authorize immediate infrastructural changes.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Profile Registration | RINOBA</title>
+    <link rel="icon" type="image/png" href="../public/assets/images/Adobe_Express_file.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { rinobaBlue: '#1E3A8A', rinobaGold: '#D4AF37' } } } }</script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col lg:flex-row overflow-x-hidden">
+
+    <div
+        class="w-full lg:w-4/12 bg-rinobaBlue p-10 lg:p-16 flex flex-col justify-center relative overflow-hidden text-white min-h-[30vh] lg:min-h-screen">
+        <i class="fa-solid fa-server absolute -left-10 -bottom-10 text-[20rem] text-white/5 pointer-events-none"></i>
+        <div class="relative z-10">
+            <a href="alumni_login.html"
+                class="inline-block text-[10px] font-black uppercase tracking-widest text-blue-200 hover:text-white mb-10 transition-colors border-b border-blue-400/30 pb-1">
+                <i class="fa-solid fa-arrow-left mr-1"></i> Back to Login
+            </a>
+            <h1 class="text-3xl lg:text-4xl font-black uppercase tracking-tight mb-4">Official Profile <br><span
+                    class="text-rinobaGold">Registration</span></h1>
+            <p class="text-sm text-blue-100 leading-relaxed mb-10">Join the central database. Your contact information
+                is strictly hidden from the public directory. It is only accessible via secure, mutual dashboard
+                requests.</p>
+
+            <div class="space-y-6 hidden lg:block">
+                <div class="flex items-center gap-4 opacity-100 transition-opacity" id="indicator-1">
+                    <div
+                        class="w-8 h-8 rounded-full bg-rinobaGold text-slate-900 flex items-center justify-center font-black text-xs shrink-0 shadow-md">
+                        1</div>
+                    <h4 class="font-bold text-sm uppercase tracking-wide">Personal Details</h4>
+                </div>
+                <div class="w-0.5 h-6 bg-white/20 ml-4"></div>
+                <div class="flex items-center gap-4 opacity-50 transition-opacity" id="indicator-2">
+                    <div
+                        class="w-8 h-8 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center font-black text-xs shrink-0">
+                        2</div>
+                    <h4 class="font-bold text-sm uppercase tracking-wide">G.U.S.S. Legacy</h4>
+                </div>
+                <div class="w-0.5 h-6 bg-white/20 ml-4"></div>
+                <div class="flex items-center gap-4 opacity-50 transition-opacity" id="indicator-3">
+                    <div
+                        class="w-8 h-8 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center font-black text-xs shrink-0">
+                        3</div>
+                    <h4 class="font-bold text-sm uppercase tracking-wide">Professional Details</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="w-full lg:w-8/12 bg-white flex flex-col justify-center px-6 sm:px-12 md:px-20 py-12">
+        <div class="max-w-2xl mx-auto w-full">
+            <form id="registrationForm" class="space-y-8">
+
+                <!-- STEP 1 -->
+                <div id="step-1" class="step-panel active">
+                    <h2 class="text-2xl font-black text-slate-800 uppercase tracking-wide mb-2">Step 1: Personal Data
+                    </h2>
+                    <p class="text-sm text-slate-500 mb-8 border-b border-slate-200 pb-4">These details will be securely
+                        stored.</p>
+
+                    <div class="grid sm:grid-cols-2 gap-5 mb-5">
+                        <div class="space-y-2 sm:col-span-2">
+                            <label for="regPhoto"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Profile Image
+                                Upload</label>
+                            <input type="file" id="regPhoto" required accept="image/*"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-black file:bg-blue-50 file:text-rinobaBlue hover:file:bg-blue-100 transition-all cursor-pointer">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regFullName"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Full Legal
+                                Name</label>
+                            <input type="text" id="regFullName" required placeholder="Surname First"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regNickname"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Nickname (High
+                                School Days)</label>
+                            <input type="text" id="regNickname" placeholder="Optional"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-5 mb-5">
+                        <div class="space-y-2">
+                            <label for="regEmail"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Secure Email
+                                Address</label>
+                            <input type="email" id="regEmail" required placeholder="Hidden from public"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regPhone"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Phone
+                                Number</label>
+                            <input type="tel" id="regPhone" required placeholder="Hidden from public"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="regState"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Current State of
+                                Residence</label>
+                            <input type="text" id="regState" required placeholder="e.g. Kano, Abuja"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regLga"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Local Government
+                                Area (LGA)</label>
+                            <input type="text" id="regLga" required placeholder="e.g. Ringim"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button type="button" onclick="nextStep(1)"
+                            class="bg-rinobaBlue hover:bg-blue-900 text-white px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-all flex items-center gap-2">
+                            Next Step <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 2 -->
+                <div id="step-2" class="step-panel">
+                    <h2 class="text-2xl font-black text-slate-800 uppercase tracking-wide mb-2">Step 2: G.U.S.S. Legacy
+                    </h2>
+                    <p class="text-sm text-slate-500 mb-8 border-b border-slate-200 pb-4">Tell us about your time on
+                        campus.</p>
+
+                    <div class="grid sm:grid-cols-2 gap-5 mb-5">
+                        <div class="space-y-2">
+                            <label for="classSet"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Graduating Class
+                                Set</label>
+                            <select id="classSet" required
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue"></select>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regClassGraduated"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Class Graduated
+                                In</label>
+                            <input type="text" id="regClassGraduated" required placeholder="e.g. SSS 3 Science B"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="regHostel"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Hostel Graduated
+                                In</label>
+                            <input type="text" id="regHostel" required placeholder="e.g. Aminu Yahaya House"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regPrefecture"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Prefecture (If
+                                any)</label>
+                            <input type="text" id="regPrefecture" placeholder="e.g. Health Prefect, House Captain"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-5 border-t border-slate-100 grid sm:grid-cols-2 gap-5">
+                        <div class="space-y-2">
+                            <label for="regAdmNo"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Admission No.
+                                <span class="text-slate-400 font-normal">(Optional — Auto-verifies recent
+                                    graduates)</span></label>
+                            <input type="text" id="regAdmNo" placeholder="e.g. GUSSR/23/S/3001"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regInviteCode"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Set Invite Code
+                                <span class="text-slate-400 font-normal">(Optional — From Set Rep)</span></label>
+                            <input type="text" id="regInviteCode" placeholder="e.g. RNB-1998-ABCD1234"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-mono uppercase focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="space-y-2 sm:col-span-2">
+                            <label for="regProof"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Old School
+                                Document / Testimonial <span
+                                    class="text-slate-400 font-normal">(Optional)</span></label>
+                            <input type="file" id="regProof" accept="image/*,.pdf"
+                                class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs">
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-between">
+                        <button type="button" onclick="prevStep(2)"
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                            <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button type="button" onclick="nextStep(2)"
+                            class="bg-rinobaBlue hover:bg-blue-900 text-white px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-all flex items-center gap-2">
+                            Next Step <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- STEP 3 -->
+                <div id="step-3" class="step-panel">
+                    <h2 class="text-2xl font-black text-slate-800 uppercase tracking-wide mb-2">Step 3: Professional
+                        Portfolio</h2>
+                    <p class="text-sm text-slate-500 mb-8 border-b border-slate-200 pb-4">Help the network understand
+                        your current expertise.</p>
+
+                    <div class="space-y-5 mb-5">
+                        <div class="space-y-2">
+                            <label for="regQualification"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Current
+                                Qualification</label>
+                            <input type="text" id="regQualification" required
+                                placeholder="e.g. B.Sc Computer Science, MBBS"
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-5">
+                            <div class="space-y-2">
+                                <label for="regProfession"
+                                    class="text-[10px] font-black uppercase tracking-widest text-slate-600">Profession /
+                                    Industry</label>
+                                <input type="text" id="regProfession" required placeholder="e.g. Tech & Software"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                            </div>
+                            <div class="space-y-2">
+                                <label for="regJobTitle"
+                                    class="text-[10px] font-black uppercase tracking-widest text-slate-600">Job Title /
+                                    Company</label>
+                                <input type="text" id="regJobTitle" placeholder="e.g. CEO, HaiDev Agency"
+                                    class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue">
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label for="regTestimonial"
+                                class="text-[10px] font-black uppercase tracking-widest text-slate-600">Legacy Feedback
+                                / Testimonial</label>
+                            <textarea id="regTestimonial" rows="3" required
+                                placeholder="A short quote about how GUSS Ringim impacted your life..."
+                                class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-rinobaBlue resize-none"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 flex justify-between items-center">
+                        <button type="button" onclick="prevStep(3)"
+                            class="bg-slate-200 hover:bg-slate-300 text-slate-700 px-6 py-4 rounded-xl text-xs font-black uppercase tracking-widest transition-all">
+                            <i class="fa-solid fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button type="submit"
+                            class="bg-rinobaGold hover:bg-yellow-500 text-slate-900 px-8 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-xl transition-all hover:-translate-y-1">
+                            Generate Credentials <i class="fa-solid fa-wand-magic-sparkles ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="credentialModal"
+        class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full text-center shadow-2xl transform transition-all scale-95 opacity-0"
+            id="modalContent">
+            <div
+                class="w-20 h-20 bg-emerald-100 text-emerald-500 rounded-full flex items-center justify-center text-4xl mx-auto mb-6">
+                <i class="fa-solid fa-check"></i>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800 uppercase tracking-wide mb-2">Profile Activated!</h3>
+            <p class="text-sm text-slate-600 mb-8">Please save these auto-generated credentials safely. You will use
+                them to access the portal permanently.</p>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 text-left space-y-4 mb-8">
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Your Portal
+                        ID (Registration No.)</span>
+                    <div class="font-mono text-lg font-bold text-rinobaBlue" id="genId">RINOBA/----/---</div>
+                </div>
+                <div>
+                    <span class="text-[9px] font-black uppercase tracking-widest text-slate-400 block mb-1">Temporary
+                        Password</span>
+                    <div class="font-mono text-lg font-bold text-slate-800" id="genPass">--------</div>
+                </div>
+            </div>
+            <a href="alumni_login.html"
+                class="inline-block w-full bg-rinobaGold text-slate-900 py-4 rounded-xl text-xs font-black uppercase tracking-widest shadow-md transition-colors hover:bg-yellow-500">
+                Proceed to Login
+            </a>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/alumni_auth_app.js"></script>
+</body>
+
+</html>

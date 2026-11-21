@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Anthems | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="Read and listen to the Sovereign School Anthem of Government Unity Secondary School, Ringim, and the Nigerian National Anthem.">
+    <meta name="author" content="HaiDev Agency">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' }
+                }
+            }
+        }
+    </script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <!-- Hidden Audio Players -->
+    <audio id="anthemAudio" src="assets/media/school-anthem.mp3" preload="none"></audio>
+    <audio id="nationalAudio" src="assets/media/national-anthem.mp3" preload="none"></audio>
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[40vh] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1511629091441-ee46146481b6?auto=format&fit=crop&q=80&w=1920"
+                alt="Anthems" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div
+            class="absolute inset-0 opacity-20 bg-[radial-gradient(#005A36_1px,transparent_1px)] [background-size:16px_16px] z-10">
+        </div>
+
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center">
+            <span
+                class="bg-gussGold/20 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">
+                Voices of Unity
+            </span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                The Official <span class="text-gussGold">Anthems</span>
+            </h1>
+            <div
+                class="flex items-center justify-center gap-3 mt-6 text-[10px] font-bold uppercase tracking-widest text-slate-300">
+                <a href="index.html" class="hover:text-white transition-colors">Home</a>
+                <i class="fa-solid fa-chevron-right text-[8px] text-gussGold"></i>
+                <span class="text-gussGreen">School Anthems</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Anthems Content Section -->
+    <section class="py-20 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16">
+
+                <!-- The Sovereign School Anthem -->
+                <div
+                    class="bg-slate-50 border border-slate-200 rounded-[2rem] p-8 sm:p-12 shadow-sm relative overflow-hidden">
+                    <div class="absolute top-0 right-0 opacity-5 pointer-events-none">
+                        <img src="assets/images/logo_img.png" alt="Watermark" class="w-64 h-64 -mt-10 -mr-10">
+                    </div>
+
+                    <div class="text-center border-b border-slate-200 pb-8 mb-10">
+                        <h2 class="text-sm font-black uppercase tracking-widest text-gussGreen mb-2">Government Unity
+                            Secondary School</h2>
+                        <h3 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The Sovereign Anthem</h3>
+                        <button onclick="toggleAnthemAudio()"
+                            class="mt-6 bg-gussGold hover:bg-yellow-500 text-gussNavy px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-md transition-colors inline-flex items-center gap-2">
+                            <i class="fa-solid fa-play" id="iconPlayAnthem"></i> <span id="textPlayAnthem">Play
+                                Audio</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-8 pl-4 sm:pl-8 border-l-4 border-gussGold relative z-10">
+                        <div class="poem-verse">
+                            So great, so mighty,<br>
+                            Far and wide, Ringim,<br>
+                            We come unity, uniting us.
+                        </div>
+                        <div class="poem-verse">
+                            Blending our diversity,<br>
+                            So blessed and versatile,<br>
+                            Nineteen states stand as one,<br>
+                            Honor, respect, binding us.
+                        </div>
+                        <div class="poem-verse">
+                            Supporting our fraternity,<br>
+                            Unity towards above,<br>
+                            Over the rest, behold!<br>
+                            The best in character,<br>
+                            Learning, discipline, <br>
+                            We rank higher than all the rest.
+                        </div>
+                        <div class="poem-verse">
+                            God bless us in Unity,<br>
+                            God bless us in Jigawa,<br>
+                            God bless our fatherland, Nigeria.
+                        </div>
+                    </div>
+
+                    <div class="mt-12 pt-8 border-t border-slate-200 text-center">
+                        <p class="font-serif italic text-lg text-gussGreen font-bold mb-2">“Learning, Discipline, and
+                            Character”</p>
+                        <p class="text-xs font-black uppercase tracking-widest text-slate-400">Proud G.U.S.S. Alumnus
+                        </p>
+                    </div>
+                </div>
+
+                <!-- The Nigerian National Anthem -->
+                <div
+                    class="bg-slate-900 border border-slate-800 rounded-[2rem] p-8 sm:p-12 shadow-xl relative overflow-hidden text-white">
+                    <div class="absolute top-0 right-0 opacity-10 pointer-events-none">
+                        <i class="fa-solid fa-flag text-[12rem] -mt-6 -mr-6 text-emerald-600"></i>
+                    </div>
+
+                    <div class="text-center border-b border-slate-700 pb-8 mb-10">
+                        <h2 class="text-sm font-black uppercase tracking-widest text-gussGold mb-2">Federal Republic of
+                            Nigeria</h2>
+                        <h3 class="text-3xl font-black text-white uppercase tracking-wide">The National Anthem</h3>
+                        <p
+                            class="text-[9px] text-slate-400 uppercase tracking-widest mt-2 border border-slate-700 inline-block px-3 py-1 rounded">
+                            "Nigeria, We Hail Thee"</p>
+                        <br>
+                        <button onclick="toggleNationalAudio()"
+                            class="mt-4 bg-white hover:bg-slate-200 text-gussNavy px-6 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest shadow-md transition-colors inline-flex items-center gap-2">
+                            <i class="fa-solid fa-play" id="iconPlayNational"></i> <span id="textPlayNational">Play
+                                Audio</span>
+                        </button>
+                    </div>
+
+                    <div class="space-y-8 pl-4 sm:pl-8 border-l-4 border-emerald-500 relative z-10">
+                        <div class="poem-verse text-slate-300">
+                            Nigeria, we hail thee,<br>
+                            Our own dear native land,<br>
+                            Though tribe and tongue may differ,<br>
+                            In brotherhood we stand,<br>
+                            Nigerians all, are proud to serve<br>
+                            Our sovereign Motherland.
+                        </div>
+                        <div class="poem-verse text-slate-300">
+                            Our flag shall be a symbol<br>
+                            That truth and justice reign,<br>
+                            In peace or battle honour'd,<br>
+                            And this we count as gain,<br>
+                            To hand on to our children<br>
+                            A banner without stain.
+                        </div>
+                        <div class="poem-verse text-slate-300">
+                            O God of all creation,<br>
+                            Grant this our one request,<br>
+                            Help us to build a nation<br>
+                            Where no man is oppressed,<br>
+                            And so with peace and plenty<br>
+                            Nigeria may be blessed.
+                        </div>
+                    </div>
+
+                    <div class="mt-12 pt-8 border-t border-slate-700 text-center">
+                        <p class="font-serif italic text-lg text-emerald-400 font-bold mb-2">“Unity and Faith, Peace and
+                            Progress”</p>
+                        <p class="text-xs font-black uppercase tracking-widest text-slate-500">National Motto</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+
+    <!-- Audio Scripts -->
+    <script>
+        let isNationalPlaying = false;
+        function toggleNationalAudio() {
+            const audio = document.getElementById('nationalAudio');
+            const icon = document.getElementById('iconPlayNational');
+            const text = document.getElementById('textPlayNational');
+            if (!audio) return;
+            if (isNationalPlaying) {
+                audio.pause();
+                icon.className = "fa-solid fa-play";
+                text.textContent = "Play Audio";
+                isNationalPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    icon.className = "fa-solid fa-pause";
+                    text.textContent = "Pause";
+                    isNationalPlaying = true;
+                }).catch(err => alert("Audio file not found."));
+            }
+            audio.onended = function () {
+                icon.className = "fa-solid fa-play";
+                text.textContent = "Play Audio";
+                isNationalPlaying = false;
+            };
+        }
+    </script>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

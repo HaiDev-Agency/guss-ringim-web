@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chief Examiner Terminal | G.U.S.S. Ringim</title>
+    <meta name="description" content="Chief Examiner Overseer Terminal for Government Unity Secondary School.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="author" content="HaiDev Agency">
+
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner relative z-[60] no-print">
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-scale-balanced text-gussGold mr-1"></i>
+                EXAMINATION & RECORDS NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-shield text-blue-400"></i> Role: Chief Examiner
+            </span>
+            <span
+                class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4 cursor-pointer hover:text-white transition-colors"
+                onclick="openChiefProfileSettings()">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeExaminerNameDisplay">Loading...</span>
+            </span>
+        </div>
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <span id="gradingTimerDisplay"
+                class="hidden sm:flex items-center gap-2 bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-md text-[10px] shadow-inner ml-2">
+                <i class="fa-solid fa-spinner fa-spin"></i> Syncing...
+            </span>
+
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0 no-print">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">Chief Examiner
+                        Overseer Terminal</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Global Compilation &
+                        Security Registry</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="globalStatusPanel"
+                    class="flex items-center gap-3 bg-slate-100 p-1.5 rounded-xl border border-slate-200"></div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6 no-print">
+
+        <div class="flex flex-col lg:flex-row gap-6 justify-between items-start lg:items-end">
+            <div class="flex bg-slate-200/50 p-1.5 rounded-2xl w-full lg:w-auto shadow-sm overflow-x-auto no-scrollbar">
+                <button onclick="switchTab('audit')" id="tabBtnAudit"
+                    class="flex-1 whitespace-nowrap lg:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all bg-white shadow text-gussNavy border border-slate-200"><i
+                        class="fa-solid fa-list-check mr-2"></i> Audit Roster</button>
+                <button onclick="switchTab('broadsheet')" id="tabBtnBroadsheet"
+                    class="flex-1 whitespace-nowrap lg:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                        class="fa-solid fa-table-cells mr-2"></i> Broadsheets</button>
+                <button onclick="switchTab('registry')" id="tabBtnRegistry"
+                    class="flex-1 whitespace-nowrap lg:flex-none px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all text-slate-500 hover:text-gussNavy"><i
+                        class="fa-solid fa-user-lock mr-2"></i> Penalties</button>
+            </div>
+
+            <div
+                class="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex flex-col lg:flex-row items-start lg:items-center gap-6 w-full lg:w-auto">
+                <div class="flex flex-col gap-2">
+                    <h3 class="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Assessment
+                        Commencement</h3>
+                    <div class="flex gap-4">
+                        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[10px] font-bold text-slate-600">C.A. PORTAL</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="caPhaseToggle" class="sr-only peer"
+                                    onchange="toggleAssessmentPhase('CA')">
+                                <div
+                                    class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-500">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[10px] font-bold text-slate-600">EXAM PORTAL</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="examPhaseToggle" class="sr-only peer"
+                                    onchange="toggleAssessmentPhase('EXAM')">
+                                <div
+                                    class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-purple-500">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="flex flex-col sm:flex-row gap-4 border-t lg:border-t-0 lg:border-l border-slate-200 pt-4 lg:pt-0 lg:pl-6 w-full lg:w-auto">
+                    <div>
+                        <label
+                            class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Global
+                            Deadline</label>
+                        <div class="flex items-center gap-2">
+                            <input type="date" id="globalDeadlineInput"
+                                class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-[10px] font-bold text-slate-700 focus:outline-none">
+                            <button onclick="openGlobalActionModal('EXTEND')"
+                                class="bg-emerald-600 hover:bg-emerald-700 text-white text-[9px] font-black uppercase px-2 py-2 rounded transition-all shadow-sm">Extend</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label
+                            class="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Student
+                            Broadcast Engine</label>
+                        <div class="flex items-center gap-2">
+                            <input type="text" id="broadcastInput" placeholder="Push announcement..."
+                                class="bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-[10px] font-bold text-slate-700 focus:outline-none w-48">
+                            <button onclick="pushSystemAnnouncement()"
+                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg text-[10px] transition-colors shadow-sm"><i
+                                    class="fa-solid fa-paper-plane"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentAudit"
+            class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex-1 animate-fade-in block">
+            <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">School-Wide Compilation Roster
+                    </h2>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Track hierarchy completion and apply
+                        administrative restrictions via the Configure button.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                            <th class="py-3 px-4">Class</th>
+                            <th class="py-3 px-4">Form Master</th>
+                            <th class="py-3 px-4 text-center">Academic Compilation</th>
+                            <th class="py-3 px-4 text-center">Pastoral Evaluation</th>
+                            <th class="py-3 px-4 text-center">Data Status</th>
+                            <th class="py-3 px-4 text-right">Scope Config</th>
+                        </tr>
+                    </thead>
+                    <tbody id="chiefAuditBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+            <div id="activeAmendmentsPanel"
+                class="mt-8 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hidden">
+                <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
+                    <h3 class="text-sm font-black text-gussNavy uppercase tracking-wide">
+                        <i class="fa-solid fa-file-pen text-amber-500 mr-2"></i> Active Grade Amendment & Remarking
+                        Orders
+                    </h3>
+                    <span
+                        class="bg-amber-100 text-amber-800 text-[9px] font-black uppercase px-2.5 py-1 rounded-full">Surgical
+                        Queue</span>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-3 px-3">Student Identity</th>
+                                <th class="py-3 px-3">Subject</th>
+                                <th class="py-3 px-3">Original Teacher</th>
+                                <th class="py-3 px-3">Assigned Marker</th>
+                                <th class="py-3 px-3">Reason / Notes</th>
+                                <th class="py-3 px-3 text-right">Deadlock Breaker</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activeAmendmentsBody" class="divide-y divide-slate-100 text-xs">
+                            <!-- Dynamically populated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="tabContentBroadsheet" class="hidden flex-col gap-6 animate-fade-in flex-1">
+            <div
+                class="bg-slate-900 text-white border border-slate-800 rounded-3xl p-6 shadow-lg flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-4 w-full md:w-auto">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-gussGold/20 text-gussGold flex items-center justify-center text-xl shrink-0 border border-gussGold/30">
+                        <i class="fa-solid fa-table"></i>
+                    </div>
+                    <div class="w-full md:w-64">
+                        <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Target
+                            Class Broadsheet</label>
+                        <select id="broadsheetClassSelector" onchange="loadMasterBroadsheet()"
+                            class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm font-bold text-white focus:ring-2 focus:ring-gussGold focus:outline-none appearance-none">
+                            <option value="">Select a class...</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="publishingControls"
+                    class="hidden flex items-center gap-3 w-full md:w-auto border-t md:border-t-0 border-slate-700 pt-4 md:pt-0">
+                    <div class="text-right mr-2 hidden sm:block">
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Publishing Status</p>
+                        <p id="publishStatusText" class="text-xs font-black text-amber-400 uppercase">Pending Review</p>
+                    </div>
+                    <button id="btnPublishResults" onclick="publishClassResults()"
+                        class="w-full md:w-auto bg-gussGreen hover:bg-emerald-600 text-white font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-satellite-dish"></i> Publish Results
+                    </button>
+                    <button onclick="printClassBroadsheet()"
+                        class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl shadow-md transition-all flex items-center justify-center gap-2 mr-2">
+                        <i class="fa-solid fa-print"></i> Print Broadsheet
+                    </button>
+                    <button id="btnRevokeResults" onclick="revokeClassResults()"
+                        class="hidden w-full md:w-auto bg-red-600 hover:bg-red-700 text-white font-black text-xs uppercase tracking-wider px-6 py-3 rounded-xl shadow-md transition-all items-center justify-center gap-2">
+                        <i class="fa-solid fa-ban"></i> Revoke
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden flex-1 flex flex-col">
+                <div class="overflow-x-auto flex-1">
+                    <table class="w-full text-left border-collapse whitespace-nowrap">
+                        <thead id="broadsheetHead"
+                            class="bg-slate-100 text-[10px] uppercase tracking-widest text-slate-600 font-black border-b border-slate-200 sticky top-0 z-10">
+                            <tr>
+                                <th class="py-4 px-6">Select a class to generate broadsheet.</th>
+                            </tr>
+                        </thead>
+                        <tbody id="broadsheetBody" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="tabContentRegistry" class="hidden lg:grid-cols-12 gap-6 items-start animate-fade-in">
+            <div class="lg:col-span-5 flex flex-col gap-4">
+                <div class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+                    <h2
+                        class="text-sm font-black text-gussNavy uppercase tracking-wide mb-4 border-b border-slate-100 pb-2">
+                        <i class="fa-solid fa-magnifying-glass text-blue-500 mr-2"></i> Omni-Search Gateway
+                    </h2>
+                    <div class="relative mb-4">
+                        <input type="text" id="omniSearchInput" onkeyup="executeOmniSearch()"
+                            placeholder="Search any student by name or ID..."
+                            class="w-full bg-slate-50 border border-slate-300 rounded-xl pl-4 pr-3 py-3 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-200">
+                    </div>
+                    <div id="omniSearchResults" class="space-y-2 max-h-[180px] overflow-y-auto pr-1 mb-4">
+                        <div class="text-center py-6 text-slate-400 text-xs font-bold"><i
+                                class="fa-solid fa-database block text-2xl mb-2 opacity-30"></i> Waiting for query...
+                        </div>
+                    </div>
+                    <div id="activePenaltyForm"
+                        class="hidden bg-red-50 border border-red-100 rounded-2xl p-4 animate-fade-in">
+                        <h4
+                            class="text-[10px] font-black uppercase tracking-widest text-red-600 mb-3 border-b border-red-100 pb-2">
+                            Apply Restriction To:</h4>
+                        <div class="mb-3">
+                            <p id="penaltyTargetName" class="text-sm font-black text-slate-800 uppercase">---</p>
+                            <p id="penaltyTargetDetails" class="text-[10px] font-mono text-slate-500 mt-0.5">---</p>
+                        </div>
+                        <input type="hidden" id="penaltyTargetId"><input type="hidden" id="penaltyTargetClass">
+                        <label
+                            class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1 mt-4">Reason
+                            for Withholding Result</label>
+                        <select id="penaltyReason"
+                            class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-bold focus:outline-none mb-4">
+                            <option value="Unpaid Tuition Fees">Unpaid Tuition Fees</option>
+                            <option value="Administrative Disciplinary Hold">Administrative Disciplinary Hold</option>
+                            <option value="Missing Clearance Documents">Missing Clearance Documents</option>
+                        </select>
+                        <button onclick="applyStudentPenalty()"
+                            class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-black uppercase tracking-wider py-2.5 rounded-lg transition-colors"><i
+                                class="fa-solid fa-lock mr-1"></i> Enforce Withhold</button>
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-7 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm min-h-[500px]">
+                <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-4">
+                    <div>
+                        <h2 class="text-sm font-black text-gussNavy uppercase tracking-wide">Master Registry of
+                            Penalties</h2>
+                        <p class="text-[10px] text-slate-500 font-bold tracking-widest mt-1 uppercase">Students/Classes
+                            excluded from publication</p>
+                    </div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr
+                                class="bg-slate-50 text-[9px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                                <th class="py-2 px-3">Target Identity</th>
+                                <th class="py-2 px-3">Class/Scope</th>
+                                <th class="py-2 px-3">Official Reason</th>
+                                <th class="py-2 px-3 text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="registryTableBody" class="divide-y divide-slate-100 text-xs"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Config Modal -->
+    <div id="classConfigModal"
+        class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div class="bg-gussNavy p-5 flex justify-between items-center text-white shrink-0">
+                <div>
+                    <h3 class="font-black text-lg uppercase tracking-wide" id="modalClassName">Scope Name</h3>
+                    <p class="text-[10px] text-slate-400 font-mono tracking-widest mt-0.5" id="modalScopeType">Security
+                        Configuration</p>
+                </div>
+                <button onclick="closeClassConfigModal()"
+                    class="text-slate-400 hover:text-white transition-colors text-xl"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="p-6 overflow-y-auto flex-1 space-y-8">
+                <div class="bg-orange-50 border border-orange-200 rounded-2xl p-5">
+                    <h4
+                        class="text-xs font-black text-orange-800 uppercase tracking-widest flex items-center gap-2 mb-3">
+                        <i class="fa-solid fa-clock-rotate-left"></i> <span id="lblExtension">Scope Deadline
+                            Override</span>
+                    </h4>
+                    <div class="flex items-end gap-3 mb-4">
+                        <div class="flex-1">
+                            <label
+                                class="block text-[9px] font-black text-orange-700 uppercase tracking-widest mb-1">Target
+                                Date</label>
+                            <input type="date" id="modalSpecificDeadline"
+                                class="w-full bg-white border border-orange-300 rounded-lg px-4 py-2 text-sm font-bold text-slate-700 focus:outline-none">
+                        </div>
+                        <button onclick="applyScopeDeadlineAction('EXTEND')"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-black uppercase px-4 py-2.5 rounded-lg transition-all shadow-sm"><i
+                                class="fa-solid fa-calendar-plus mr-1"></i> Extend</button>
+                        <button onclick="applyScopeDeadlineAction('SQUEEZE')"
+                            class="bg-red-600 hover:bg-red-700 text-white text-[10px] font-black uppercase px-4 py-2.5 rounded-lg transition-all shadow-sm"><i
+                                class="fa-solid fa-calendar-minus mr-1"></i> Squeeze</button>
+                        <button onclick="clearSpecificDeadline()"
+                            class="bg-white border border-orange-300 text-orange-700 px-3 py-2.5 rounded-lg text-[10px] font-black uppercase hover:bg-orange-100"><i
+                                class="fa-solid fa-eraser"></i></button>
+                    </div>
+                    <input type="text" id="modalExtensionReason" placeholder="Official reason for deadline change..."
+                        class="w-full bg-white border border-orange-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-300 text-slate-700">
+                </div>
+
+                <div class="border-b border-slate-200 pb-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <h4 class="text-sm font-black text-gussNavy uppercase tracking-wide" id="lblWithhold">
+                                Withhold Entire Scope</h4>
+                            <p class="text-[10px] text-slate-500">Exclude this scope from Result Sheet publication.</p>
+                        </div>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" id="modalClassWithholdToggle" class="sr-only peer"
+                                onchange="toggleClassReasonField()">
+                            <div
+                                class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-500">
+                            </div>
+                        </label>
+                    </div>
+                    <div id="classReasonBlock" class="hidden">
+                        <input type="text" id="modalClassReason" placeholder="Enter reason for withholding..."
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-red-200">
+                    </div>
+                </div>
+
+                <div class="border-b border-slate-200 pb-4 mb-4" id="granularPortalControls">
+                    <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <h4 class="text-sm font-black text-gussNavy uppercase tracking-wide">Granular Portal Access
+                            </h4>
+                            <p class="text-[10px] text-slate-500">Manually unlock grading portals for this specific
+                                class after a revocation.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-4 mt-3">
+                        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[10px] font-bold text-slate-600">C.A. PORTAL</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="modalCaToggle" class="sr-only peer">
+                                <div
+                                    class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-blue-500">
+                                </div>
+                            </label>
+                        </div>
+                        <div class="flex items-center gap-2 bg-slate-50 px-3 py-1.5 rounded-lg border border-slate-200">
+                            <span class="text-[10px] font-bold text-slate-600">EXAM PORTAL</span>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="modalExamToggle" class="sr-only peer">
+                                <div
+                                    class="w-8 h-4 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-purple-500">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="studentWithholdSection">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="text-xs font-black text-slate-500 uppercase tracking-widest">Granular Controls
+                            (Student Level)</h4>
+                        <div class="relative w-1/2">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2 text-slate-400 text-xs"></i>
+                            <input type="text" id="modalSearchInput" onkeyup="filterModalStudents()"
+                                placeholder="Search class roster..."
+                                class="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-1.5 text-[10px] font-medium focus:outline-none focus:ring-2 focus:ring-gussNavy">
+                        </div>
+                    </div>
+                    <div class="border border-slate-200 rounded-xl overflow-hidden">
+                        <div
+                            class="bg-slate-50 px-4 py-2 text-[9px] font-black uppercase tracking-widest text-slate-400 border-b border-slate-200 grid grid-cols-12 gap-2">
+                            <div class="col-span-6">Student Identity</div>
+                            <div class="col-span-4 text-center">Custom Deadline</div>
+                            <div class="col-span-2 text-center text-red-500">Withhold</div>
+                        </div>
+                        <div id="modalStudentList" class="divide-y divide-slate-100 max-h-[200px] overflow-y-auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 p-4 border-t border-slate-200 flex justify-end gap-3 shrink-0">
+                <button onclick="closeClassConfigModal()"
+                    class="px-5 py-2.5 rounded-xl text-xs font-black uppercase text-slate-500 hover:bg-slate-200 transition-colors">Cancel</button>
+                <button onclick="saveClassConfiguration()"
+                    class="bg-gussNavy hover:bg-slate-800 text-white text-xs font-black uppercase tracking-wider px-6 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2"><i
+                        class="fa-solid fa-floppy-disk"></i> Save Config</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Modal -->
+    <div id="securityModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6 text-center">
+            <div id="securityIcon"
+                class="w-16 h-16 rounded-full mx-auto flex items-center justify-center text-2xl mb-4"></div>
+            <h3 class="font-black text-xl text-gussNavy uppercase tracking-wide mb-2" id="securityTitle">Confirm Action
+            </h3>
+            <p class="text-sm text-slate-500 font-medium mb-6" id="securityMessage">Are you sure you want to proceed?
+            </p>
+
+            <div id="securityInputBlock" class="hidden mb-6 text-left">
+                <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Mandatory
+                    Reason</label>
+                <input type="text" id="securityReasonInput" placeholder="Type reason here..."
+                    class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300">
+            </div>
+
+            <div class="flex gap-3">
+                <button onclick="document.getElementById('securityModal').classList.add('hidden')"
+                    class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                <button id="securityConfirmBtn"
+                    class="flex-1 py-3 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Self-Service Leave Modal -->
+    <div id="leaveModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <h3 class="font-black text-lg text-orange-600 uppercase tracking-wide mb-2"><i
+                    class="fa-solid fa-plane-departure mr-2"></i> Official Leave Request</h3>
+            <p
+                class="text-[10px] text-slate-500 font-bold tracking-widest uppercase border-b border-slate-200 pb-4 mb-4">
+                Request digital clearance from DD Admin</p>
+
+            <form onsubmit="submitLeaveRequest(event)" class="space-y-4">
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Type of Leave</label>
+                    <select id="leaveType"
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required>
+                        <option value="Medical">Medical Leave</option>
+                        <option value="Casual">Casual Leave</option>
+                        <option value="Maternity">Maternity/Paternity</option>
+                        <option value="Compassionate">Compassionate Leave</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Start
+                            Date</label>
+                        <input type="date" id="leaveStart"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Expected
+                            Return</label>
+                        <input type="date" id="leaveEnd"
+                            class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2.5 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-orange-300"
+                            required>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="font-black text-[10px] text-slate-500 uppercase tracking-widest">Handover Notes /
+                        Instructions</label>
+                    <textarea id="leaveNotes" rows="3"
+                        placeholder="Brief details for the DD Academics regarding your stranded classes..."
+                        class="w-full bg-slate-50 border border-slate-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-orange-300"
+                        required></textarea>
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="document.getElementById('leaveModal').classList.add('hidden')"
+                        class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-black uppercase transition-colors">Cancel</button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl text-xs font-black uppercase tracking-wider shadow-md transition-all">Submit
+                        Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CHIEF EXAMINER PROFILE & SIGNATURE MODAL -->
+    <div id="chiefProfileModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <h3 class="font-black text-lg text-gussNavy uppercase tracking-wide"><i
+                        class="fa-solid fa-signature text-gussGold mr-2"></i> Official Digital Signature</h3>
+                <button onclick="document.getElementById('chiefProfileModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 text-center">
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Current Authorized
+                    Signature</p>
+                <img id="chiefSignaturePreview" src="" class="h-20 object-contain mx-auto mix-blend-multiply opacity-80"
+                    alt="No Signature Uploaded">
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-start gap-3">
+                <i class="fa-solid fa-lock text-slate-400 mt-0.5"></i>
+                <p class="text-[10px] text-slate-500 font-medium leading-relaxed">Your digital signature is
+                    cryptographically locked. If you require a modification, you must physically visit the Central ICT
+                    Administrator.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/chief_examiner_app.js"></script>
+
+</body>
+
+</html>

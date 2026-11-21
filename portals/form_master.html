@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Security Guard to intercept unauthorized access -->
+    <script type="module" src="assets/js/security_guard.js"></script>
+    <title>Form Master Console | G.U.S.S. Ringim</title>
+    <meta name="description" content="Form Master Evaluation Console for Government Unity Secondary School.">
+    <meta name="author" content="HaiDev Agency">
+
+    <link rel="icon" type="image/png" href="assets/images/Adobe_Express_file.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+
+    <script>
+        tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }
+    </script>
+
+    <!-- SweetAlert2 UI Framework -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- DOMPurify is included to sanitize any user-generated content and prevent XSS attacks. -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col relative">
+
+    <div
+        class="bg-gussNavy text-white text-xs py-2.5 px-4 flex flex-col sm:flex-row justify-between items-center gap-2 border-b border-slate-900 shadow-inner relative z-[60]">
+
+        <div class="flex items-center gap-4">
+            <span class="text-slate-400 hidden md:inline"><i class="fa-solid fa-users-rectangle text-gussGold mr-1"></i>
+                PASTORAL NODE</span>
+            <span class="hidden md:inline text-slate-600">|</span>
+            <span
+                class="bg-slate-800 border border-slate-700 px-3 py-0.5 rounded-full font-bold text-[10px] tracking-wide text-slate-300 uppercase inline-flex items-center gap-1.5 shadow-sm">
+                <i class="fa-solid fa-user-tie text-purple-400"></i> Role: Form Master
+            </span>
+            <span
+                class="font-bold text-slate-200 tracking-wide border-l border-slate-700 pl-4 cursor-pointer hover:text-white transition-colors"
+                onclick="openFormMasterProfileSettings()">
+                <i class="fa-regular fa-circle-user mr-1 text-gussGold"></i> <span
+                    id="activeFormMasterNameDisplay">Loading...</span>
+            </span>
+        </div>
+
+        <div class="flex items-center gap-3 font-bold tracking-wider">
+            <span id="gradingTimerDisplay"
+                class="hidden sm:flex items-center gap-2 bg-slate-800 border border-slate-700 text-slate-300 px-3 py-1 rounded-md text-[10px] shadow-inner ml-2">
+                <i class="fa-solid fa-spinner fa-spin"></i> Syncing...
+            </span>
+
+            <!--  ENTERPRISE NETWORK TELEMETRY BADGE -->
+            <span id="networkPingBadge"
+                class="bg-slate-800 px-3 py-1 rounded-md border border-slate-700 flex items-center gap-2 shadow-inner cursor-help ml-2"
+                title="Server Latency">
+                <span id="networkPingDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="networkPingText" class="text-[10px] font-mono font-bold text-emerald-400">SYNCING...</span>
+            </span>
+
+            <!--  GLOBAL SESSION & TERM CONTROLLER -->
+            <div class="hidden md:flex items-center gap-2 bg-slate-900/80 border border-slate-700 rounded-lg p-1 shadow-inner ml-2"
+                id="globalTimeMachineWidget">
+                <button onclick="SessionManager.resetToLive()" id="tmLiveBtn"
+                    class="bg-gussGreen text-white px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest shadow-sm border border-emerald-600 transition-colors flex items-center gap-1.5">
+                    <span class="relative flex h-2 w-2 mr-1">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                    </span>Live
+                </button>
+                <select id="globalSessionSelect" onchange="SessionManager.setSession(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center rounded">
+                    <option value="LOADING">Syncing...</option>
+                </select>
+                <select id="globalTermSelect" onchange="SessionManager.setTerm(this.value)"
+                    class="bg-slate-900 text-white hover:text-gussGold text-[10px] font-black uppercase tracking-widest focus:outline-none cursor-pointer px-2 py-1.5 appearance-none text-center border-l border-slate-700 ml-1 pl-3 rounded">
+                    <option value="1ST TERM">1ST TERM</option>
+                    <option value="2ND TERM">2ND TERM</option>
+                    <option value="3RD TERM">3RD TERM</option>
+                </select>
+            </div>
+
+            <button onclick="executeSystemLogout()"
+                class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1 rounded-md transition-colors flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-power-off"></i> System Exit
+            </button>
+        </div>
+    </div>
+
+    <header class="bg-white border-b border-slate-200 shadow-sm z-40 py-4 px-4 sticky top-0">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4">
+                <div class="h-12 w-auto flex items-center justify-center border-r border-slate-200 pr-4 shrink-0">
+                    <img src="assets/images/logo_img.png" alt="G.U.S.S. Crest"
+                        class="h-full w-auto object-contain max-w-[150px]">
+                </div>
+                <div>
+                    <h1 class="font-black text-lg tracking-tight text-gussGreen uppercase leading-tight">Form Master
+                        Console</h1>
+                    <p class="text-[10px] text-slate-500 tracking-widest uppercase font-bold">Class Administration &
+                        Auditing</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl w-full mx-auto px-4 py-8 flex-1">
+        <div
+            class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-4 w-full sm:w-auto">
+                <div
+                    class="w-12 h-12 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-chalkboard"></i>
+                </div>
+                <div class="w-full sm:w-64">
+                    <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-1">Active
+                        Assigned Class</label>
+                    <select id="fmClassSelector" onchange="initializeFormMasterDashboard()"
+                        class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2 text-sm font-bold text-gussNavy focus:ring-2 focus:ring-purple-400 focus:outline-none appearance-none">
+                        <option value="">Syncing Workload...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex bg-slate-100 p-1 rounded-xl w-full sm:w-auto">
+                <button onclick="switchTab('audit')" id="tabBtnAudit"
+                    class="flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all bg-white shadow-sm text-gussNavy border border-slate-200"><i
+                        class="fa-solid fa-list-check mr-1"></i> Teachers Audit</button>
+                <button onclick="switchTab('evaluate')" id="tabBtnEval"
+                    class="flex-1 sm:flex-none px-6 py-2 rounded-lg text-xs font-black uppercase tracking-wider transition-all text-slate-500 hover:text-gussNavy"><i
+                        class="fa-solid fa-user-pen mr-1"></i> Student Eval</button>
+            </div>
+        </div>
+
+        <div id="extensionNotificationBanner"
+            class="hidden border-l-4 p-4 rounded-r-xl shadow-sm animate-fade-in flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+            <div id="bannerIcon" class="text-2xl mt-0.5"><i class="fa-solid fa-bullhorn"></i></div>
+            <div class="flex-1">
+                <h4 class="text-xs font-black uppercase tracking-widest mb-1" id="bannerTitle">Portal Status &
+                    Directives</h4>
+                <p id="extensionReasonText" class="text-[11px] font-medium">---</p>
+            </div>
+        </div>
+
+        <div id="tabContentAudit"
+            class="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm premium-card-shadow animate-fade-in">
+            <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
+                <div>
+                    <h2 class="text-lg font-black text-gussNavy uppercase tracking-wide">Subject Teachers' Progress
+                        Matrix</h2>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Monitor grading submissions to authorize final
+                        report compilation.</p>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr
+                            class="bg-slate-50 text-[10px] uppercase tracking-widest text-slate-500 font-black border-y border-slate-200">
+                            <th class="py-3 px-4">Subject</th>
+                            <th class="py-3 px-4">Assigned Teacher</th>
+                            <th class="py-3 px-4">Contact Detail</th>
+                            <th class="py-3 px-4 text-center">Grading Progress</th>
+                            <th class="py-3 px-4 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="auditMatrixBody" class="divide-y divide-slate-100 text-sm">
+                        <tr>
+                            <td colspan="5" class="py-12 text-center text-slate-400 font-medium text-xs">
+                                <i class="fa-solid fa-users-viewfinder text-3xl mb-3 opacity-20 block"></i>
+                                Select a class to view grading audit.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="tabContentEval" class="hidden grid lg:grid-cols-12 gap-8 items-start animate-fade-in">
+            <div class="lg:col-span-4 flex flex-col gap-4">
+                <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+                    <div class="relative mb-4">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-slate-400 text-sm"></i>
+                        <input type="text" id="fmSearchInput" onkeyup="filterFmRoster()"
+                            placeholder="Search student name..."
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-9 pr-3 py-2 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-purple-200">
+                    </div>
+                    <div id="fmRosterList" class="space-y-2 max-h-[500px] overflow-y-auto pr-1">
+                    </div>
+                </div>
+            </div>
+            <div
+                class="lg:col-span-8 bg-white border border-slate-200 rounded-3xl p-6 shadow-sm flex flex-col min-h-[500px]">
+                <div id="noStudentPrompt" class="flex-1 flex flex-col items-center justify-center space-y-3">
+                    <div
+                        class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center text-slate-300 mx-auto text-2xl">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                    <p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Select a student to evaluate
+                    </p>
+                </div>
+
+                <div id="evaluationFormBlock" class="hidden flex-col h-full animate-fade-in">
+                    <div class="flex justify-between items-end border-b border-slate-200 pb-4 mb-6">
+                        <div>
+                            <h2 id="evalStudentName" class="text-xl font-black text-gussNavy uppercase tracking-wide">
+                                ---</h2>
+                            <p id="evalStudentId" class="text-xs text-slate-500 font-mono font-bold mt-1">---</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 flex-1">
+                        <div class="space-y-6">
+                            <div class="bg-slate-50 rounded-xl p-4 border border-slate-200">
+                                <h4
+                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2">
+                                    <i class="fa-regular fa-calendar-check text-blue-500"></i> Attendance Roster
+                                </h4>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Days
+                                            Opened</label><input type="number" id="evalDaysOpened"
+                                            class="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-gussGreen text-sm font-mono">
+                                    </div>
+                                    <div><label class="block text-xs font-bold text-slate-700 mb-1">Days
+                                            Present</label><input type="number" id="evalDaysPresent" placeholder="0"
+                                            class="w-full px-3 py-2 border border-slate-300 rounded focus:outline-none focus:border-gussGreen text-sm font-mono">
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 border-b border-slate-200 pb-2">
+                                    <i class="fa-solid fa-heart-pulse text-red-400"></i> Affective Traits
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Punctuality</label><select
+                                            id="affPunctuality"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Politeness</label><select
+                                            id="affPoliteness"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Neatness</label><select
+                                            id="affNeatness"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="space-y-6">
+                            <div>
+                                <h4
+                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-3 flex items-center gap-2 border-b border-slate-200 pb-2">
+                                    <i class="fa-solid fa-person-running text-orange-400"></i> Psychomotor Skills
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Handwriting</label><select
+                                            id="psyHandwriting"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Sports & Games</label><select
+                                            id="psySports"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                    <div class="flex justify-between items-center"><label
+                                            class="text-xs font-bold text-slate-700">Verbal Fluency</label><select
+                                            id="psyVerbal"
+                                            class="border border-slate-300 rounded px-2 py-1 text-xs font-bold">
+                                            <option value="5">5</option>
+                                            <option value="4">4</option>
+                                            <option value="3">3</option>
+                                            <option value="2">2</option>
+                                            <option value="1">1</option>
+                                            <option value="0" selected>0</option>
+                                        </select></div>
+                                </div>
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <h4
+                                    class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-pen-nib text-gussGold"></i> Official Remark
+                                </h4>
+                                <textarea id="evalRemark" rows="4" placeholder="Enter behavioral remark..."
+                                    class="w-full px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 text-sm resize-none"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8 pt-4 border-t border-slate-200 flex justify-end">
+                        <button id="saveEvalBtn" onclick="saveEvaluationToCloud()"
+                            class="bg-gussGreen hover:bg-emerald-800 text-white text-xs font-black uppercase tracking-wider px-6 py-3 rounded-xl shadow-md transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> Save Evaluation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FORM MASTER PROFILE & SIGNATURE MODAL -->
+    <div id="formMasterProfileModal"
+        class="hidden fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[150] flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl w-full max-w-md overflow-hidden shadow-2xl p-6">
+            <div class="flex justify-between items-center mb-4 border-b border-slate-200 pb-2">
+                <h3 class="font-black text-lg text-gussNavy uppercase tracking-wide"><i
+                        class="fa-solid fa-signature text-gussGold mr-2"></i> Official Digital Signature</h3>
+                <button onclick="document.getElementById('formMasterProfileModal').classList.add('hidden')"
+                    class="text-slate-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 text-center">
+                <p class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-2">Current Authorized
+                    Signature</p>
+                <img id="fmSignaturePreview" src="" class="h-20 object-contain mx-auto mix-blend-multiply opacity-80"
+                    alt="No Signature Uploaded">
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl flex items-start gap-3">
+                <i class="fa-solid fa-lock text-slate-400 mt-0.5"></i>
+                <p class="text-[10px] text-slate-500 font-medium leading-relaxed">Your digital signature is
+                    cryptographically locked. If you require a modification, you must physically visit the Central ICT
+                    Administrator.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="assets/js/form_master_app.js"></script>
+
+</body>
+
+</html>

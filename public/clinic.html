@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wellbeing & Medical Care | G.U.S.S. Ringim</title>
+    <!-- SEO Optimization & Meta Tags -->
+    <meta name="description"
+        content="Learn about the student wellbeing, medical clinic, and the strict nutritional dining schedules at Government Unity Secondary School, Ringim.">
+    <meta name="keywords"
+        content="GUSS Ringim Clinic, Student Welfare, Boarding School Nutrition, Ringim General Hospital">
+    <meta name="author" content="HaiDev Agency">
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <!-- Page Header -->
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-cyan-500">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&q=80&w=1920"
+                alt="Clinic and Medical" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-cyan-900/40 border border-cyan-500/50 text-cyan-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Health
+                & Nutrition</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Wellbeing & <span class="text-cyan-500">Medical Care</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">Ensuring the physical health,
+                rapid medical response, and strict nutritional welfare of our 5,000+ boarding scholars.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+
+                <!-- The Medical Wing -->
+                <div class="lg:col-span-7 space-y-12">
+                    <div>
+                        <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The School Clinic</h2>
+                        <div class="w-16 h-1.5 bg-cyan-500 mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                            Operating around the clock within the Area Hostels quadrant, the School Clinic is the
+                            immediate first-responder unit for all scholar health concerns. It is rigorously managed by
+                            the faculty <strong>Health Masters</strong> and actively assisted by the student
+                            <strong>Health Prefects</strong>, who are granted emergency campus movement privileges.
+                        </p>
+                    </div>
+
+                    <div
+                        class="bg-cyan-50 border border-cyan-200 p-8 rounded-[2rem] shadow-sm relative overflow-hidden">
+                        <i class="fa-solid fa-truck-medical absolute -right-6 -bottom-6 text-9xl text-cyan-500/10"></i>
+                        <h3
+                            class="text-xl font-black text-cyan-900 uppercase tracking-wide mb-4 relative z-10 flex items-center gap-3">
+                            <i class="fa-solid fa-hospital text-cyan-600"></i> The Referral Protocol
+                        </h3>
+                        <p class="text-sm text-cyan-800 leading-relaxed text-justify relative z-10">
+                            The campus clinic is fully equipped for first aid, routine fever management, and minor
+                            injuries. However, the school operates a strict, zero-risk medical protocol. Any condition
+                            deemed critical or requiring specialized diagnostic testing is immediately routed to the
+                            <strong>Ringim General Hospital</strong>. The DD Administration directly coordinates with
+                            parents in these severe instances to ensure full transparency and immediate care.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Nutritional Welfare (Kitchen) -->
+                <div class="lg:col-span-5">
+                    <div
+                        class="bg-gussNavy text-white rounded-[2rem] p-8 shadow-2xl sticky top-28 border border-slate-700">
+                        <div class="flex items-center gap-4 mb-6">
+                            <div
+                                class="w-14 h-14 bg-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-center text-2xl shrink-0">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <h3 class="text-2xl font-black uppercase tracking-wide text-white">Nutritional Matrix</h3>
+                        </div>
+
+                        <p class="text-sm text-slate-300 mb-8 leading-relaxed text-justify">
+                            Proper nutrition is the fuel for academic excellence. Because personal cooking is strictly
+                            banned to prevent fire hazards, the massive Central Kitchen handles the dietary needs of the
+                            entire student body through an unyielding daily schedule.
+                        </p>
+
+                        <div class="bg-slate-900 border border-slate-700 rounded-2xl p-6">
+                            <h4
+                                class="font-black text-emerald-400 text-[10px] uppercase tracking-widest mb-4 border-b border-slate-800 pb-3">
+                                <i class="fa-regular fa-clock mr-1"></i> Daily Dining Schedule
+                            </h4>
+
+                            <ul class="space-y-4 text-xs font-bold text-slate-300">
+                                <li
+                                    class="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-white/5">
+                                    <span class="uppercase tracking-wider">Morning Meal</span>
+                                    <span class="text-emerald-400 font-black">10:40 AM - 11:00 AM</span>
+                                </li>
+                                <li
+                                    class="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-white/5">
+                                    <span class="uppercase tracking-wider">Afternoon Meal</span>
+                                    <span class="text-emerald-400 font-black">02:00 PM - 02:30 PM</span>
+                                </li>
+                                <li
+                                    class="flex items-center justify-between p-3 bg-slate-800/50 rounded-xl border border-white/5">
+                                    <span class="uppercase tracking-wider">Evening Meal</span>
+                                    <span class="text-emerald-400 font-black">07:00 PM - 07:30 PM</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <p class="text-[10px] font-black uppercase tracking-widest text-slate-500 mt-6 text-center">
+                            <i class="fa-solid fa-shield text-gussGold mr-1"></i> Supervised by the Kitchen Masters
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

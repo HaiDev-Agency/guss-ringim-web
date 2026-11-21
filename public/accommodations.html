@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accommodations | G.U.S.S. Ringim</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-amber-600">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1920"
+                alt="Hostels" class="w-full h-full object-cover opacity-30 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-amber-900/40 border border-amber-500/50 text-amber-200 font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">Residential
+                Ecosystem</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Boarding <span class="text-amber-500">Accommodations</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The 19 Sovereign Area Hostels
+                supporting over 5,000 scholars from across the Northern states.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-white relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+                <div class="space-y-8">
+                    <div>
+                        <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">The 19 Area Hostels</h2>
+                        <div class="w-16 h-1.5 bg-amber-500 mt-4 rounded-full"></div>
+                        <p class="text-sm text-slate-600 mt-6 leading-relaxed text-justify">
+                            G.U.S.S. Ringim operates a massive, highly structured residential quadrant. Scholars are
+                            distributed across 19 distinct dormitories—including prominent houses like <strong>Aminu
+                                Yahaya</strong>, <strong>Dutse House</strong>, and <strong>Prof. Ruqayyatu</strong>.
+                            Each house operates independently to foster localized brotherhood and fierce loyalty during
+                            Inter-House sports.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 p-6 rounded-2xl shadow-sm">
+                        <h4 class="font-black text-slate-800 uppercase text-sm mb-3 flex items-center gap-2"><i
+                                class="fa-solid fa-sitemap text-amber-500"></i> Chain of Command</h4>
+                        <p class="text-xs text-slate-600 leading-relaxed text-justify mb-4">Hostels are strictly
+                            governed by faculty <strong>House Masters</strong> who oversee general welfare and
+                            discipline. They are supported internally by student <strong>House Captains</strong> who act
+                            as the first line of leadership during evening prep and lights-out.</p>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-200 p-6 rounded-2xl shadow-sm">
+                        <h4 class="font-black text-red-900 uppercase text-sm mb-3 flex items-center gap-2"><i
+                                class="fa-solid fa-fire-ban text-red-600"></i> Provisions & Fire Hazards</h4>
+                        <p class="text-xs text-red-800 leading-relaxed text-justify">
+                            Because the campus features a massive central Kitchen serving 3 square meals daily,
+                            <strong>cooking and the use of naked flames are strictly forbidden</strong> within the
+                            dormitories to prevent fire hazards. Students are only permitted to bring "dry provisions"
+                            such as cabin biscuits, garri, and milk.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=600"
+                        class="w-full h-64 object-cover rounded-[2rem] shadow-lg" alt="Dorm Beds">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=600"
+                        class="w-full h-64 object-cover rounded-[2rem] shadow-lg mt-8" alt="Students Reading">
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderships & Prefectures | G.U.S.S. Ringim</title>
+    <meta name="description"
+        content="View the dynamic student leadership hierarchy at Government Unity Secondary School, Ringim.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/gussr_logo_transparent.png">
+    <link rel="stylesheet" href="assets/css/styles.css">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>tailwind.config = { theme: { extend: { colors: { gussGreen: '#005A36', gussGold: '#D4AF37', gussNavy: '#0F172A' } } } }</script>
+
+    <!-- Enterprise Security & UI Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body class="bg-slate-50 text-slate-800 font-sans antialiased overflow-x-hidden">
+
+    <div id="guss-header"></div>
+
+    <header class="relative bg-gussNavy overflow-hidden min-h-[45vh] flex items-center border-b-[6px] border-gussGold">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=1920"
+                alt="Leadership" class="w-full h-full object-cover opacity-20 mix-blend-overlay grayscale">
+        </div>
+        <div class="absolute inset-0 hero-overlay z-10"></div>
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-20 w-full text-center mt-8">
+            <span
+                class="bg-yellow-900/40 border border-gussGold/50 text-gussGold font-black px-4 py-1.5 rounded-full text-[10px] uppercase tracking-widest mb-6 inline-block backdrop-blur-sm shadow-inner">The
+                Student Council</span>
+            <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-black uppercase tracking-tight leading-[1.1] text-white drop-shadow-2xl mb-4">
+                Leaderships & <span class="text-gussGold">Prefectures</span></h1>
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-medium">The live chain of command
+                managing the student body, enforcing discipline, and coordinating campus life.</p>
+        </div>
+    </header>
+
+    <section class="py-24 bg-slate-100 relative">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-black text-gussNavy uppercase tracking-wide">Current Chain of Command</h2>
+                <div class="w-24 h-1.5 bg-gussGold mx-auto mt-4 rounded-full"></div>
+            </div>
+
+            <!-- Dynamic Tree Chart Container (Injected via app.js) -->
+            <div id="dynamicPrefectsTree" class="w-full overflow-x-auto pb-8 flex flex-col items-center">
+                <!-- Data renders here -->
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-white border-t border-slate-200">
+        <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-start">
+
+                <div class="space-y-8">
+                    <h3
+                        class="text-2xl font-black text-gussNavy uppercase tracking-wide border-b border-slate-200 pb-4">
+                        The Selection Protocol</h3>
+
+                    <div class="bg-blue-50 border border-blue-100 p-6 rounded-2xl shadow-sm">
+                        <h4 class="font-black text-blue-900 uppercase text-sm mb-2"><i
+                                class="fa-solid fa-hourglass-half mr-2 text-blue-600"></i> The Trial Phase</h4>
+                        <p class="text-xs text-blue-800 leading-relaxed text-justify">
+                            As the outgoing SSS 3 students begin their national WAEC/NECO examinations, the
+                            administrative baton is temporarily passed to selected SSS 2 students. This "Acting
+                            Prefecture" phase allows the Directorate to actively monitor their leadership capabilities
+                            under pressure before confirming full appointment. These temporary assignments are one of
+                            the few exceptions allowed to be announced outside the standard Monday Assembly.
+                        </p>
+                    </div>
+
+                    <div class="bg-red-50 border border-red-100 p-6 rounded-2xl shadow-sm">
+                        <h4 class="font-black text-red-900 uppercase text-sm mb-2"><i
+                                class="fa-solid fa-gavel mr-2 text-red-600"></i> Cap Forfeiture Rule</h4>
+                        <p class="text-xs text-red-800 leading-relaxed text-justify">
+                            Prefects are held to the absolute highest standard of discipline. Any verified incident of
+                            bullying junior students, academic malpractice, or violating the non-gadget policy results
+                            in immediate "Cap Forfeiture" (stripping of rank) by the Disciplinary Committee, leaving
+                            their position permanently blank on the hierarchy board until reassigned.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-8">
+                    <h3
+                        class="text-2xl font-black text-gussNavy uppercase tracking-wide border-b border-slate-200 pb-4">
+                        Executive Privileges</h3>
+
+                    <div class="space-y-6">
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="w-12 h-12 bg-gussGold/20 text-gussGold rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-slate-800 uppercase text-sm mb-1">Head Student Exemptions
+                                </h4>
+                                <p class="text-xs text-slate-600 leading-relaxed text-justify">The Head Student is the
+                                    only scholar granted the executive privilege to carry and operate a digital
+                                    device/laptop publicly, specifically for the execution of official administrative
+                                    documentation and liaison duties with the DD Administration.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4 items-start">
+                            <div
+                                class="w-12 h-12 bg-emerald-500/20 text-emerald-600 rounded-xl flex items-center justify-center text-xl shrink-0">
+                                <i class="fa-solid fa-bullhorn"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-black text-slate-800 uppercase text-sm mb-1">Monday Assembly Command
+                                </h4>
+                                <p class="text-xs text-slate-600 leading-relaxed text-justify">During the mandatory
+                                    Monday Assemblies, the Special Duty Prefect (the Auditor) and the Ameers hold the
+                                    floor to issue student directives before the administrative staff takes over. The
+                                    Special Duty Prefect ranks third in command, strictly monitoring the rest of the
+                                    council.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <div id="guss-footer"></div>
+    <script type="module" src="assets/js/public_app.js" defer></script>
+</body>
+
+</html>

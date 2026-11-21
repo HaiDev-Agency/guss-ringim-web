@@ -1,0 +1,179 @@
+/**
+ * G.U.S.S. Ringim - Universal Global Stylesheet
+ * Contains master design variables, cross-page cacheable components, 
+ * custom scrollbars, and core layout spacing.
+ */
+:root {
+    /* Sovereign Institutional Color Palette Variables */
+    --guss-green: #005A36;
+    --guss-green-hover: #004428;
+    --guss-gold: #D4AF37;
+    --guss-gold-hover: #bca02e;
+    --guss-navy: #0F172A;
+    --guss-navy-dark: #020617;
+}
+
+/* Custom Uniform Scrollbar System */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--guss-green);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--guss-green-hover);
+}
+
+/* Global Selection and Component Overrides */
+::selection {
+    background-color: var(--guss-green);
+    color: #ffffff;
+}
+
+/* Standardized Accessible Form Focus Outlines */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--guss-gold) !important;
+    outline-offset: 1px;
+}
+
+/* Card Micro-Animation Classes */
+.premium-card-shadow {
+    box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.05), 0 2px 4px -1px rgba(15, 23, 42, 0.03);
+}
+
+/* Print Utilities for Paper Standardization */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+}
+
+/* ==========================================================================
+   STATE ORCHESTRATION ENGINE: SINGLE-PAGE DASHBOARD LAYOUT TRANSITIONS
+   ========================================================================== */
+
+/* 1.  Respect Tailwind's hidden class when the user is logged out */
+#masterWorkspaceContainer.hidden {
+    display: none !important;
+}
+
+/* 2. State A: Initial Centered Pathway Selection View */
+#masterWorkspaceContainer:not(.hidden):not(.dashboard-active) {
+    display: block;
+    width: 100%;
+}
+
+#pathwaySelectionGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 56rem;
+    /* max-w-4xl */
+    margin-left: auto;
+    margin-right: auto;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Side-by-side cards when centered */
+#cardsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+@media (max-width: 767px) {
+    #cardsGrid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+}
+
+/* 3. Hide the right form pane and sidebar checklist completely before selection */
+#masterWorkspaceContainer:not(.dashboard-active) #rightFormBlockPane,
+#masterWorkspaceContainer:not(.dashboard-active) #sidebarChecklistWidget {
+    display: none !important;
+    opacity: 0 !important;
+}
+
+/* 4. State B: Active Side-by-Side Application Dashboard Toggle */
+@media (min-width: 1024px) {
+    #masterWorkspaceContainer.dashboard-active {
+        display: grid !important;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        gap: 2rem;
+        max-width: 80rem;
+        /* max-w-7xl */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    #masterWorkspaceContainer.dashboard-active #pathwaySelectionGroup {
+        grid-column: span 4 / span 4;
+        max-width: 100% !important;
+        width: 100%;
+    }
+
+    /* Stack cards vertically on the left sidebar */
+    #masterWorkspaceContainer.dashboard-active #cardsGrid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    #masterWorkspaceContainer.dashboard-active #rightFormBlockPane {
+        grid-column: span 8 / span 8;
+        display: block !important;
+        opacity: 1 !important;
+        animation: gussFadeIn 0.5s ease-out forwards;
+    }
+}
+
+/* 5. Mobile responsive adjustments for active dashboard */
+@media (max-width: 1023px) {
+    #masterWorkspaceContainer.dashboard-active {
+        display: block !important;
+    }
+
+    #masterWorkspaceContainer.dashboard-active #pathwaySelectionGroup {
+        margin-bottom: 2rem;
+    }
+
+    #masterWorkspaceContainer.dashboard-active #cardsGrid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+
+    #masterWorkspaceContainer.dashboard-active #rightFormBlockPane {
+        display: block !important;
+        opacity: 1 !important;
+        animation: gussFadeIn 0.5s ease-out forwards;
+    }
+}
+
+.animate-fade-in {
+    animation: gussFadeIn 0.4s ease-out forwards;
+}
+
+@keyframes gussFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
