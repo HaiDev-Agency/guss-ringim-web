@@ -12,6 +12,7 @@ export const ApiGateway = {
         const headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
+            'ngrok-skip-browser-warning': 'true',
             ...options.headers
         };
 
@@ -79,7 +80,10 @@ export const ApiGateway = {
 
     async sendFormData(endpoint, method, formData) {
         const token = sessionStorage.getItem('guss_access_token');
-        const headers = { 'Accept': 'application/json' };
+        const headers = {
+            'Accept': 'application/json',
+            'ngrok-skip-browser-warning': 'true'
+        };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
         try {
@@ -124,7 +128,10 @@ export const ApiGateway = {
 
     async getBlob(endpoint, acceptMime = 'application/pdf') {
         const token = sessionStorage.getItem('guss_access_token');
-        const headers = { 'Accept': acceptMime };
+        const headers = {
+            'Accept': acceptMime,
+            'ngrok-skip-browser-warning': 'true'
+        };
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
         const response = await fetch(`${this.baseURL}${endpoint}`, { method: 'GET', headers });
@@ -140,6 +147,7 @@ export const ApiGateway = {
         const token = sessionStorage.getItem('guss_access_token');
         const headers = {
             'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': 'true',
             'Accept': acceptMime
         };
         if (token) headers['Authorization'] = `Bearer ${token}`;

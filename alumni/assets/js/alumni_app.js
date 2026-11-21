@@ -5,7 +5,7 @@
 const ALUMNI_ENV = {
     isDev: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1',
     get API_BASE_URL() {
-        return this.isDev ? 'http://127.0.0.1:8080' : 'https://bailey-participated-buses-nonprofit.trycloudflare.com';
+        return this.isDev ? 'http://127.0.0.1:8080' : 'https://throbbing-dribble-twelve.ngrok-free.dev';
     }
 };
 
@@ -52,7 +52,10 @@ function debounce(fn, waitMs = 350) {
 async function fetchPublic(endpoint) {
     const res = await fetch(`${ALUMNI_ENV.API_BASE_URL}/api/public${endpoint}`, {
         method: 'GET',
-        headers: { 'Accept': 'application/json' }
+        headers: {
+            'Accept': 'application/json',
+            'ngrok-skip-browser-warning': 'true',
+        }
     });
     const data = await res.json().catch(() => null);
     if (!res.ok) throw new Error(data?.message || data?.error || `HTTP ${res.status}`);
